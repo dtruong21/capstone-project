@@ -1,0 +1,11 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="bottom_navigation_view_elevation">8dp</dimen>
+    <dimen name="app_bar_layout_elevation">4dp</dimen>
+    <dimen name="collapse_tb_expandedTitle_start">48dp</dimen>
+    <dimen name="collapse_expandedTitle_end">64dp</dimen>
+    <dimen name="location_et_margin">8dp</dimen>
+    <dimen name="button_text_size">15sp</dimen>
+</resources>
