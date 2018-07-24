@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1049582288789",
+    "firebase_url": "https://dalker-6ea20.firebaseio.com",
+    "project_id": "dalker-6ea20",
+    "storage_bucket": "dalker-6ea20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049582288789:android:07d83433c2b23573",
+        "android_client_info": {
+          "package_name": "dalker.cmtruong.com.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049582288789-ebemi5dclq3am2u673spnr5dqqfcrp60.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dalker.cmtruong.com.app",
+            "certificate_hash": "c58c2cd68ad9db895b152874523fa95c2caec495"
+          }
+        },
+        {
+          "client_id": "1049582288789-c9ghea0vgq4o7tjfjogohm4g95rfiinc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY9lNgoSbl4bPtpp5QRy_nmBKPS8KEDFk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049582288789-c9ghea0vgq4o7tjfjogohm4g95rfiinc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
