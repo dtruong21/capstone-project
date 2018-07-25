@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-firestore:17.0.3'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
