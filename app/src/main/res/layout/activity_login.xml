@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nav_icon"
+    tools:context="dalker.cmtruong.com.app.view.LoginActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="350dp"
+        android:layout_marginTop="150dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <EditText
+        android:id="@+id/login_id_et"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        style="@android:style/TextAppearance.Material.Widget.EditText"
+        android:layout_gravity="center"
+        android:hint="@string/login_id"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/password_et"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        style="@android:style/TextAppearance.Material.Widget.EditText"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
+</android.support.design.widget.CoordinatorLayout>

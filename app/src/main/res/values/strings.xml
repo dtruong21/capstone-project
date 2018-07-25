@@ -6,4 +6,6 @@
     <string name="title_notifications">Profile</string>
     <string name="try_paris">Try \"Paris\" …</string>
     <string name="filter">Filter</string>
+    <string name="login_id">Login ID</string>
+    <string name="password">Password</string>
 </resources>
