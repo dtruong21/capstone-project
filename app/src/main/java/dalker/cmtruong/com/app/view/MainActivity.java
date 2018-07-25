@@ -9,6 +9,13 @@ import android.widget.TextView;
 
 import dalker.cmtruong.com.app.R;
 
+/**
+ * Main activity for dalker app which displays the list of dalker available
+ *
+ * @author davidetruong
+ * @version 1.0
+ * @since JUly 25th, 2018
+ */
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
