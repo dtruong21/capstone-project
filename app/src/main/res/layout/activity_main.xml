@@ -5,6 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="dalker.cmtruong.com.app.view.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -43,15 +44,18 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="8dp"
                 android:background="@android:color/transparent"
+                android:fontFamily="@string/common_google_play_services_install_text"
                 android:text="@string/filter"
-                android:textSize="@dimen/button_text_size"
-                android:fontFamily="@string/common_google_play_services_install_text"/>
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/button_text_size" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/list_toolbar_side_margin"
+                android:layout_marginStart="@dimen/list_toolbar_side_margin"
                 android:elevation="@dimen/app_bar_layout_elevation"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
@@ -63,11 +67,10 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintTop_toBottomOf="@+id/main_toolbar_container">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <fragment
+        <FrameLayout
             android:id="@+id/main_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -81,6 +84,8 @@
         android:layout_marginStart="0dp"
         android:background="@android:color/white"
         app:elevation="@dimen/bottom_navigation_view_elevation"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

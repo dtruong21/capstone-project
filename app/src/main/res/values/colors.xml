@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#cacaca</color>
     <color name="colorAccent">#FF4081</color>
     <color name="divider">#cacaca</color>
+    <color name="nav_icon">#FF944F</color>
+    <color name="nav_icon_unchecked">#FF944F</color>
 </resources>
