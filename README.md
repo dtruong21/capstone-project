@@ -4,7 +4,8 @@
 
 ## Capstone project
 
-[![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg?maxAge=2592000)]()
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build Status](https://circleci.com/gh/cminhtruong/capstone-project/tree/master.svg?style=shield&circle-token=56cc09bc819ba296c975e732cecc24dd2c976896)](https://circleci.com/gh/cminhtruong/capstone-project/tree/master)
 
 Dalker is my last Udacity's project before the certification in Udacity's Android Developer Nanodegree.
 This application is a solution for dog owners who are too busy to get out with their friends. There are always a lot of guys who love this job and for sure they are pet lovers.
