@@ -1,0 +1,10 @@
+
+Have questions, feedback, or issues? Get support by visiting:
+  https://firebase.google.com/support/
+
+API [testing.googleapis.com] not enabled on project [420687321693]. 
+Would you like to enable and retry (this will take a few minutes)? 
+(y/N)?  
+
+Command killed by keyboard interrupt
+
