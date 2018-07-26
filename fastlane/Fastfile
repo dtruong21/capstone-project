@@ -21,6 +21,36 @@ platform :android do
     gradle(task: "test")
   end
 
+  desc "Run instrumentation tests in Firebase Test Lab"
+  lane :instrumentation_tests_testlab do
+    run_tests_firebase_testlab(
+      project_id: "dalker-6ea20",
+      model: "Nexus6P",
+      version: "21",
+      delete_firebase_files: true)
+    run_tests_firebase_testlab(
+            project_id: "dalker-6ea20",
+            model: "Nexus5",
+            version: "26",
+            delete_firebase_files: true)
+  end
+
+  desc "Assemble Build"
+  lane :assemble_build do
+    gradle(task: "assembleDebug")
+  end
+
+  desc "Assemble Test Application"
+  lane :assemble_test_application do
+    gradle(task: "assembleAndroidTest")
+  end
+
+  desc "Assemble Build and Test Application"
+  lane :assemble do
+    assemble_build
+    assemble_test_application
+  end
+
   desc "Submit a new Beta Build to Crashlytics Beta"
   lane :beta do
     gradle(task: "clean assembleRelease")
