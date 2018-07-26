@@ -31,7 +31,7 @@ platform :android do
     run_tests_firebase_testlab(
             project_id: "dalker-6ea20",
             model: "Nexus5",
-            version: "26",
+            version: "27",
             delete_firebase_files: true)
   end
 
