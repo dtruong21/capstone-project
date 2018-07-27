@@ -12,4 +12,5 @@
     <dimen name="photo_item_margin">4dp</dimen>
     <dimen name="dalker_name_item_margin">10dp</dimen>
     <dimen name="dalker_detail_padding_layout">8dp</dimen>
+    <dimen name="margin_view">10dp</dimen>
 </resources>

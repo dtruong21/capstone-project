@@ -7,12 +7,6 @@
     android:background="@color/nav_icon"
     tools:context="dalker.cmtruong.com.app.view.LoginActivity">
 
-    <TextView
-        style="?android:attr/textAppearanceSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:text="@string/version_1_0" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="150dp"
