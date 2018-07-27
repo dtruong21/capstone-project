@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'DavideTruong'
+            keyPassword 'H@long14'
+            storeFile file('/Users/davidetruong/Documents/My Documents/android.jks')
+            storePassword 'Halong14'
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "dalker.cmtruong.com.app"
@@ -15,8 +23,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
-
     }
     lintOptions {
 
@@ -51,7 +59,7 @@ ext {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:$supportLibrariesVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibrariesVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintVersion"
@@ -67,7 +75,6 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycleVersion"
     implementation "android.arch.persistence.room:runtime:$roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
-
 }
 
 apply plugin: 'com.google.gms.google-services'
