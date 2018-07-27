@@ -6,4 +6,5 @@
     <color name="divider">#cacaca</color>
     <color name="nav_icon">#FF944F</color>
     <color name="nav_icon_unchecked">#FF944F</color>
+    <color name="background_detail_layout">#333</color>
 </resources>
