@@ -63,6 +63,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportLibrariesVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibrariesVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintVersion"
+    implementation "com.android.support:cardview-v7:$supportLibrariesVersion"
     implementation "com.android.support:design:$supportLibrariesVersion"
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "com.android.support.test:runner:$supportTestVersion"

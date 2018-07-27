@@ -8,4 +8,7 @@
     <dimen name="collapse_expandedTitle_end">64dp</dimen>
     <dimen name="location_et_margin">8dp</dimen>
     <dimen name="button_text_size">15sp</dimen>
+    <dimen name="cardview_margin">4dp</dimen>
+    <dimen name="photo_item_margin">4dp</dimen>
+    <dimen name="dalker_name_item_margin">10dp</dimen>
 </resources>

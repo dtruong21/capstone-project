@@ -8,4 +8,11 @@
     <string name="filter">Filter</string>
     <string name="login_id">Login ID</string>
     <string name="password">Password</string>
+    <string name="dalker_photo">dalker photo</string>
+    <string name="dalker_test_name">Alisson Plisson</string>
+    <string name="dalker_age_test">24 years old</string>
+    <string name="dalker_doggo_test">2 doggos possible</string>
+    <string name="dalker_test_rate">Rate: 4,5/5</string>
+    <string name="dalker_price_test">$12/h</string>
+    <string name="favorite_dalker">favorite dalker</string>
 </resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/cardview_margin"
+    android:clickable="true"
+    android:elevation="@dimen/cardview_default_elevation"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+    app:cardCornerRadius="@dimen/cardview_default_radius">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/dalker_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/photo_item_margin"
+            android:contentDescription="@string/dalker_photo"
+            tools:src="@drawable/ic_launcher_foreground" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dalker_name_tv"
+                style="@android:style/TextAppearance.Material.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dalker_name_item_margin"
+                android:maxLength="18"
+                android:maxLines="1"
+                tools:text="@string/dalker_test_name" />
+
+            <TextView
+                android:id="@+id/dalker_age_tv"
+                style="@android:style/TextAppearance.Material.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/dalker_age_test" />
+
+            <TextView
+                android:id="@+id/dalker_service_tv"
+                style="@android:style/TextAppearance.Material.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/dalker_doggo_test" />
+
+            <TextView
+                android:id="@+id/dalker_rate_tv"
+                style="@android:style/TextAppearance.Material.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                tools:text="@string/dalker_test_rate" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="15dp"
+            android:contentDescription="@string/favorite_dalker"
+            tools:src="@drawable/ic_favorite_border_black_48dp" />
+
+        <TextView
+            android:id="@+id/dalker_price_tv"
+            style="@android:style/TextAppearance.Material.Widget.ActionMode.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="25dp"
+            tools:text="@string/dalker_price_test" />
+
+
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v7.widget.CardView>
