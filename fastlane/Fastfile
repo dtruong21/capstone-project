@@ -50,9 +50,9 @@ platform :android do
   lane :assemble_build do |options|
     properties = {
       "android.injected.signing.store.file" => "android.jks",
-      "android.injected.signing.store.password" => "Halong14"
+      "android.injected.signing.store.password" => "Halong14",
       "android.injected.signing.key.alias" => "DavideTruong",
-      "android.injected.signing.key.password" => "H@long14",
+      "android.injected.signing.key.password" => "H@long14"
     } if @build_type == "Release"
 
     gradle(task: "assemble", build_type: @build_type, properties: properties)
