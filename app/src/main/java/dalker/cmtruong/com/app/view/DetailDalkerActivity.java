@@ -5,6 +5,13 @@ import android.os.Bundle;
 
 import dalker.cmtruong.com.app.R;
 
+/**
+ * Dalker detail activity
+ *
+ * @author davidetruong
+ * @version 1.0
+ * @since July 30th, 2018
+ */
 public class DetailDalkerActivity extends AppCompatActivity {
 
     @Override

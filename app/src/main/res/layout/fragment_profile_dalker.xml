@@ -110,7 +110,7 @@
                         android:layout_gravity="end|center_vertical"
                         android:layout_marginEnd="@dimen/margin_image_signin"
                         android:contentDescription="@string/login"
-                        tools:src="@drawable/ic_add_circle_black_48dp" />
+                        tools:src="@drawable/ic_settings_black_48dp" />
                 </FrameLayout>
             </android.support.v7.widget.CardView>
 
