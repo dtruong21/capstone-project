@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/nav_icon">
+
+        <TextView
+            style="@android:style/TextAppearance.Material.Widget.Toolbar.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginBottom="@dimen/margin_title_center"
+            android:layout_marginEnd="@dimen/margin_et_sign_in"
+            android:layout_marginStart="@dimen/margin_et_sign_in"
+            android:text="@string/create_a_new_account"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="@dimen/text_size" />
+
+        <EditText
+            android:id="@+id/email_add_et"
+            style="@android:style/Widget.Material.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginBottom="@dimen/margin_et_bottom"
+            android:layout_marginEnd="@dimen/margin_et_sign_in"
+            android:layout_marginStart="@dimen/margin_et_sign_in"
+            android:background="@drawable/borders"
+            android:hint="@string/Email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/id_add_et"
+            style="@android:style/Widget.Material.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginBottom="@dimen/margin_et_login"
+            android:layout_marginEnd="@dimen/margin_et_sign_in"
+            android:layout_marginStart="@dimen/margin_et_sign_in"
+            android:background="@drawable/borders"
+            android:hint="@string/login_id"
+            android:inputType="text" />
+
+
+        <EditText
+            android:id="@+id/pass_add_et"
+            style="@android:style/Widget.Material.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginBottom="@dimen/margin_password"
+            android:layout_marginEnd="@dimen/margin_et_sign_in"
+            android:layout_marginStart="@dimen/margin_et_sign_in"
+            android:background="@drawable/borders"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/pass_confirm_et"
+            style="@android:style/Widget.Material.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginEnd="@dimen/margin_et_sign_in"
+            android:layout_marginStart="@dimen/margin_et_sign_in"
+            android:layout_marginTop="@dimen/margin_top_password"
+            android:background="@drawable/borders"
+            android:hint="@string/re_type_your_password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/create_account_bt"
+            style="@android:style/Widget.Material.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginEnd="@dimen/margin_et_sign_in"
+            android:layout_marginStart="@dimen/margin_et_sign_in"
+            android:layout_marginTop="300dp"
+            android:background="@android:color/holo_orange_dark"
+            android:text="@string/login" />
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.NestedScrollView>

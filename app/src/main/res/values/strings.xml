@@ -30,4 +30,7 @@
     <string name="help_us_to_improve">Help us to improve</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="log_out">Log out</string>
+    <string name="Email">Email</string>
+    <string name="re_type_your_password">Re-type your password</string>
+    <string name="create_a_new_account">Create a new account</string>
 </resources>

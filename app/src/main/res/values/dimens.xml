@@ -20,4 +20,12 @@
     <dimen name="margin_button_profile_text">25dp</dimen>
     <dimen name="margin_image_signin">25dp</dimen>
     <dimen name="cardview_elevation">2dp</dimen>
+    <dimen name="margin_et_sign_in">20dp</dimen>
+    <dimen name="margin_et_bottom">350dp</dimen>
+    <dimen name="margin_et_login">200dp</dimen>
+    <dimen name="margin_password">50dp</dimen>
+    <dimen name="margin_top_password">100dp</dimen>
+    <dimen name="text_size">38sp</dimen>
+    <dimen name="margin_title_create">50dp</dimen>
+    <dimen name="margin_title_center">500dp</dimen>
 </resources>
