@@ -9,24 +9,20 @@ package dalker.cmtruong.com.app.model;
  */
 public class User {
 
-    private long id;
+    private String id;
+
     private String login;
+
     private String password;
-    private String name;
-    private String gender;
-    private String dateOfBirth;
-    private String address;
-    private int telephone;
-    private boolean isDalker;
 
-    public User() {
-    }
+    private Profile profile;
 
-    public long getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -46,52 +42,21 @@ public class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public Profile getProfile() {
+        return profile;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public int getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(int telephone) {
-        this.telephone = telephone;
-    }
-
-    public boolean isDalker() {
-        return isDalker;
-    }
-
-    public void setDalker(boolean dalker) {
-        isDalker = dalker;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", profile=" + profile +
+                '}';
     }
 }
