@@ -70,7 +70,7 @@
             android:layout_marginEnd="25dp"
             android:layout_marginTop="15dp"
             android:contentDescription="@string/favorite_dalker"
-            tools:src="@drawable/ic_favorite_border_black_48dp" />
+            tools:src="@drawable/ic_favorite_border_blue_48dp" />
 
         <TextView
             android:id="@+id/dalker_price_tv"

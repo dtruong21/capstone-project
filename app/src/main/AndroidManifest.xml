@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.DetailDalkerActivity"></activity>
+        <activity android:name=".view.DetailDalkerActivity" />
     </application>
 
 </manifest>

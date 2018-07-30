@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#cacaca</color>
     <color name="colorAccent">#FF4081</color>
     <color name="divider">#cacaca</color>
-    <color name="nav_icon">#FF944F</color>
-    <color name="nav_icon_unchecked">#FF944F</color>
+    <color name="nav_icon">#2EFFFC</color>
+    <color name="nav_icon_unchecked">#000000</color>
     <color name="background_detail_layout">#333</color>
     <color name="view_color">#000000</color>
 </resources>

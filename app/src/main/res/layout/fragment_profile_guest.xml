@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main_toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@android:color/white"
+        android:elevation="@dimen/app_bar_layout_elevation"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main_collapsing_tb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:expandedTitleMarginEnd="@dimen/collapse_expandedTitle_end"
+            app:expandedTitleMarginStart="@dimen/collapse_tb_expandedTitle_start"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/dalker_detail_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:src="@mipmap/ic_launcher_foreground" />
+
+            <TextView
+                style="@android:style/TextAppearance.Material.Title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/margin_guest_name"
+                android:gravity="bottom|center_horizontal"
+                android:text="@string/GUEST" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/dalker_detail_nsv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/dalker_detail_padding_layout">
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/signin_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/padding_profile_cardview"
+                app:cardElevation="@dimen/cardview_elevation">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@android:style/TextAppearance.Material.Widget.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/margin_button_profile_text"
+                        android:text="@string/login_started_dalker" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="@dimen/margin_image_signin"
+                        android:contentDescription="@string/login"
+                        tools:src="@drawable/ic_add_circle_black_48dp" />
+                </FrameLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/settings_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/padding_profile_cardview"
+                app:cardElevation="@dimen/cardview_elevation">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@android:style/TextAppearance.Material.Widget.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/margin_button_profile_text"
+                        android:text="@string/settings" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="@dimen/margin_image_signin"
+                        android:contentDescription="@string/login"
+                        tools:src="@drawable/ic_add_circle_black_48dp" />
+                </FrameLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/help_us"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/padding_profile_cardview"
+                app:cardElevation="@dimen/cardview_elevation">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@android:style/TextAppearance.Material.Widget.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/margin_button_profile_text"
+                        android:text="@string/help_us_to_improve" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="@dimen/margin_image_signin"
+                        android:contentDescription="@string/help"
+                        tools:src="@drawable/ic_help_black_48dp" />
+                </FrameLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
