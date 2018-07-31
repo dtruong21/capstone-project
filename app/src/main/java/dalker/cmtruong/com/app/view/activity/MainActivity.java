@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.view.fragment.ListDalkerFragment;
+import dalker.cmtruong.com.app.view.fragment.ListFavoriteDalkerFragment;
 import timber.log.Timber;
 
 /**
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             Timber.d("Add new fragment");
             getFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment_container, ListDalkerFragment.getInstance())
+                    .addToBackStack(null)
                     .commit();
         }
 
@@ -80,8 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void openDalkerDetail() {
         Timber.d("Open Dalker detail activity");
-        Intent intent = new Intent(getApplicationContext(), DetailDalkerActivity.class);
-        startActivity(intent);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment_container, ListFavoriteDalkerFragment.getInstance())
+                .addToBackStack(null)
+                .commit();
     }
 
 
