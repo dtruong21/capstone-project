@@ -51,11 +51,13 @@ ext {
     supportTestVersion = '1.0.2'
     espressoVersion = '3.0.2'
     firebaseCoreVersion = '16.0.1'
-    firestoreVersion = '17.0.3'
+    firestoreVersion = '17.0.4'
     circleImageVersion = '2.2.0'
     androidAdmodVersion = '15.0.1'
     lifecycleVersion = '1.1.1'
     roomVersion = '1.1.1'
+    butterknife = '8.8.1'
+    timberVersion = '4.7.1'
 }
 
 dependencies {
@@ -77,6 +79,10 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycleVersion"
     implementation "android.arch.persistence.room:runtime:$roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
+    implementation "com.jakewharton:butterknife:$butterknife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife"
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+
 }
 
 apply plugin: 'com.google.gms.google-services'

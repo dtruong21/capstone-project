@@ -1,4 +1,4 @@
-package dalker.cmtruong.com.app.view;
+package dalker.cmtruong.com.app.view.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

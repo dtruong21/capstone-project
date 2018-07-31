@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/nav_icon"
-    tools:context="dalker.cmtruong.com.app.view.LoginActivity">
+    tools:context="dalker.cmtruong.com.app.view.activity.LoginActivity">
 
 
     <de.hdodenhof.circleimageview.CircleImageView

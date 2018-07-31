@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class User {
 
     @PrimaryKey(autoGenerate = true)
-    private String id;
+    private int idUser;
 
     private String gender;
 
@@ -50,6 +50,8 @@ public class User {
     private double rate;
 
     private int price;
+    @Embedded
+    private ArrayList<Review> reviews;
 
     @Ignore
     public User(String gender, Login login, Name name, Location location, String email, String dob, String registered, int phone, String pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
@@ -69,8 +71,8 @@ public class User {
         this.reviews = reviews;
     }
 
-    public User(String id, String gender, Login login, Name name, Location location, String email, String dob, String registered, int phone, String pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
-        this.id = id;
+    public User(int idUser, String gender, Login login, Name name, Location location, String email, String dob, String registered, int phone, String pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
+        this.idUser = idUser;
         this.gender = gender;
         this.login = login;
         this.name = name;
@@ -87,8 +89,13 @@ public class User {
         this.reviews = reviews;
     }
 
-    @Embedded
-    private ArrayList<Review> reviews;
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
 
     public String getGender() {
         return gender;
