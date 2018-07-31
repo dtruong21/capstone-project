@@ -1,62 +1,224 @@
 package dalker.cmtruong.com.app.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
+import java.util.ArrayList;
+
 /**
- * Main model of dalker
+ * User model
  *
  * @author davidetruong
  * @version 1.0
- * @since JUly 25th, 2018
+ * @since 31th July, 2018
  */
+@Entity(tableName = "users")
 public class User {
 
+    @PrimaryKey(autoGenerate = true)
     private String id;
 
-    private String login;
+    private String gender;
 
-    private String password;
+    @Embedded
+    private Login login;
 
-    private Profile profile;
+    @Embedded
+    private Name name;
 
+    @Embedded
+    private Location location;
 
-    public String getId() {
-        return id;
+    private String email;
+
+    private String dob;
+
+    private String registered;
+
+    private int phone;
+
+    @ColumnInfo(name = "picture_url")
+    private String pictureURL;
+
+    private String nat;
+
+    private String description;
+
+    private double rate;
+
+    private int price;
+
+    @Ignore
+    public User(String gender, Login login, Name name, Location location, String email, String dob, String registered, int phone, String pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
+        this.gender = gender;
+        this.login = login;
+        this.name = name;
+        this.location = location;
+        this.email = email;
+        this.dob = dob;
+        this.registered = registered;
+        this.phone = phone;
+        this.pictureURL = pictureURL;
+        this.nat = nat;
+        this.description = description;
+        this.rate = rate;
+        this.price = price;
+        this.reviews = reviews;
     }
 
-    public void setId(String id) {
+    public User(String id, String gender, Login login, Name name, Location location, String email, String dob, String registered, int phone, String pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
         this.id = id;
+        this.gender = gender;
+        this.login = login;
+        this.name = name;
+        this.location = location;
+        this.email = email;
+        this.dob = dob;
+        this.registered = registered;
+        this.phone = phone;
+        this.pictureURL = pictureURL;
+        this.nat = nat;
+        this.description = description;
+        this.rate = rate;
+        this.price = price;
+        this.reviews = reviews;
     }
 
-    public String getLogin() {
+    @Embedded
+    private ArrayList<Review> reviews;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Login getLogin() {
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(Login login) {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
+    public Name getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(Name name) {
+        this.name = name;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(String registered) {
+        this.registered = registered;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
+    }
+
+    public String getNat() {
+        return nat;
+    }
+
+    public void setNat(String nat) {
+        this.nat = nat;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public ArrayList<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<Review> reviews) {
+        this.reviews = reviews;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id='" + id + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", profile=" + profile +
+                "gender='" + gender + '\'' +
+                ", login=" + login +
+                ", name=" + name +
+                ", location=" + location +
+                ", email='" + email + '\'' +
+                ", dob='" + dob + '\'' +
+                ", registered='" + registered + '\'' +
+                ", phone=" + phone +
+                ", pictureURL='" + pictureURL + '\'' +
+                ", nat='" + nat + '\'' +
+                ", description='" + description + '\'' +
+                ", rate=" + rate +
+                ", price=" + price +
+                ", reviews=" + reviews +
                 '}';
     }
 }
