@@ -35,7 +35,7 @@ public class ListDalkerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_dalker, container, false);
         setRetainInstance(true);
         ButterKnife.bind(this, view);
-        Timber.d("Fragment ListDalker is created");
+        Timber.d("Fragment Paid ListDalker is created");
         return view;
     }
 }

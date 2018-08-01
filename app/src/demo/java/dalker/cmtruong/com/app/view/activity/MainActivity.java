@@ -15,15 +15,7 @@ import dalker.cmtruong.com.app.view.fragment.ListFavoriteDalkerFragment;
 import dalker.cmtruong.com.app.view.fragment.ProfileFragment;
 import timber.log.Timber;
 
-/**
- * Main activity for dalker app which displays the list of dalker available
- *
- * @author davidetruong
- * @version 1.0
- * @since JUly 25th, 2018
- */
 public class MainActivity extends AppCompatActivity {
-
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
@@ -91,5 +83,4 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .commit();
     }
-
 }
