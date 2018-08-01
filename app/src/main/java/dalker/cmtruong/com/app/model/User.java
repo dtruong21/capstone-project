@@ -6,6 +6,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -21,28 +23,36 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     private int idUser;
 
+    @SerializedName("gender")
     private String gender;
 
-    @Embedded
-    private Login login;
-
+    @SerializedName("name")
     @Embedded
     private Name name;
 
+    @SerializedName("location")
     @Embedded
     private Location location;
 
+    @SerializedName("email")
     private String email;
 
-    private String dob;
+    @SerializedName("login")
+    @Embedded
+    private Login login;
 
-    private String registered;
+    @SerializedName("dob")
+    @Embedded
+    private Dob dob;
 
-    private int phone;
+    @SerializedName("phone")
+    private String phone;
 
-    @ColumnInfo(name = "picture_url")
-    private String pictureURL;
+    @SerializedName("picture")
+    @Embedded
+    private Picture pictureURL;
 
+    @SerializedName("nat")
     private String nat;
 
     private String description;
@@ -50,18 +60,18 @@ public class User {
     private double rate;
 
     private int price;
+
     @Embedded
     private ArrayList<Review> reviews;
 
     @Ignore
-    public User(String gender, Login login, Name name, Location location, String email, String dob, String registered, int phone, String pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
+    public User(String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
         this.gender = gender;
         this.login = login;
         this.name = name;
         this.location = location;
         this.email = email;
         this.dob = dob;
-        this.registered = registered;
         this.phone = phone;
         this.pictureURL = pictureURL;
         this.nat = nat;
@@ -71,7 +81,7 @@ public class User {
         this.reviews = reviews;
     }
 
-    public User(int idUser, String gender, Login login, Name name, Location location, String email, String dob, String registered, int phone, String pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
+    public User(int idUser, String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
         this.idUser = idUser;
         this.gender = gender;
         this.login = login;
@@ -79,7 +89,6 @@ public class User {
         this.location = location;
         this.email = email;
         this.dob = dob;
-        this.registered = registered;
         this.phone = phone;
         this.pictureURL = pictureURL;
         this.nat = nat;
@@ -137,35 +146,27 @@ public class User {
         this.email = email;
     }
 
-    public String getDob() {
+    public Dob getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Dob dob) {
         this.dob = dob;
     }
 
-    public String getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(String registered) {
-        this.registered = registered;
-    }
-
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getPictureURL() {
+    public Picture getPictureURL() {
         return pictureURL;
     }
 
-    public void setPictureURL(String pictureURL) {
+    public void setPictureURL(Picture pictureURL) {
         this.pictureURL = pictureURL;
     }
 
@@ -218,7 +219,6 @@ public class User {
                 ", location=" + location +
                 ", email='" + email + '\'' +
                 ", dob='" + dob + '\'' +
-                ", registered='" + registered + '\'' +
                 ", phone=" + phone +
                 ", pictureURL='" + pictureURL + '\'' +
                 ", nat='" + nat + '\'' +

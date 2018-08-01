@@ -4,7 +4,7 @@ public class Location {
     private String street;
     private String city;
     private String state;
-    private String postCode;
+    private int postCode;
 
     public String getStreet() {
         return street;
@@ -30,11 +30,11 @@ public class Location {
         this.state = state;
     }
 
-    public String getPostCode() {
+    public int getPostCode() {
         return postCode;
     }
 
-    public void setPostCode(String postCode) {
+    public void setPostCode(int postCode) {
         this.postCode = postCode;
     }
 

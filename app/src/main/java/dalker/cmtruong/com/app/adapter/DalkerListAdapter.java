@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -54,13 +55,35 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
         @BindView(R.id.dalker_iv)
         ImageView mImageView;
 
+        @BindView(R.id.dalker_name_tv)
+        TextView mDalkerName;
+
+        @BindView(R.id.dalker_age_tv)
+        TextView mDalkerAge;
+
+        @BindView(R.id.dalker_service_tv)
+        TextView mDalkerService;
+
+        @BindView(R.id.dalker_rate_tv)
+        TextView mDalkerRate;
+
+        @BindView(R.id.dalker_price_tv)
+        TextView mDalkerPrice;
+
+        @BindView(R.id.dalker_add_favorite)
+        ImageView mFavoriteIv;
+
         public DalkerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         void bind(User user) {
-
+            mDalkerName.setText(String.format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
+            mDalkerAge.setText(user.getDob().getAge());
+            mDalkerService.setText(R.string.fake_service_user);
+            mDalkerRate.setText(R.string.rate_fake_user);
+            mDalkerPrice.setText(R.string.dalker_price_test);
         }
     }
 }

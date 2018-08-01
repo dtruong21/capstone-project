@@ -8,6 +8,7 @@ import android.content.Context;
 import android.util.Log;
 
 import dalker.cmtruong.com.app.model.User;
+import timber.log.Timber;
 
 /**
  * Dalker database class
@@ -29,12 +30,12 @@ public abstract class DalkerDatabase extends RoomDatabase {
     private static DalkerDatabase getsInstance(Context context) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                Log.d(TAG, "Create new database instance: " + DATABASE_NAME);
+                Timber.d("Create new database instance: %s", DATABASE_NAME);
                 sInstance = Room.databaseBuilder(context.getApplicationContext(), DalkerDatabase.class, DalkerDatabase.DATABASE_NAME)
                         .build();
             }
         }
-        Log.d(TAG, "Getting the database instance");
+        Timber.d("Getting the database instance");
         return sInstance;
     }
 
