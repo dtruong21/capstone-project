@@ -1,5 +1,7 @@
 package dalker.cmtruong.com.app.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Name model
  *
@@ -10,7 +12,11 @@ package dalker.cmtruong.com.app.model;
 public class Name {
 
     private String title;
+
+    @SerializedName("first")
     private String firstName;
+
+    @SerializedName("last")
     private String lastName;
 
     public String getTitle() {

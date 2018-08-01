@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.adapter.DalkerListAdapter;
 import dalker.cmtruong.com.app.model.User;
 import dalker.cmtruong.com.app.utilities.NetworkUtilities;
 import timber.log.Timber;
@@ -136,7 +138,7 @@ public class ListDalkerFragment extends Fragment {
             if (s != null && !s.equals("")) {
                 JSONObject jsonObject;
                 JSONArray mArray = null;
-                List<User> users = null;
+                ArrayList<User> users = null;
                 try {
                     jsonObject = new JSONObject(s);
                     mArray = jsonObject.getJSONArray("results");
@@ -145,6 +147,10 @@ public class ListDalkerFragment extends Fragment {
                     }.getType();
                     users = gson.fromJson(mArray.toString(), type);
                     Timber.d("My results: %s", users.toString());
+                    mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    mDalkerRV.setHasFixedSize(true);
+                    DalkerListAdapter adapter = new DalkerListAdapter(users);
+                    mDalkerRV.setAdapter(adapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

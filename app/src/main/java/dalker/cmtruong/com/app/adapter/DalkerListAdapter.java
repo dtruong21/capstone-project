@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,8 +81,14 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
         }
 
         void bind(User user) {
+
+            Picasso.get()
+                    .load(user.getPictureURL().getLarge())
+                    .error(R.drawable.ic_launcher_foreground)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(mImageView);
             mDalkerName.setText(String.format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
-            mDalkerAge.setText(user.getDob().getAge());
+            mDalkerAge.setText(String.valueOf(user.getDob().getAge()));
             mDalkerService.setText(R.string.fake_service_user);
             mDalkerRate.setText(R.string.rate_fake_user);
             mDalkerPrice.setText(R.string.dalker_price_test);

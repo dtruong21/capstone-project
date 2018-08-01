@@ -18,9 +18,10 @@
         <ImageView
             android:id="@+id/dalker_iv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="@dimen/photo_item_margin"
             android:contentDescription="@string/dalker_photo"
+            android:scaleType="centerCrop"
             tools:src="@drawable/ic_launcher_foreground" />
 
         <LinearLayout

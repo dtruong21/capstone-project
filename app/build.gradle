@@ -53,6 +53,7 @@ ext {
     butterknife = '8.8.1'
     timberVersion = '4.7.1'
     gsonVersion = '2.8.5'
+    picasso = '2.71828'
 }
 
 dependencies {
@@ -78,6 +79,7 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife"
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.squareup.picasso:picasso:$picasso"
 }
 
 apply plugin: 'com.google.gms.google-services'
