@@ -11,16 +11,7 @@ import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
 import timber.log.Timber;
 
-
-/**
- * This fragment will display the list of dalker searching by location
- *
- * @author davidetruong
- * @version 1.0
- * @since 31th july, 2018
- */
 public class ListDalkerFragment extends Fragment {
-
     private static final String TAG = ListDalkerFragment.class.getSimpleName();
 
     @Override
