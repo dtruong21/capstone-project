@@ -9,10 +9,9 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main_toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="256dp"
         android:background="@android:color/white"
-        android:elevation="@dimen/app_bar_layout_elevation"
-        android:fitsSystemWindows="true">
+        android:elevation="@dimen/app_bar_layout_elevation">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/main_collapsing_tb"
@@ -26,7 +25,10 @@
                 android:id="@+id/dalker_detail_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:scaleType="centerCrop"
                 tools:src="@mipmap/ic_launcher_foreground" />
+
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>

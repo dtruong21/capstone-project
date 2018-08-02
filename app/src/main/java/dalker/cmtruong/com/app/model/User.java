@@ -1,10 +1,11 @@
 package dalker.cmtruong.com.app.model;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * @since 31th July, 2018
  */
 @Entity(tableName = "users")
-public class User {
+public class User implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int idUser;
@@ -97,6 +98,54 @@ public class User {
         this.price = price;
         this.reviews = reviews;
     }
+
+
+    protected User(Parcel in) {
+        idUser = in.readInt();
+        gender = in.readString();
+        name = in.readParcelable(Name.class.getClassLoader());
+        location = in.readParcelable(Location.class.getClassLoader());
+        email = in.readString();
+        login = in.readParcelable(Login.class.getClassLoader());
+        dob = in.readParcelable(Dob.class.getClassLoader());
+        phone = in.readString();
+        pictureURL = in.readParcelable(Picture.class.getClassLoader());
+        nat = in.readString();
+        description = in.readString();
+        rate = in.readDouble();
+        price = in.readInt();
+        reviews = in.createTypedArrayList(Review.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(idUser);
+        dest.writeString(gender);
+        dest.writeParcelable(name, flags);
+        dest.writeParcelable(location, flags);
+        dest.writeString(email);
+        dest.writeParcelable(login, flags);
+        dest.writeParcelable(dob, flags);
+        dest.writeString(phone);
+        dest.writeParcelable(pictureURL, flags);
+        dest.writeString(nat);
+        dest.writeString(description);
+        dest.writeDouble(rate);
+        dest.writeInt(price);
+        dest.writeTypedList(reviews);
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public int getIdUser() {
         return idUser;
@@ -228,4 +277,11 @@ public class User {
                 ", reviews=" + reviews +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
 }

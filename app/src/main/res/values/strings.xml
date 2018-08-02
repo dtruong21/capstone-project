@@ -35,6 +35,8 @@
     <string name="create_a_new_account">Create a new account</string>
     <string name="user_session">USER_SESSION</string>
     <string name="dalker_list_error">No result found</string>
-    <string name="fake_service_user">4 doggo</string>
-    <string name="rate_fake_user">4.5</string>
+    <string name="fake_service_user">4 doggo possible</string>
+    <string name="rate_fake_user">Rate: 4.5/5</string>
+    <string name="year">years old</string>
+    <string name="dalker_intent_detail">DALKER_CLICKED</string>
 </resources>

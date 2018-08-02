@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.event.OnDalkerHandledListener;
 import dalker.cmtruong.com.app.model.User;
 import timber.log.Timber;
 
@@ -23,6 +24,7 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
 
     private static final String TAG = DalkerListAdapter.class.getSimpleName();
     private List<User> users;
+    private OnDalkerHandledListener mListener;
 
     public DalkerListAdapter(List<User> users) {
         Timber.plant(new Timber.DebugTree());
@@ -47,12 +49,16 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
         holder.bind(user);
     }
 
+    public void setOnItemClickedListener(OnDalkerHandledListener mListener) {
+        this.mListener = mListener;
+    }
+
     @Override
     public int getItemCount() {
         return users.size();
     }
 
-    class DalkerViewHolder extends RecyclerView.ViewHolder {
+    class DalkerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.dalker_iv)
         ImageView mImageView;
@@ -78,7 +84,9 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
         public DalkerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
+
 
         void bind(User user) {
 
@@ -88,10 +96,15 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(mImageView);
             mDalkerName.setText(String.format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
-            mDalkerAge.setText(String.valueOf(user.getDob().getAge()));
+            mDalkerAge.setText("Age: " + String.valueOf(user.getDob().getAge()));
             mDalkerService.setText(R.string.fake_service_user);
             mDalkerRate.setText(R.string.rate_fake_user);
             mDalkerPrice.setText(R.string.dalker_price_test);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onItemClicked(v, getAdapterPosition());
         }
     }
 }

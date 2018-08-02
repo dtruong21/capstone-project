@@ -1,5 +1,8 @@
 package dalker.cmtruong.com.app.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
  * @version 1.0
  * @since July 31th, 2018
  */
-public class Name {
+public class Name implements Parcelable {
 
     private String title;
 
@@ -18,6 +21,37 @@ public class Name {
 
     @SerializedName("last")
     private String lastName;
+
+    public Name(String title, String firstName, String lastName) {
+        this.title = title;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    protected Name(Parcel in) {
+        title = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+    }
+
+    public static final Creator<Name> CREATOR = new Creator<Name>() {
+        @Override
+        public Name createFromParcel(Parcel in) {
+            return new Name(in);
+        }
+
+        @Override
+        public Name[] newArray(int size) {
+            return new Name[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -51,4 +85,11 @@ public class Name {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="150dp"
     android:layout_margin="@dimen/cardview_margin"
     android:clickable="true"
     android:elevation="@dimen/cardview_default_elevation"
@@ -13,7 +13,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="6">
 
@@ -31,6 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/location_et_margin"
             android:layout_weight="3"
             android:orientation="vertical">
 
@@ -39,31 +40,41 @@
                 style="@android:style/TextAppearance.Material.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/location_et_margin"
                 android:layout_marginTop="@dimen/dalker_name_item_margin"
                 android:maxLength="18"
                 android:maxLines="1"
+                android:textSize="@dimen/name_size"
+                android:textStyle="bold"
                 tools:text="@string/dalker_test_name" />
 
             <TextView
                 android:id="@+id/dalker_age_tv"
                 style="@android:style/TextAppearance.Material.Medium"
                 android:layout_width="wrap_content"
+                android:fontFamily="monospace"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/location_et_margin"
+                android:layout_marginTop="@dimen/location_et_margin"
+                android:textStyle="italic"
                 tools:text="@string/dalker_age_test" />
 
             <TextView
                 android:id="@+id/dalker_service_tv"
                 style="@android:style/TextAppearance.Material.Medium"
                 android:layout_width="wrap_content"
+                android:fontFamily="monospace"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/location_et_margin"
+                android:textStyle="italic"
                 tools:text="@string/dalker_doggo_test" />
 
             <TextView
                 android:id="@+id/dalker_rate_tv"
-                style="@android:style/TextAppearance.Material.Medium"
+                style="@android:style/TextAppearance.Material.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
+                android:textStyle="italic"
                 tools:text="@string/dalker_test_rate" />
         </LinearLayout>
 
@@ -78,8 +89,9 @@
                 android:id="@+id/dalker_add_favorite"
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginBottom="@dimen/favorite_margin"
+                android:layout_marginEnd="@dimen/favorite_margin"
+                android:layout_marginTop="@dimen/favorite_margin"
                 android:clickable="true"
                 android:contentDescription="@string/favorite_dalker"
                 android:focusable="true"
@@ -90,8 +102,7 @@
                 style="@android:style/TextAppearance.Material.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="@dimen/favorite_margin"
                 android:textStyle="bold"
                 tools:text="@string/dalker_price_test" />
         </LinearLayout>

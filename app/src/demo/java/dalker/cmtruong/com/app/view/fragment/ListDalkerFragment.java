@@ -1,8 +1,10 @@
 package dalker.cmtruong.com.app.view.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,8 +31,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.adapter.DalkerListAdapter;
+import dalker.cmtruong.com.app.event.OnDalkerHandledListener;
 import dalker.cmtruong.com.app.model.User;
 import dalker.cmtruong.com.app.utilities.NetworkUtilities;
+import dalker.cmtruong.com.app.view.activity.DetailDalkerActivity;
 import timber.log.Timber;
 
 /**
@@ -48,6 +52,8 @@ public class ListDalkerFragment extends Fragment {
     @BindView(R.id.dalker_search_error)
     TextView mErrorMessage;
 
+    DalkerListAdapter adapter;
+    ArrayList<User> users = null;
 
     private static final String TAG = ListDalkerFragment.class.getSimpleName();
 
@@ -74,6 +80,7 @@ public class ListDalkerFragment extends Fragment {
         ButterKnife.bind(this, view);
         Timber.d("Fragment Demo ListDalker is created");
         initData();
+
         return view;
     }
 
@@ -103,6 +110,19 @@ public class ListDalkerFragment extends Fragment {
         String mQuery = getString(R.string.url_fake_user);
         URL mUrl = NetworkUtilities.buildURL(mQuery);
         new FakeUserAsyncTask().execute(mUrl);
+    }
+
+    private void showDetailDalker(DalkerListAdapter adapter) {
+        adapter.setOnItemClickedListener(new OnDalkerHandledListener() {
+            @Override
+            public void onItemClicked(View view, int position) {
+                Intent intent = new Intent(getActivity(), DetailDalkerActivity.class);
+                Bundle b = new Bundle();
+                b.putParcelable(getString(R.string.dalker_intent_detail), users.get(position));
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -138,7 +158,6 @@ public class ListDalkerFragment extends Fragment {
             if (s != null && !s.equals("")) {
                 JSONObject jsonObject;
                 JSONArray mArray = null;
-                ArrayList<User> users = null;
                 try {
                     jsonObject = new JSONObject(s);
                     mArray = jsonObject.getJSONArray("results");
@@ -149,13 +168,12 @@ public class ListDalkerFragment extends Fragment {
                     Timber.d("My results: %s", users.toString());
                     mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
                     mDalkerRV.setHasFixedSize(true);
-                    DalkerListAdapter adapter = new DalkerListAdapter(users);
+                    adapter = new DalkerListAdapter(users);
                     mDalkerRV.setAdapter(adapter);
+                    showDetailDalker(adapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
                 showDalkerList();
             } else {
                 showMessageError();

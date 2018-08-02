@@ -1,10 +1,57 @@
 package dalker.cmtruong.com.app.model;
 
-public class Location {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+/**
+ * @author davidetruong
+ * @version 1.0
+ * @since 02 August 2018
+ */
+public class Location implements Parcelable {
     private String street;
     private String city;
     private String state;
     private int postCode;
+
+    protected Location(Parcel in) {
+        street = in.readString();
+        city = in.readString();
+        state = in.readString();
+        postCode = in.readInt();
+    }
+
+    public Location(String street, String city, String state, int postCode) {
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.postCode = postCode;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(street);
+        dest.writeString(city);
+        dest.writeString(state);
+        dest.writeInt(postCode);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Location> CREATOR = new Creator<Location>() {
+        @Override
+        public Location createFromParcel(Parcel in) {
+            return new Location(in);
+        }
+
+        @Override
+        public Location[] newArray(int size) {
+            return new Location[size];
+        }
+    };
 
     public String getStreet() {
         return street;

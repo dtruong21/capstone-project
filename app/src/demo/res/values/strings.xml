@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="url_fake_user">https://randomuser.me/api/?page=1&amp;results=50&amp;seed=abc</string>
+    <string name="url_fake_user">https://randomuser.me/api/?page=2&amp;results=100&amp;seed=abc</string>
 </resources>

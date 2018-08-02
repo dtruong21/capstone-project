@@ -28,4 +28,6 @@
     <dimen name="text_size">38sp</dimen>
     <dimen name="margin_title_create">50dp</dimen>
     <dimen name="margin_title_center">500dp</dimen>
+    <dimen name="name_size">20sp</dimen>
+    <dimen name="favorite_margin">20dp</dimen>
 </resources>
