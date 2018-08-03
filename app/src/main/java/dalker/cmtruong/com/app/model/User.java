@@ -58,15 +58,13 @@ public class User implements Parcelable {
 
     private String description;
 
-    private double rate;
-
     private int price;
 
     @Embedded
     private ArrayList<Review> reviews;
 
     @Ignore
-    public User(String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
+    public User(String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, int price, ArrayList<Review> reviews) {
         this.gender = gender;
         this.login = login;
         this.name = name;
@@ -77,12 +75,11 @@ public class User implements Parcelable {
         this.pictureURL = pictureURL;
         this.nat = nat;
         this.description = description;
-        this.rate = rate;
         this.price = price;
         this.reviews = reviews;
     }
 
-    public User(int idUser, String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, double rate, int price, ArrayList<Review> reviews) {
+    public User(int idUser, String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, int price, ArrayList<Review> reviews) {
         this.idUser = idUser;
         this.gender = gender;
         this.login = login;
@@ -94,7 +91,6 @@ public class User implements Parcelable {
         this.pictureURL = pictureURL;
         this.nat = nat;
         this.description = description;
-        this.rate = rate;
         this.price = price;
         this.reviews = reviews;
     }
@@ -112,7 +108,6 @@ public class User implements Parcelable {
         pictureURL = in.readParcelable(Picture.class.getClassLoader());
         nat = in.readString();
         description = in.readString();
-        rate = in.readDouble();
         price = in.readInt();
         reviews = in.createTypedArrayList(Review.CREATOR);
     }
@@ -130,7 +125,6 @@ public class User implements Parcelable {
         dest.writeParcelable(pictureURL, flags);
         dest.writeString(nat);
         dest.writeString(description);
-        dest.writeDouble(rate);
         dest.writeInt(price);
         dest.writeTypedList(reviews);
     }
@@ -235,13 +229,6 @@ public class User implements Parcelable {
         this.description = description;
     }
 
-    public double getRate() {
-        return rate;
-    }
-
-    public void setRate(double rate) {
-        this.rate = rate;
-    }
 
     public int getPrice() {
         return price;
@@ -272,7 +259,6 @@ public class User implements Parcelable {
                 ", pictureURL='" + pictureURL + '\'' +
                 ", nat='" + nat + '\'' +
                 ", description='" + description + '\'' +
-                ", rate=" + rate +
                 ", price=" + price +
                 ", reviews=" + reviews +
                 '}';

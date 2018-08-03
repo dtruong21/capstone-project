@@ -46,36 +46,64 @@
             android:orientation="vertical"
             android:padding="@dimen/dalker_detail_padding_layout">
 
-            <TextView
-                android:id="@+id/dalker_detail_name_tv"
-                style="@android:style/TextAppearance.Material.Title"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="@string/dalker_test_name" />
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin">
 
-            <TextView
-                android:id="@+id/dalker_detail_address_tv"
-                style="@android:style/TextAppearance.Material.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="@string/dalker_address_test" />
+                <TextView
+                    android:id="@+id/dalker_detail_name_tv"
+                    style="@android:style/TextAppearance.Material.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:textAlignment="viewStart"
+                    tools:text="@string/dalker_test_name" />
 
-            <RatingBar
-                android:id="@+id/dalker_rating_bar"
-                style="?android:attr/ratingBarStyleIndicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="true"
-                android:numStars="5"
-                android:stepSize="0.1" />
+                <TextView
+                    android:id="@+id/dalker_detail_address_tv"
+                    style="@android:style/TextAppearance.Material.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:textAlignment="viewStart"
+                    android:layout_below="@id/dalker_detail_name_tv"
+                    tools:text="@string/dalker_address_test" />
 
 
-            <TextView
-                android:id="@+id/dalker_detail_tarif_tv"
-                style="@android:style/TextAppearance.Material.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="@string/dalker_price_test" />
+                <RatingBar
+                    android:id="@+id/dalker_rating_bar"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dalker_detail_address_tv"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="0.1"
+                    android:theme="@style/RatingBar" />
+
+                <ImageView
+                    android:id="@+id/insert_to_fav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="17dp"
+                    android:contentDescription="@string/favorite_dalker"
+                    android:src="@drawable/ic_favorite_border_blue_48dp" />
+
+                <TextView
+                    android:id="@+id/dalker_detail_tarif_tv"
+                    style="@android:style/TextAppearance.Material.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toEndOf="@id/dalker_rating_bar"
+                    android:textAlignment="viewEnd"
+                    tools:text="@string/dalker_price_test" />
+
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -95,6 +123,8 @@
                 style="@android:style/TextAppearance.Material.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/location_et_margin"
+                android:layout_marginStart="@dimen/location_et_margin"
                 tools:text="@string/text_test" />
 
             <View
@@ -114,6 +144,8 @@
                 android:id="@+id/dalker_review_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:scrollbarStyle="outsideOverlay"
                 android:scrollbars="vertical">
 

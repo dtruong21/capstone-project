@@ -16,7 +16,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dalker.cmtruong.com.app.BuildConfig;
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.model.Review;
 import dalker.cmtruong.com.app.model.User;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
@@ -53,10 +55,13 @@ public class FragmentDetailDalker extends Fragment {
     RatingBar dalkerRatingBar;
 
     @BindView(R.id.dalker_detail_text)
-    TextView dalkerDescrition;
+    TextView dalkerDescription;
 
     @BindView(R.id.dalker_review_list)
     RecyclerView reviewRV;
+
+    ArrayList<Review> reviews;
+    double rateAverage;
 
     public FragmentDetailDalker() {
     }
@@ -104,6 +109,30 @@ public class FragmentDetailDalker extends Fragment {
         dalkerNameTv.setText(String.format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
         dalkerAddressTv.setText(String.format("%s, %s", user.getLocation().getStreet(), user.getLocation().getCity()));
         dalkerPriceTv.setText(String.format("Price: %s", getString(R.string.dalker_price_test)));
-        dalkerDescrition.setText(getString(R.string.text_test));
+
+        if (user.getDescription() == null)
+            if (BuildConfig.FLAVOR.equals(getString(R.string.demo)))
+                dalkerDescription.setText(getString(R.string.text_test));
+            else
+                dalkerDescription.setText(R.string.description_empty_error);
+        else
+            dalkerDescription.setText(user.getDescription());
+        reviews = user.getReviews();
+        rateAverage = getRateAverage(reviews);
+        if (user.getReviews() == null && BuildConfig.FLAVOR.equals(getString(R.string.demo)))
+            dalkerRatingBar.setRating(4.5f);
+        else
+            dalkerRatingBar.setRating((float) rateAverage);
+    }
+
+    private double getRateAverage(ArrayList<Review> reviews) {
+        int sum = 0;
+        double average;
+        if (reviews != null) {
+            for (Review review : reviews)
+                sum += review.getRate();
+            average = sum / reviews.size();
+        }
+        return sum;
     }
 }

@@ -8,4 +8,6 @@
     <color name="nav_icon_unchecked">#000000</color>
     <color name="background_detail_layout">#333</color>
     <color name="view_color">#000000</color>
+    <color name="dust_yellow">#ffea00</color>
+    <color name="light_green">#11ff00</color>
 </resources>

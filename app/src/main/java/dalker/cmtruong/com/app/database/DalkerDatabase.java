@@ -39,5 +39,5 @@ public abstract class DalkerDatabase extends RoomDatabase {
         return sInstance;
     }
 
-
+    public abstract UserDAO userDAO();
 }
