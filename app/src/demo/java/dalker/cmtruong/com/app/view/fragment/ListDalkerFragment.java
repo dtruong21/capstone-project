@@ -118,7 +118,8 @@ public class ListDalkerFragment extends Fragment {
             public void onItemClicked(View view, int position) {
                 Intent intent = new Intent(getActivity(), DetailDalkerActivity.class);
                 Bundle b = new Bundle();
-                b.putParcelable(getString(R.string.dalker_intent_detail), users.get(position));
+                b.putParcelableArrayList(getString(R.string.dalker_intent_detail), users);
+                b.putInt(getString(R.string.dalker_intent_position), position);
                 intent.putExtras(b);
                 startActivity(intent);
             }

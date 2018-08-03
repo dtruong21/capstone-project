@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_comment"
+        android:enabled="true"
+        android:icon="@drawable/ic_insert_comment_black_24dp"
+        android:title="@string/title_comment"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_call"
+        android:enabled="true"
+        android:icon="@drawable/ic_call_black_24dp"
+        android:title="@string/call"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_share"
+        android:enabled="true"
+        android:icon="@drawable/ic_share_black_24dp"
+        android:title="@string/share"
+        app:showAsAction="ifRoom" />
+</menu>

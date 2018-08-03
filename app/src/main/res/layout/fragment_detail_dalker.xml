@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main_toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:background="@android:color/white"
+        android:elevation="@dimen/app_bar_layout_elevation">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main_collapsing_tb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:expandedTitleMarginEnd="@dimen/collapse_expandedTitle_end"
+            app:expandedTitleMarginStart="@dimen/collapse_tb_expandedTitle_start"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/dalker_detail_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:scaleType="centerCrop"
+                tools:src="@mipmap/ic_launcher_foreground" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/dalker_detail_nsv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/dalker_detail_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/dalker_detail_padding_layout">
+
+            <TextView
+                android:id="@+id/dalker_detail_name_tv"
+                style="@android:style/TextAppearance.Material.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/dalker_test_name" />
+
+            <TextView
+                android:id="@+id/dalker_detail_address_tv"
+                style="@android:style/TextAppearance.Material.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/dalker_address_test" />
+
+            <RatingBar
+                android:id="@+id/dalker_rating_bar"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.1" />
+
+
+            <TextView
+                android:id="@+id/dalker_detail_tarif_tv"
+                style="@android:style/TextAppearance.Material.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/dalker_price_test" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_margin="@dimen/margin_view"
+                android:background="@color/view_color" />
+
+            <TextView
+                style="@android:style/TextAppearance.Material.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/dalker_detail_text"
+                style="@android:style/TextAppearance.Material.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/text_test" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_margin="@dimen/margin_view"
+                android:background="@color/view_color" />
+
+            <TextView
+                style="@android:style/TextAppearance.Material.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dalker_review"
+                android:textAlignment="center" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dalker_review_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

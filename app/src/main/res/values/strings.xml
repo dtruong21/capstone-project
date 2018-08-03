@@ -39,4 +39,8 @@
     <string name="rate_fake_user">Rate: 4.5/5</string>
     <string name="year">years old</string>
     <string name="dalker_intent_detail">DALKER_CLICKED</string>
+    <string name="dalker_intent_position">POSITION_CLICKED</string>
+    <string name="title_comment">Comment</string>
+    <string name="share">share</string>
+    <string name="description">Description</string>
 </resources>
