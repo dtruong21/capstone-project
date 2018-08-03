@@ -1,14 +1,12 @@
 package dalker.cmtruong.com.app.view.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -17,7 +15,6 @@ import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.model.User;
 import dalker.cmtruong.com.app.view.fragment.FragmentDetailDalker;
-import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 /**
@@ -56,6 +53,7 @@ public class DetailDalkerActivity extends AppCompatActivity {
         position = bundle.getInt(getString(R.string.dalker_intent_position));
         getFragmentManager().beginTransaction()
                 .add(R.id.detail_dalker_container, FragmentDetailDalker.getInstance(users, position))
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -82,5 +80,11 @@ public class DetailDalkerActivity extends AppCompatActivity {
         }
     };
 
-
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0)
+            getFragmentManager().popBackStackImmediate();
+        else
+            super.onBackPressed();
+    }
 }

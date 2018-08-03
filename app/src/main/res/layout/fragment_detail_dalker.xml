@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main_toolbar_container"
@@ -28,6 +29,13 @@
                 android:scaleType="centerCrop"
                 tools:src="@mipmap/ic_launcher_foreground" />
 
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/mToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
@@ -67,8 +75,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:textAlignment="viewStart"
                     android:layout_below="@id/dalker_detail_name_tv"
+                    android:textAlignment="viewStart"
                     tools:text="@string/dalker_address_test" />
 
 
@@ -89,8 +97,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginEnd="17dp"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:clickable="true"
                     android:contentDescription="@string/favorite_dalker"
+                    android:focusable="true"
                     android:src="@drawable/ic_favorite_border_blue_48dp" />
 
                 <TextView
@@ -147,9 +157,7 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:scrollbarStyle="outsideOverlay"
-                android:scrollbars="vertical">
-
-            </android.support.v7.widget.RecyclerView>
+                android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

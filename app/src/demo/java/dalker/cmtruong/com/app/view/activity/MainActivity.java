@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_fragment_container)
     FrameLayout fragmentContainer;
     private static final String TAG = MainActivity.class.getSimpleName();
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Timber.plant(new Timber.DebugTree());
         Timber.tag(TAG);
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //addNewFragment();
         if (getFragmentManager().findFragmentById(R.id.main_fragment_container) == null)

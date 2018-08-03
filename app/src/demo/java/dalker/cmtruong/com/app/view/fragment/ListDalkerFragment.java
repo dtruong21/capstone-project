@@ -4,10 +4,10 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +54,9 @@ public class ListDalkerFragment extends Fragment {
 
     DalkerListAdapter adapter;
     ArrayList<User> users = null;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private static final String TAG = ListDalkerFragment.class.getSimpleName();
 
