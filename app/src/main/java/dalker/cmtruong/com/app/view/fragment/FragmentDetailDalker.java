@@ -98,9 +98,9 @@ public class FragmentDetailDalker extends Fragment {
             Timber.d("Let's roll ...");
 
             users = getArguments().getParcelableArrayList(USER_LIST);
-            Timber.d("Resultats: %s", users.toString());
+            Timber.d("Results: %s", users.toString());
             position = getArguments().getInt(USER_POSITION);
-            Timber.d("My position: " + position);
+            Timber.d("My position: %s", position);
         }
         initData(users.get(position));
         return view;
@@ -138,6 +138,7 @@ public class FragmentDetailDalker extends Fragment {
             for (Review review : reviews)
                 sum += review.getRate();
             average = sum / reviews.size();
+            return average;
         }
         return sum;
     }
