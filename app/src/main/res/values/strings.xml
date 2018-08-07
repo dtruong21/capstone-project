@@ -46,4 +46,5 @@
     <string name="demo">demo</string>
     <string name="description_empty_error">No description</string>
     <string name="tel">tel</string>
+    <string name="no_fav_message">No dalker favorite. Please insert one!</string>
 </resources>

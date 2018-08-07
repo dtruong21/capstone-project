@@ -98,6 +98,10 @@ public class FragmentDetailDalker extends Fragment {
 
     private int mUserId = DEFAULT_TASK_ID;
 
+    AddFavoriteDalkerVMFactory factory;
+
+    AddFavoriteDalkerViewModel viewModel;
+
     public FragmentDetailDalker() {
     }
 
@@ -113,6 +117,7 @@ public class FragmentDetailDalker extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
     }
 
     @Nullable
@@ -177,6 +182,7 @@ public class FragmentDetailDalker extends Fragment {
                     String text = "Add " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
                     Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
                     Timber.d(user.toString());
+                    insert_bt.setImageResource(R.drawable.ic_favorite_black_48dp);
                 } else {
                     user.setIdUser(mUserId);
                     mDB.userDAO().updateUser(user);
@@ -235,9 +241,8 @@ public class FragmentDetailDalker extends Fragment {
 
     private void setupFavorite(ImageView imageView) {
         if (mUserId == DEFAULT_TASK_ID) {
-            AddFavoriteDalkerVMFactory factory = new AddFavoriteDalkerVMFactory(mDB, mUserId);
-            final AddFavoriteDalkerViewModel viewModel
-                    = ViewModelProviders.of(this, factory).get(AddFavoriteDalkerViewModel.class);
+            factory = new AddFavoriteDalkerVMFactory(mDB, mUserId);
+            viewModel = ViewModelProviders.of(this, factory).get(AddFavoriteDalkerViewModel.class);
             viewModel.getUser().observe(this, new Observer<User>() {
                 @Override
                 public void onChanged(@Nullable User user) {
@@ -250,6 +255,7 @@ public class FragmentDetailDalker extends Fragment {
                 }
             });
         }
+
     }
 
 }

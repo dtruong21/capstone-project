@@ -53,6 +53,10 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
         this.mListener = mListener;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
     @Override
     public int getItemCount() {
         return users.size();

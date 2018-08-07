@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh_layout_favorite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,10 +18,11 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <ProgressBar
-        android:id="@+id/dalker_list_favorite_pb"
-        style="@android:style/Widget.Material.ProgressBar.Horizontal"
-        android:layout_width="120dp"
+    <TextView
+        android:id="@+id/no_fav_tv"
+        style="@android:style/TextAppearance.Material.Medium"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical" />
+        android:gravity="center"
+        android:text="@string/no_fav_message" />
 </android.support.v4.widget.SwipeRefreshLayout>
