@@ -78,9 +78,6 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
         @BindView(R.id.dalker_price_tv)
         TextView mDalkerPrice;
 
-        @BindView(R.id.dalker_add_favorite)
-        ImageView mFavoriteIv;
-
         public DalkerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

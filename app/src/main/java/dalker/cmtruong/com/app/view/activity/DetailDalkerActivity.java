@@ -2,10 +2,7 @@ package dalker.cmtruong.com.app.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -27,8 +24,6 @@ import timber.log.Timber;
 public class DetailDalkerActivity extends AppCompatActivity {
 
     private static final String TAG = DetailDalkerActivity.class.getSimpleName();
-    @BindView(R.id.navigation_detail)
-    BottomNavigationView navigation;
 
     @BindView(R.id.detail_dalker_container)
     FrameLayout mContainer;
@@ -42,7 +37,7 @@ public class DetailDalkerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Timber.plant(new Timber.DebugTree());
         Timber.tag(TAG);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         getDataAndTransferToFragment();
     }
 
@@ -51,39 +46,16 @@ public class DetailDalkerActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         users = bundle.getParcelableArrayList(getString(R.string.dalker_intent_detail));
         position = bundle.getInt(getString(R.string.dalker_intent_position));
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .add(R.id.detail_dalker_container, FragmentDetailDalker.getInstance(users, position))
                 .addToBackStack(null)
                 .commit();
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_comment:
-                    Timber.d("Comment is created");
-
-                    return true;
-                case R.id.navigation_call:
-                    Timber.d("Call is created");
-
-                    return true;
-                case R.id.navigation_share:
-                    Timber.d("Share is created");
-
-                    return true;
-            }
-            return false;
-        }
-    };
-
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0)
-            getFragmentManager().popBackStackImmediate();
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+            getSupportFragmentManager().popBackStackImmediate();
         else
             super.onBackPressed();
     }

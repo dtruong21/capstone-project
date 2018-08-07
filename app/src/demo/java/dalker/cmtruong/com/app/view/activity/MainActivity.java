@@ -58,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //addNewFragment();
-        if (getFragmentManager().findFragmentById(R.id.main_fragment_container) == null)
+        if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) == null)
             navigation.setSelectedItemId(R.id.navigation_search);
 
     }
 
     private void addNewFragment() {
         Timber.d("Add new fragment");
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_container, ListDalkerFragment.getInstance())
                 .addToBackStack(null)
                 .commit();
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openDalkerDetail() {
         Timber.d("Open Dalker detail activity");
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_container, ListFavoriteDalkerFragment.getInstance())
                 .addToBackStack(null)
                 .commit();
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addProfileFragment() {
         Timber.d("Open profile fragment");
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_container, ProfileFragment.getInstance())
                 .addToBackStack(null)
                 .commit();

@@ -45,4 +45,5 @@
     <string name="description">Description</string>
     <string name="demo">demo</string>
     <string name="description_empty_error">No description</string>
+    <string name="tel">tel</string>
 </resources>

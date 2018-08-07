@@ -30,4 +30,8 @@
     <dimen name="margin_title_center">500dp</dimen>
     <dimen name="name_size">20sp</dimen>
     <dimen name="favorite_margin">20dp</dimen>
+    <dimen name="fab_margin">24dp</dimen>
+    <dimen name="fab_elevation">6dp</dimen>
+    <dimen name="fab_border">0dp</dimen>
+    <dimen name="pressedTranslationZ">12dp</dimen>
 </resources>

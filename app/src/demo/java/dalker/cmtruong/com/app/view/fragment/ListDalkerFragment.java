@@ -1,10 +1,10 @@
 package dalker.cmtruong.com.app.view.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -83,12 +83,12 @@ public class ListDalkerFragment extends Fragment {
         ButterKnife.bind(this, view);
         Timber.d("Fragment Demo ListDalker is created");
         initData();
-
         return view;
     }
 
     private void initData() {
         makeFakeUserQuery();
+
     }
 
     private void showDalkerList() {
@@ -116,16 +116,13 @@ public class ListDalkerFragment extends Fragment {
     }
 
     private void showDetailDalker(DalkerListAdapter adapter) {
-        adapter.setOnItemClickedListener(new OnDalkerHandledListener() {
-            @Override
-            public void onItemClicked(View view, int position) {
-                Intent intent = new Intent(getActivity(), DetailDalkerActivity.class);
-                Bundle b = new Bundle();
-                b.putParcelableArrayList(getString(R.string.dalker_intent_detail), users);
-                b.putInt(getString(R.string.dalker_intent_position), position);
-                intent.putExtras(b);
-                startActivity(intent);
-            }
+        adapter.setOnItemClickedListener((view, position) -> {
+            Intent intent = new Intent(getActivity(), DetailDalkerActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelableArrayList(getString(R.string.dalker_intent_detail), users);
+            b.putInt(getString(R.string.dalker_intent_position), position);
+            intent.putExtras(b);
+            startActivity(intent);
         });
     }
 
@@ -170,6 +167,9 @@ public class ListDalkerFragment extends Fragment {
                     }.getType();
                     users = gson.fromJson(mArray.toString(), type);
                     Timber.d("My results: %s", users.toString());
+                    for (int i = 0; i < users.size(); i++) {
+                        users.get(i).setIdUser(i);
+                    }
                     mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
                     mDalkerRV.setHasFixedSize(true);
                     adapter = new DalkerListAdapter(users);

@@ -79,7 +79,6 @@
                     android:textAlignment="viewStart"
                     tools:text="@string/dalker_address_test" />
 
-
                 <RatingBar
                     android:id="@+id/dalker_rating_bar"
                     style="?android:attr/ratingBarStyleIndicator"
@@ -114,6 +113,36 @@
                     tools:text="@string/dalker_price_test" />
 
             </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/comment_bt"
+                    style="@android:style/Widget.Material.Light.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/title_comment"
+                    android:textColor="@color/nav_icon" />
+
+                <Button
+                    android:id="@+id/call_bt"
+                    style="@android:style/Widget.Material.Light.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/call"
+                    android:textColor="@color/nav_icon" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
@@ -157,8 +186,25 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:scrollbarStyle="outsideOverlay"
-                android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+                android:scrollbars="vertical">
+
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/share_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:contentDescription="@string/share"
+        android:elevation="@dimen/fab_elevation"
+        android:focusable="true"
+        android:src="@drawable/ic_share_black_24dp"
+        app:borderWidth="@dimen/fab_border"
+        app:layout_anchorGravity="bottom|end"
+        app:pressedTranslationZ="@dimen/pressedTranslationZ" />
 </android.support.design.widget.CoordinatorLayout>

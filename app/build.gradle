@@ -21,6 +21,10 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     flavorDimensions 'version'
     productFlavors {
         free {
@@ -72,6 +76,7 @@ dependencies {
     implementation "de.hdodenhof:circleimageview:$circleImageVersion"
     freeImplementation "com.google.android.gms:play-services-ads:$androidAdmodVersion"
     implementation "android.arch.lifecycle:extensions:$lifecycleVersion"
+    implementation "android.arch.lifecycle:viewmodel:$lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycleVersion"
     implementation "android.arch.persistence.room:runtime:$roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"

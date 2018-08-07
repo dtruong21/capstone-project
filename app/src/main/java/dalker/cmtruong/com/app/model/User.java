@@ -6,6 +6,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 public class User implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     private int idUser;
 
     @SerializedName("gender")

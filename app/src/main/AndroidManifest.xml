@@ -20,11 +20,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.LoginActivity" />
-        <activity android:name=".view.activity.DetailDalkerActivity"
+        <activity
+            android:name=".view.activity.DetailDalkerActivity"
             android:parentActivityName=".view.activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.activity.MainActivity"/>
+                android:value=".view.activity.MainActivity" />
 
         </activity>
     </application>
