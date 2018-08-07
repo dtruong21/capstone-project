@@ -45,7 +45,6 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
     @Override
     public void onBindViewHolder(@NonNull DalkerViewHolder holder, int position) {
         User user = users.get(position);
-        Timber.d("The user item: %s", user.toString());
         holder.bind(user);
     }
 

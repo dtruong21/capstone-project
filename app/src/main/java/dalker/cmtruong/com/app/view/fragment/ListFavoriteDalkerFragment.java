@@ -2,6 +2,7 @@ package dalker.cmtruong.com.app.view.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,6 +25,7 @@ import dalker.cmtruong.com.app.adapter.DalkerListAdapter;
 import dalker.cmtruong.com.app.database.AppExecutors;
 import dalker.cmtruong.com.app.database.DalkerDatabase;
 import dalker.cmtruong.com.app.model.User;
+import dalker.cmtruong.com.app.view.activity.DetailDalkerActivity;
 import dalker.cmtruong.com.app.viewmodel.FavoriteDalkerViewModel;
 import timber.log.Timber;
 
@@ -43,7 +46,6 @@ public class ListFavoriteDalkerFragment extends Fragment {
     @BindView(R.id.no_fav_tv)
     TextView noFavMessage;
 
-    FavoriteDalkerViewModel viewModel;
     private DalkerListAdapter mAdapter;
 
     private DalkerDatabase mDB;
@@ -67,7 +69,7 @@ public class ListFavoriteDalkerFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(FavoriteDalkerViewModel.class);
+
     }
 
     @Nullable
@@ -76,36 +78,38 @@ public class ListFavoriteDalkerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorite_list, container, false);
         ButterKnife.bind(this, view);
         Timber.d("Open favorite fragment");
-
+        FavoriteDalkerViewModel viewModel = ViewModelProviders.of(this).get(FavoriteDalkerViewModel.class);
         viewModel.getUsers().observe(this, users -> {
-            if (users != null) {
+            if (users == null || users.size() == 0) {
+                showMessageError();
+            } else {
                 mAdapter = new DalkerListAdapter(users);
                 Timber.d(users.toString());
                 favRV.setLayoutManager(new LinearLayoutManager(getActivity()));
                 favRV.setHasFixedSize(true);
                 favRV.setAdapter(mAdapter);
                 showDalkerList();
-            } else {
-                showMessageError();
+                ArrayList<User> mList = new ArrayList<>(users.size());
+                mList.addAll(users);
+                showDetailDalker(mAdapter, mList);
             }
         });
 
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//            @Override
-//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-//                AppExecutors.getInstance().diskIO().execute(() -> {
-//                    int position = viewHolder.getAdapterPosition();
-//                    List<User> userList = mAdapter.getUsers();
-//                    mDB.userDAO().deleteUser(userList.get(position));
-//                });
-//            }
-//        }).attachToRecyclerView(favRV);
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                AppExecutors.getInstance().diskIO().execute(() -> {
+                    int position = viewHolder.getAdapterPosition();
+                    List<User> userList = mAdapter.getUsers();
+                    mDB.userDAO().deleteUser(userList.get(position));
+                });
+            }
+        }).attachToRecyclerView(favRV);
 
         mDB = DalkerDatabase.getsInstance(getActivity().getApplicationContext());
         return view;
@@ -117,8 +121,19 @@ public class ListFavoriteDalkerFragment extends Fragment {
     }
 
     private void showMessageError() {
+        Timber.d("show time");
         favRV.setVisibility(View.GONE);
         noFavMessage.setVisibility(View.VISIBLE);
     }
 
+    private void showDetailDalker(DalkerListAdapter adapter, ArrayList<User> users) {
+        adapter.setOnItemClickedListener((view, position) -> {
+            Intent intent = new Intent(getActivity(), DetailDalkerActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelableArrayList(getString(R.string.dalker_intent_detail), users);
+            b.putInt(getString(R.string.dalker_intent_position), position);
+            intent.putExtras(b);
+            startActivity(intent);
+        });
+    }
 }

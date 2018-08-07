@@ -27,6 +27,8 @@ public class FavoriteDalkerViewModel extends AndroidViewModel {
         Timber.tag(TAG);
         DalkerDatabase mDB = DalkerDatabase.getsInstance(this.getApplication());
         Timber.d("Actively retrieving users from the DataBase");
+        users = mDB.userDAO().loadAllUsers();
+        Timber.d(users.toString());
     }
 
     public LiveData<List<User>> getUsers() {

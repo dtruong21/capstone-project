@@ -61,13 +61,6 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        <ProgressBar
-            android:id="@+id/dalker_list_pb"
-            style="@android:style/Widget.Material.ProgressBar.Horizontal"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical" />
-
         <TextView
             android:id="@+id/dalker_search_error"
             style="@android:style/TextAppearance.Material.Medium"

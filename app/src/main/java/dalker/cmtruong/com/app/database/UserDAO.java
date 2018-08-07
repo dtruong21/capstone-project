@@ -24,7 +24,7 @@ public interface UserDAO {
     @Query("SELECT * FROM users")
     LiveData<List<User>> loadAllUsers();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertUser(User user);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -33,6 +33,6 @@ public interface UserDAO {
     @Delete
     void deleteUser(User user);
 
-    @Query("SELECT * FROM users WHERE id = :id")
+    @Query("SELECT * FROM users WHERE idUser = :id")
     LiveData<User> loadUserById(int id);
 }

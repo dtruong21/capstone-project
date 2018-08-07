@@ -1,5 +1,6 @@
 package dalker.cmtruong.com.app.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 public class User implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
+    @ColumnInfo(name = "idUser")
     private int idUser;
 
     @SerializedName("gender")
@@ -81,22 +82,8 @@ public class User implements Parcelable {
         this.reviews = reviews;
     }
 
-    public User(int idUser, String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, int price, ArrayList<Review> reviews) {
-        this.idUser = idUser;
-        this.gender = gender;
-        this.login = login;
-        this.name = name;
-        this.location = location;
-        this.email = email;
-        this.dob = dob;
-        this.phone = phone;
-        this.pictureURL = pictureURL;
-        this.nat = nat;
-        this.description = description;
-        this.price = price;
-        this.reviews = reviews;
+    public User() {
     }
-
 
     protected User(Parcel in) {
         idUser = in.readInt();

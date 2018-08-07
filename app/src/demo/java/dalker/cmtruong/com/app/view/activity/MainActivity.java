@@ -26,26 +26,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_search:
-                    Timber.d("MainActivity is created");
-                    addNewFragment();
-                    return true;
-                case R.id.navigation_favorite:
-                    Timber.d("FavoriteActivity is created");
-                    openDalkerDetail();
-                    return true;
-                case R.id.navigation_profile:
-                    Timber.d("ProfileActivity is created");
-                    addProfileFragment();
-                    return true;
-            }
-            return false;
+            = item -> {
+        switch (item.getItemId()) {
+            case R.id.navigation_search:
+                Timber.d("MainActivity is created");
+                addNewFragment();
+                return true;
+            case R.id.navigation_favorite:
+                Timber.d("FavoriteActivity is created");
+                openDalkerDetail();
+                return true;
+            case R.id.navigation_profile:
+                Timber.d("ProfileActivity is created");
+                addProfileFragment();
+                return true;
         }
+        return false;
     };
 
     @Override

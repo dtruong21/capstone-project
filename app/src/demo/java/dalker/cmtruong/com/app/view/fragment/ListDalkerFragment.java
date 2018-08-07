@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -46,9 +47,6 @@ public class ListDalkerFragment extends Fragment {
     @BindView(R.id.dalker_list_rv)
     RecyclerView mDalkerRV;
 
-    @BindView(R.id.dalker_list_pb)
-    ProgressBar mProgressBar;
-
     @BindView(R.id.dalker_search_error)
     TextView mErrorMessage;
 
@@ -57,6 +55,9 @@ public class ListDalkerFragment extends Fragment {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mLayout;
 
     private static final String TAG = ListDalkerFragment.class.getSimpleName();
 
@@ -83,29 +84,33 @@ public class ListDalkerFragment extends Fragment {
         ButterKnife.bind(this, view);
         Timber.d("Fragment Demo ListDalker is created");
         initData();
+        mLayout.setOnRefreshListener(this::disableRefresh);
         return view;
+    }
+
+    private void disableRefresh() {
+        mLayout.setRefreshing(false);
     }
 
     private void initData() {
         makeFakeUserQuery();
-
     }
 
     private void showDalkerList() {
         mDalkerRV.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
+        mLayout.setRefreshing(false);
         mErrorMessage.setVisibility(View.GONE);
     }
 
     private void showMessageError() {
         mDalkerRV.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.GONE);
+        mLayout.setRefreshing(false);
         mErrorMessage.setVisibility(View.VISIBLE);
     }
 
     private void waitingForResult() {
         mDalkerRV.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
+        mLayout.setRefreshing(true);
         mErrorMessage.setVisibility(View.GONE);
     }
 
@@ -142,11 +147,9 @@ public class ListDalkerFragment extends Fragment {
         @Override
         protected String doInBackground(URL... urls) {
             URL url = urls[0];
-            Timber.d(url.toString());
             String mQueryUrl = null;
             try {
                 mQueryUrl = NetworkUtilities.getResultFromHttp(url);
-                Timber.d(mQueryUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -158,7 +161,7 @@ public class ListDalkerFragment extends Fragment {
             super.onPostExecute(s);
             if (s != null && !s.equals("")) {
                 JSONObject jsonObject;
-                JSONArray mArray = null;
+                JSONArray mArray;
                 try {
                     jsonObject = new JSONObject(s);
                     mArray = jsonObject.getJSONArray("results");
@@ -166,7 +169,6 @@ public class ListDalkerFragment extends Fragment {
                     Type type = new TypeToken<List<User>>() {
                     }.getType();
                     users = gson.fromJson(mArray.toString(), type);
-                    Timber.d("My results: %s", users.toString());
                     for (int i = 0; i < users.size(); i++) {
                         users.get(i).setIdUser(i);
                     }

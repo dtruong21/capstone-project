@@ -98,10 +98,6 @@ public class FragmentDetailDalker extends Fragment {
 
     private int mUserId = DEFAULT_TASK_ID;
 
-    AddFavoriteDalkerVMFactory factory;
-
-    AddFavoriteDalkerViewModel viewModel;
-
     public FragmentDetailDalker() {
     }
 
@@ -114,12 +110,6 @@ public class FragmentDetailDalker extends Fragment {
         return mFragment;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -130,17 +120,11 @@ public class FragmentDetailDalker extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-        Timber.d("fragment detail is created");
         if (getArguments() != null) {
-            Timber.d("Let's roll ...");
-
             users = getArguments().getParcelableArrayList(USER_LIST);
-            Timber.d("Results: %s", users.toString());
             position = getArguments().getInt(USER_POSITION);
-            Timber.d("My position: %s", position);
         }
         initData(users.get(position));
-        Timber.d("check: " + users.get(position).getIdUser());
         return view;
     }
 
@@ -149,7 +133,7 @@ public class FragmentDetailDalker extends Fragment {
      *
      * @param user
      */
-    private void initData(User user) {
+    private void initData(final User user) {
         Picasso.get()
                 .load(user.getPictureURL().getLarge())
                 .error(R.mipmap.ic_launcher_foreground)
@@ -173,17 +157,20 @@ public class FragmentDetailDalker extends Fragment {
         else
             dalkerRatingBar.setRating((float) rateAverage);
         setupButton(user);
-        setupFavorite(insert_bt);
-
+        setupFavorite();
+        Timber.d("Call the event here");
         insert_bt.setOnClickListener(v -> {
             AppExecutors.getInstance().diskIO().execute(() -> {
                 if (mUserId == DEFAULT_TASK_ID) {
+                    Timber.d("Something wrong here");
                     mDB.userDAO().insertUser(user);
                     String text = "Add " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
                     Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
-                    Timber.d(user.toString());
+                    Timber.d("user:" + user.toString());
                     insert_bt.setImageResource(R.drawable.ic_favorite_black_48dp);
                 } else {
+                    Timber.d("Something wrong here too");
+                    Timber.d("user ID: " + String.valueOf(mUserId));
                     user.setIdUser(mUserId);
                     mDB.userDAO().updateUser(user);
                     String text = "Update " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
@@ -239,19 +226,18 @@ public class FragmentDetailDalker extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupFavorite(ImageView imageView) {
+    private void setupFavorite() {
         if (mUserId == DEFAULT_TASK_ID) {
-            factory = new AddFavoriteDalkerVMFactory(mDB, mUserId);
-            viewModel = ViewModelProviders.of(this, factory).get(AddFavoriteDalkerViewModel.class);
+            AddFavoriteDalkerVMFactory factory = new AddFavoriteDalkerVMFactory(mDB, mUserId);
+            final AddFavoriteDalkerViewModel viewModel = ViewModelProviders.of(this, factory).get(AddFavoriteDalkerViewModel.class);
             viewModel.getUser().observe(this, new Observer<User>() {
                 @Override
                 public void onChanged(@Nullable User user) {
                     viewModel.getUser().removeObserver(this);
-                    if (user == null) {
-                        imageView.setImageResource(R.drawable.ic_favorite_border_blue_48dp);
+                    if (user == null)
                         return;
-                    }
-                    imageView.setImageResource(R.drawable.ic_favorite_black_48dp);
+                    insert_bt.setImageResource(R.drawable.ic_favorite_black_48dp);
+                    Timber.d("check 1");
                 }
             });
         }
