@@ -157,7 +157,7 @@ public class FragmentDetailDalker extends Fragment {
         else
             dalkerRatingBar.setRating((float) rateAverage);
         setupButton(user);
-        setupFavorite();
+        setupFavorite(user);
         Timber.d("Call the event here");
         insert_bt.setOnClickListener(v -> {
             AppExecutors.getInstance().diskIO().execute(() -> {
@@ -226,21 +226,21 @@ public class FragmentDetailDalker extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupFavorite() {
-        if (mUserId == DEFAULT_TASK_ID) {
-            AddFavoriteDalkerVMFactory factory = new AddFavoriteDalkerVMFactory(mDB, mUserId);
-            final AddFavoriteDalkerViewModel viewModel = ViewModelProviders.of(this, factory).get(AddFavoriteDalkerViewModel.class);
-            viewModel.getUser().observe(this, new Observer<User>() {
-                @Override
-                public void onChanged(@Nullable User user) {
-                    viewModel.getUser().removeObserver(this);
-                    if (user == null)
-                        return;
+    private void setupFavorite(User user) {
+        AddFavoriteDalkerVMFactory factory = new AddFavoriteDalkerVMFactory(mDB, user.getIdUser());
+        final AddFavoriteDalkerViewModel viewModel = ViewModelProviders.of(this, factory).get(AddFavoriteDalkerViewModel.class);
+        viewModel.getUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User user) {
+                viewModel.getUser().removeObserver(this);
+                if (user == null)
+                    insert_bt.setImageResource(R.drawable.ic_favorite_border_blue_48dp);
+                else
                     insert_bt.setImageResource(R.drawable.ic_favorite_black_48dp);
-                    Timber.d("check 1");
-                }
-            });
-        }
+                Timber.d("check 1");
+            }
+        });
+
 
     }
 
