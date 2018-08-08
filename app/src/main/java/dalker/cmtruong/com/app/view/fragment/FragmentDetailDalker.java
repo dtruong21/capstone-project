@@ -169,13 +169,14 @@ public class FragmentDetailDalker extends Fragment {
                     Timber.d("user:" + user.toString());
                     insert_bt.setImageResource(R.drawable.ic_favorite_black_48dp);
                 } else {
-                    Timber.d("Something wrong here too");
                     Timber.d("user ID: " + String.valueOf(mUserId));
-                    user.setIdUser(mUserId);
-                    mDB.userDAO().updateUser(user);
-                    String text = "Update " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
-                    Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
-                    Timber.d(user.toString());
+                    insert_bt.setClickable(false);
+                    insert_bt.setFocusable(false);
+//                    user.setIdUser(mUserId);
+//                    mDB.userDAO().updateUser(user);
+//                    String text = "Update " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
+//                    Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
+//                    Timber.d(user.toString());
                 }
             });
         });

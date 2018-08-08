@@ -76,6 +76,7 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore:$firestoreVersion"
     implementation "de.hdodenhof:circleimageview:$circleImageVersion"
     freeImplementation "com.google.android.gms:play-services-ads:$androidAdmodVersion"
+    implementation "com.google.android.gms:play-services-location:$androidAdmodVersion"
     implementation "android.arch.lifecycle:extensions:$lifecycleVersion"
     implementation "android.arch.lifecycle:viewmodel:$lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycleVersion"
