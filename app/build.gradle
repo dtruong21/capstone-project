@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "dalker.cmtruong.com.app"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -43,7 +43,7 @@ android {
 }
 
 ext {
-    supportLibrariesVersion = '26.1.0'
+    supportLibrariesVersion = '27.1.1'
     constraintVersion = '1.1.2'
     junitVersion = '4.12'
     supportTestVersion = '1.0.2'
@@ -62,6 +62,7 @@ ext {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:$supportLibrariesVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibrariesVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintVersion"

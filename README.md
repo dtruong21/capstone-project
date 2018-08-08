@@ -15,7 +15,6 @@ This application is a solution for dog owners who are too busy to get out with t
 In the version 1.0, the application will concentrate to build a platform with all necessary features of communication in a community: 
 
 - Search by location
-- Filter the search criteria
 - Create a dalker's profile
 - Review the dalker's services
 - Share dalker's information in socials medias
@@ -28,9 +27,10 @@ In the version 1.0, the application will concentrate to build a platform with al
 - Room
 - Live Data
 - Butterknife
+- Picasso
 - Cloud Firestore
 - Firebase Cloud Messaging
-- Google Admod
+- Google Play Service (Location & Admod)
 - Timber
 - Espresso Testing UI
 - Fastlane
