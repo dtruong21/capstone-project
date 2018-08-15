@@ -46,6 +46,7 @@ import timber.log.Timber;
 public class FragmentDetailDalker extends Fragment {
 
     private static final String TAG = FragmentDetailDalker.class.getSimpleName();
+    public final String ACTION_UPDATED = getString(R.string.ACTION_UPDATE);
     View view;
 
     private static final String USER_LIST = "USER_LIST";
@@ -162,14 +163,16 @@ public class FragmentDetailDalker extends Fragment {
         insert_bt.setOnClickListener(v -> {
             AppExecutors.getInstance().diskIO().execute(() -> {
                 if (mUserId == DEFAULT_TASK_ID) {
+                    final Intent intent = new Intent(ACTION_UPDATED);
                     Timber.d("Something wrong here");
                     mDB.userDAO().insertUser(user);
                     String text = "Add " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
                     Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
-                    Timber.d("user:" + user.toString());
+                    Timber.d("user:%s", user.toString());
                     insert_bt.setImageResource(R.drawable.ic_favorite_black_48dp);
+                    getActivity().getApplicationContext().sendBroadcast(intent);
                 } else {
-                    Timber.d("user ID: " + String.valueOf(mUserId));
+                    Timber.d("user ID: %s", String.valueOf(mUserId));
                     insert_bt.setClickable(false);
                     insert_bt.setFocusable(false);
 //                    user.setIdUser(mUserId);
