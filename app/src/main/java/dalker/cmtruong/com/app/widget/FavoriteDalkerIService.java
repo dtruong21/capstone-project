@@ -1,17 +1,13 @@
 package dalker.cmtruong.com.app.widget;
 
 import android.appwidget.AppWidgetManager;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import java.util.List;
 
-import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.database.DalkerDatabase;
 import dalker.cmtruong.com.app.model.User;
 
@@ -31,7 +27,7 @@ public class FavoriteDalkerIService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return null;
+        return new DalkerRemoteViewFactory(this.getApplicationContext(), intent);
     }
 
     public class DalkerRemoteViewFactory implements RemoteViewsFactory {
