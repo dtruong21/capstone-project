@@ -24,6 +24,9 @@ public interface UserDAO {
     @Query("SELECT * FROM users")
     LiveData<List<User>> loadAllUsers();
 
+    @Query("SELECT * FROM users")
+    List<User> loadFavUser();
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertUser(User user);
 

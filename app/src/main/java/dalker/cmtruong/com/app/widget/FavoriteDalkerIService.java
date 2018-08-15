@@ -1,11 +1,19 @@
 package dalker.cmtruong.com.app.widget;
 
-import android.arch.lifecycle.ViewModelProviders;
+import android.appwidget.AppWidgetManager;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import dalker.cmtruong.com.app.viewmodel.FavoriteDalkerViewModel;
+import java.util.List;
+
+import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.database.DalkerDatabase;
+import dalker.cmtruong.com.app.model.User;
 
 /**
  * IntentService to request Room Database
@@ -23,54 +31,69 @@ public class FavoriteDalkerIService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new RemoteViewsFactory() {
-
-
-            @Override
-            public void onCreate() {
-
-
-            }
-
-            @Override
-            public void onDataSetChanged() {
-
-            }
-
-            @Override
-            public void onDestroy() {
-
-            }
-
-            @Override
-            public int getCount() {
-                return 0;
-            }
-
-            @Override
-            public RemoteViews getViewAt(int position) {
-                return null;
-            }
-
-            @Override
-            public RemoteViews getLoadingView() {
-                return null;
-            }
-
-            @Override
-            public int getViewTypeCount() {
-                return 0;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
-
-            @Override
-            public boolean hasStableIds() {
-                return false;
-            }
-        };
+        return null;
     }
+
+    public class DalkerRemoteViewFactory implements RemoteViewsFactory {
+
+        private Context mContext;
+        private int mAppWidgetId;
+        private List<User> users;
+
+        public DalkerRemoteViewFactory(Context mContext, Intent intent) {
+            this.mContext = mContext;
+            mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+
+        }
+
+        @Override
+        public void onCreate() {
+            users = DalkerDatabase.getsInstance(mContext).userDAO().loadFavUser();
+
+        }
+
+        @Override
+        public void onDataSetChanged() {
+            users = DalkerDatabase.getsInstance(mContext).userDAO().loadFavUser();
+        }
+
+        @Override
+        public void onDestroy() {
+
+        }
+
+        @Override
+        public int getCount() {
+            if (users == null)
+                return 0;
+            return users.size();
+        }
+
+        @Override
+        public RemoteViews getViewAt(int position) {
+
+            return null;
+        }
+
+        @Override
+        public RemoteViews getLoadingView() {
+            return null;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 0;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+    }
+
 }
