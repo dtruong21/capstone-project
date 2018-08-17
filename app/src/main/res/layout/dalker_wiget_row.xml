@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/location_et_margin"
-    android:background="@android:color/darker_gray">
+    android:background="@android:color/transparent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/dalker_fav_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_toEndOf="@+id/dalker_fav_photo"
         android:textSize="@dimen/name_size"
         tools:text="@string/dalker_test_name" />

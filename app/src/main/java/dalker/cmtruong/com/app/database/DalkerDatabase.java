@@ -32,6 +32,7 @@ public abstract class DalkerDatabase extends RoomDatabase {
             synchronized (LOCK) {
                 Timber.d("Create new database instance: %s", DATABASE_NAME);
                 sInstance = Room.databaseBuilder(context.getApplicationContext(), DalkerDatabase.class, DalkerDatabase.DATABASE_NAME)
+                        .allowMainThreadQueries()
                         .build();
             }
         }

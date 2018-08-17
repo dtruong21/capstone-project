@@ -46,7 +46,7 @@ import timber.log.Timber;
 public class FragmentDetailDalker extends Fragment {
 
     private static final String TAG = FragmentDetailDalker.class.getSimpleName();
-    public final String ACTION_UPDATED = getString(R.string.ACTION_UPDATE);
+    public static final String ACTION_UPDATED = "dalker.cmtruong.com.app.view.activity.ACTION_UPDATE";
     View view;
 
     private static final String USER_LIST = "USER_LIST";
@@ -163,7 +163,7 @@ public class FragmentDetailDalker extends Fragment {
         insert_bt.setOnClickListener(v -> {
             AppExecutors.getInstance().diskIO().execute(() -> {
                 if (mUserId == DEFAULT_TASK_ID) {
-                    final Intent intent = new Intent(ACTION_UPDATED);
+                    Intent intent = new Intent(ACTION_UPDATED);
                     Timber.d("Something wrong here");
                     mDB.userDAO().insertUser(user);
                     String text = "Add " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";

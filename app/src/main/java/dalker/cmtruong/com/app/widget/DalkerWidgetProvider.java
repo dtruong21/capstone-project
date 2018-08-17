@@ -1,15 +1,19 @@
 package dalker.cmtruong.com.app.widget;
 
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.view.activity.DetailDalkerActivity;
 import dalker.cmtruong.com.app.view.activity.MainActivity;
+import dalker.cmtruong.com.app.view.fragment.FragmentDetailDalker;
 import timber.log.Timber;
 
 
@@ -37,7 +41,14 @@ public class DalkerWidgetProvider extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
         // Instruct the widget manager to update the widget
+        setRemoteAdapter(context, views);
+
+        Intent favIntent = new Intent(context, DetailDalkerActivity.class);
+        PendingIntent pendingIntentFav = TaskStackBuilder.create(context)
+                .addNextIntentWithParentStack(favIntent).getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.favorite_lv, pendingIntentFav);
         appWidgetManager.updateAppWidget(appWidgetId, views);
+        Timber.d("checked");
     }
 
     @Override
@@ -67,6 +78,19 @@ public class DalkerWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+        Timber.d("Get intent action");
+        if (intent.getAction().equals(FragmentDetailDalker.ACTION_UPDATED)) {
+            Timber.d("Run");
+            AppWidgetManager manager = AppWidgetManager.getInstance(context);
+            int[] widgetIds = manager.getAppWidgetIds(new ComponentName(context, getClass()));
+            manager.notifyAppWidgetViewDataChanged(widgetIds, R.id.favorite_lv);
+            onUpdate(context, manager, widgetIds);
+        }
+
+    }
+
+    private static void setRemoteAdapter(Context context, RemoteViews remoteViews) {
+        remoteViews.setRemoteAdapter(R.id.favorite_lv, new Intent(context, FavoriteDalkerIService.class));
     }
 }
 
