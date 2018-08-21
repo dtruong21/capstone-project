@@ -19,8 +19,7 @@ public class Login implements Parcelable {
         password = in.readString();
     }
 
-    public Login(String id, String username, String password) {
-        this.id = id;
+    public Login(String username, String password) {
         this.username = username;
         this.password = password;
     }

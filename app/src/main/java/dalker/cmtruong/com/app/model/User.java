@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 /**
@@ -23,9 +25,10 @@ import java.util.ArrayList;
 @Entity(tableName = "users")
 public class User implements Parcelable {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "idUser")
-    private int idUser;
+    @NotNull
+    private String idUser;
 
     @SerializedName("gender")
     private String gender;
@@ -86,7 +89,7 @@ public class User implements Parcelable {
     }
 
     protected User(Parcel in) {
-        idUser = in.readInt();
+        idUser = in.readString();
         gender = in.readString();
         name = in.readParcelable(Name.class.getClassLoader());
         location = in.readParcelable(Location.class.getClassLoader());
@@ -103,7 +106,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(idUser);
+        dest.writeString(idUser);
         dest.writeString(gender);
         dest.writeParcelable(name, flags);
         dest.writeParcelable(location, flags);
@@ -130,11 +133,11 @@ public class User implements Parcelable {
         }
     };
 
-    public int getIdUser() {
+    public String getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(String idUser) {
         this.idUser = idUser;
     }
 

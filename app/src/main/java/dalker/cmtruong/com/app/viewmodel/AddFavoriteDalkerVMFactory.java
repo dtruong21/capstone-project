@@ -15,9 +15,9 @@ public class AddFavoriteDalkerVMFactory extends ViewModelProvider.NewInstanceFac
 
     private final DalkerDatabase mDb;
 
-    private final int dalkerId;
+    private final String dalkerId;
 
-    public AddFavoriteDalkerVMFactory(DalkerDatabase mDb, int dalkerId) {
+    public AddFavoriteDalkerVMFactory(DalkerDatabase mDb, String dalkerId) {
         this.mDb = mDb;
         this.dalkerId = dalkerId;
     }

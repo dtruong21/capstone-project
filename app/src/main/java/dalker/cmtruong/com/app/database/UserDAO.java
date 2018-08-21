@@ -37,5 +37,5 @@ public interface UserDAO {
     void deleteUser(User user);
 
     @Query("SELECT * FROM users WHERE idUser = :id")
-    LiveData<User> loadUserById(int id);
+    LiveData<User> loadUserById(String id);
 }

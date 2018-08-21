@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/location_et_margin"
-                android:layout_marginTop="@dimen/dalker_name_item_margin"
+                android:layout_marginTop="@dimen/cardview_margin"
                 android:maxLength="18"
                 android:maxLines="1"
                 android:textSize="@dimen/name_size"
@@ -50,18 +50,18 @@
 
             <TextView
                 android:id="@+id/dalker_age_tv"
-                style="@android:style/TextAppearance.Material.Medium"
+                style="@android:style/TextAppearance.Material.Small"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/location_et_margin"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/location_et_margin"
-                android:layout_marginTop="@dimen/location_et_margin"
                 android:fontFamily="monospace"
                 android:textStyle="italic"
                 tools:text="@string/dalker_age_test" />
 
             <TextView
                 android:id="@+id/dalker_service_tv"
-                style="@android:style/TextAppearance.Material.Medium"
+                style="@android:style/TextAppearance.Material.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/location_et_margin"

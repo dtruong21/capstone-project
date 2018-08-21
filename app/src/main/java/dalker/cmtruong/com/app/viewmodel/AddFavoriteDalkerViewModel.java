@@ -15,7 +15,7 @@ public class AddFavoriteDalkerViewModel extends ViewModel {
 
     private LiveData<User> user;
 
-    public AddFavoriteDalkerViewModel(DalkerDatabase mDB, int dalkerId) {
+    public AddFavoriteDalkerViewModel(DalkerDatabase mDB, String dalkerId) {
         user = mDB.userDAO().loadUserById(dalkerId);
     }
 

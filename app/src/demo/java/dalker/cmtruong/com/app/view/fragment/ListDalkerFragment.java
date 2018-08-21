@@ -27,6 +27,7 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -138,6 +139,10 @@ public class ListDalkerFragment extends Fragment {
      */
     private class FakeUserAsyncTask extends AsyncTask<URL, Void, String> {
 
+        private static final String CHARS = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890";
+        private static final int TOKEN_LENGTH = 8;
+        private final Random random = new Random();
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -170,7 +175,8 @@ public class ListDalkerFragment extends Fragment {
                     }.getType();
                     users = gson.fromJson(mArray.toString(), type);
                     for (int i = 0; i < users.size(); i++) {
-                        users.get(i).setIdUser(i);
+                        String id = getToken(TOKEN_LENGTH);
+                        users.get(i).setIdUser(id);
                     }
                     mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
                     mDalkerRV.setHasFixedSize(true);
@@ -184,6 +190,14 @@ public class ListDalkerFragment extends Fragment {
             } else {
                 showMessageError();
             }
+        }
+
+        public String getToken(int length) {
+            StringBuilder token = new StringBuilder(length);
+            for (int i = 0; i < length; i++) {
+                token.append(CHARS.charAt(random.nextInt(CHARS.length())));
+            }
+            return token.toString();
         }
     }
 }

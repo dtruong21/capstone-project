@@ -97,7 +97,7 @@ public class SignUpFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_in_form, container, false);
         ButterKnife.bind(this, view);
         Timber.d("Sign up fragment");
-        handleError();
+
         signIn();
         return view;
     }
@@ -134,7 +134,7 @@ public class SignUpFragment extends Fragment {
                 User user = new User();
                 user.setEmail(email.getText().toString());
                 String id = getToken(TOKEN_LENGTH);
-                Login login = new Login(id, loginId.getText().toString(), password.getText().toString());
+                Login login = new Login(loginId.getText().toString(), password.getText().toString());
                 user.setLogin(login);
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 String json = convertToJson(user);
@@ -173,7 +173,7 @@ public class SignUpFragment extends Fragment {
                         })
                         .addOnFailureListener(e -> Timber.d("add failed"));
             } else {
-                Timber.d("something not done");
+                handleError();
             }
         });
 

@@ -17,7 +17,7 @@ import timber.log.Timber;
  * @version 1.0
  * @since 31th July, 2018
  */
-@Database(entities = {User.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class}, version = 2, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class DalkerDatabase extends RoomDatabase {
     private static final String TAG = DalkerDatabase.class.getSimpleName();
@@ -33,6 +33,7 @@ public abstract class DalkerDatabase extends RoomDatabase {
                 Timber.d("Create new database instance: %s", DATABASE_NAME);
                 sInstance = Room.databaseBuilder(context.getApplicationContext(), DalkerDatabase.class, DalkerDatabase.DATABASE_NAME)
                         .allowMainThreadQueries()
+                        .fallbackToDestructiveMigration()
                         .build();
             }
         }
