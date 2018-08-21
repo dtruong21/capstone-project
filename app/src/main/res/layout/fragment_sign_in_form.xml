@@ -89,7 +89,7 @@
         android:layout_marginTop="162dp"
         android:text="@string/confirm_error"
         android:textColor="@android:color/holo_red_light"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/create_account_bt"

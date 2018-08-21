@@ -25,7 +25,7 @@
     <dimen name="margin_et_login">200dp</dimen>
     <dimen name="margin_password">50dp</dimen>
     <dimen name="margin_top_password">100dp</dimen>
-    <dimen name="text_size">38sp</dimen>
+    <dimen name="text_size">32sp</dimen>
     <dimen name="margin_title_create">50dp</dimen>
     <dimen name="margin_title_center">500dp</dimen>
     <dimen name="name_size">20sp</dimen>

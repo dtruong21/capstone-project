@@ -1,9 +1,19 @@
 package dalker.cmtruong.com.app.view.fragment;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +21,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.model.Login;
+import dalker.cmtruong.com.app.model.User;
+import dalker.cmtruong.com.app.view.activity.LoginActivity;
 import timber.log.Timber;
+
+import static android.app.NotificationManager.*;
 
 /**
  * TODO: Sign up form
@@ -29,6 +54,13 @@ import timber.log.Timber;
  * @since 2018 August, 21th
  */
 public class SignUpFragment extends Fragment {
+
+    private static final Random random = new Random();
+    private static final String CHARS = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890";
+    private static final int TOKEN_LENGTH = 8;
+    private static final int NOTIFY_ID = 1;
+    private static final String CHANNEL_ID = "login";
+
 
     @BindView(R.id.email_add_et)
     EditText email;
@@ -64,7 +96,9 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_in_form, container, false);
         ButterKnife.bind(this, view);
+        Timber.d("Sign up fragment");
         handleError();
+        signIn();
         return view;
     }
 
@@ -85,12 +119,77 @@ public class SignUpFragment extends Fragment {
     }
 
     private boolean isConfirmed(String password, String confirm) {
-        if (password.equals(confirm))
-            return true;
-        else
-            return false;
+        return !confirm.isEmpty() && !password.isEmpty() && confirm.equals(password);
     }
 
+    private boolean isValidForm(String email, String id, String password, String passwordConfirm) {
+        return !email.isEmpty() && !id.isEmpty() && isConfirmed(password, passwordConfirm);
+    }
 
+    private void signIn() {
+
+        createAccount.setOnClickListener(v -> {
+            if (isValidForm(email.getText().toString(), loginId.getText().toString(), password.getText().toString(), confirmPassword.getText().toString())) {
+
+                User user = new User();
+                user.setEmail(email.getText().toString());
+                String id = getToken(TOKEN_LENGTH);
+                Login login = new Login(id, loginId.getText().toString(), password.getText().toString());
+                user.setLogin(login);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                String json = convertToJson(user);
+                Map<String, Object> userFF = new Gson().fromJson(
+                        json, new TypeToken<HashMap<String, Object>>() {
+                        }.getType()
+                );
+                db.collection(getString(R.string.users))
+                        .add(userFF)
+                        .addOnSuccessListener(documentReference -> {
+                            Intent notificationIntent = new Intent(getContext(), LoginActivity.class);
+                            notificationIntent.putExtra(getString(R.string.intent_login), getString(R.string.intent_user_default));
+                            PendingIntent contentIntent = PendingIntent.getActivity(v.getContext(), 0, notificationIntent, 0);
+                            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(v.getContext())
+                                    .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                                    .setContentTitle(getString(R.string.app_name))
+                                    .setContentText("Add user " + loginId.getText().toString() + " with successful")
+                                    .setStyle(new NotificationCompat.BigTextStyle().bigText("Add user " + loginId.getText().toString() + " with successful"))
+                                    .setPriority(NotificationCompat.PRIORITY_MAX);
+                            mBuilder.setContentIntent(contentIntent);
+
+                            NotificationManager notificationManager =
+                                    (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, getString(R.string.app_name), IMPORTANCE_HIGH);
+                                notificationManager.createNotificationChannel(mChannel);
+                            }
+                            notificationManager.notify(NOTIFY_ID, mBuilder.build());
+                            Timber.d("add new user");
+
+
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.profile_container, LoginFragment.getInstance())
+                                    .addToBackStack(null)
+                                    .commit();
+                        })
+                        .addOnFailureListener(e -> Timber.d("add failed"));
+            } else {
+                Timber.d("something not done");
+            }
+        });
+
+    }
+
+    public static String getToken(int length) {
+        StringBuilder token = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            token.append(CHARS.charAt(random.nextInt(CHARS.length())));
+        }
+        return token.toString();
+    }
+
+    private String convertToJson(User user) {
+        Gson gson = new Gson();
+        return gson.toJson(user);
+    }
 
 }

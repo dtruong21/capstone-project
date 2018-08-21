@@ -55,4 +55,5 @@
     <string name="intent_user_default">No user</string>
     <string name="password_required">Your password requires minimum 8 characters at least 1 Alphabet, 1 number and 1 special character</string>
     <string name="confirm_error">Not the same password</string>
+    <string name="users">users</string>
 </resources>
