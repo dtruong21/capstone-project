@@ -24,7 +24,7 @@
     <string name="comment">Comment</string>
     <string name="call">Call</string>
     <string name="GUEST">GUEST</string>
-    <string name="login_started_dalker">Sign in to become doggo dalker</string>
+    <string name="login_started_dalker">Sign in to started your dalker career</string>
     <string name="settings">Settings</string>
     <string name="help">help us</string>
     <string name="help_us_to_improve">Help us to improve</string>
@@ -51,4 +51,6 @@
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
     <string name="comment_here">Comment here</string>
+    <string name="intent_login">userSession</string>
+    <string name="intent_user_default">No user</string>
 </resources>

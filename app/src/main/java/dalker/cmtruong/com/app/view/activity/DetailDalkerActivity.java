@@ -37,7 +37,6 @@ public class DetailDalkerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Timber.plant(new Timber.DebugTree());
         Timber.tag(TAG);
-
         getDataAndTransferToFragment();
     }
 

@@ -13,6 +13,11 @@ import dalker.cmtruong.com.app.view.fragment.ListFavoriteDalkerFragment;
 import dalker.cmtruong.com.app.view.fragment.ProfileFragment;
 import timber.log.Timber;
 
+/**
+ * @author davidetruong
+ * @version 1.0
+ * @since 2018 August, 21th
+ */
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.navigation)
     BottomNavigationView navigation;

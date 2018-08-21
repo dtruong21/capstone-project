@@ -15,7 +15,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="350dp"
+        android:layout_marginBottom="400dp"
         android:layout_marginTop="150dp"
         android:src="@mipmap/ic_launcher_round" />
 
