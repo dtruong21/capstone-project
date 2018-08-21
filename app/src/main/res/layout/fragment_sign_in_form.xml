@@ -56,6 +56,17 @@
         android:hint="@string/password"
         android:inputType="textPassword" />
 
+    <TextView
+        android:id="@+id/password_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginStart="@dimen/margin_et_sign_in"
+        android:layout_marginTop="22dp"
+        android:text="@string/password_required"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="gone" />
+
     <EditText
         android:id="@+id/pass_confirm_et"
         style="@android:style/Widget.Material.EditText"
@@ -68,6 +79,17 @@
         android:background="@drawable/borders"
         android:hint="@string/re_type_your_password"
         android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/confirm_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginStart="@dimen/margin_et_sign_in"
+        android:layout_marginTop="162dp"
+        android:text="@string/confirm_error"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/create_account_bt"
