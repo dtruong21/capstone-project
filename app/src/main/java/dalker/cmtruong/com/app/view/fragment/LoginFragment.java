@@ -1,5 +1,6 @@
 package dalker.cmtruong.com.app.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,12 +25,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.helper.PreferencesHelper;
 import dalker.cmtruong.com.app.model.Login;
+import dalker.cmtruong.com.app.view.activity.MainActivity;
 import timber.log.Timber;
 
 import static android.support.constraint.Constraints.TAG;
@@ -52,6 +56,8 @@ public class LoginFragment extends Fragment {
 
     @BindView(R.id.signup_bt)
     Button signupBt;
+
+    String data;
 
     public LoginFragment() {
     }
@@ -88,34 +94,32 @@ public class LoginFragment extends Fragment {
                     .setTimestampsInSnapshotsEnabled(true)
                     .build();
             fb.setFirestoreSettings(settings);
-            Login loginUser = new Login(login.getText().toString(), password.getText().toString());
+            Login loginUser = null;
+            if (isValidLogin(login.getText().toString(), password.getText().toString())) {
+                loginUser = new Login(login.getText().toString(), password.getText().toString());
+            }
             Gson gson = new Gson();
             String loginJson = gson.toJson(loginUser);
             Timber.d(loginJson);
             fb.collection(getString(R.string.users))
-                    .whereEqualTo("login.username", login.getText().toString())
+                    .whereEqualTo(getString(R.string.login_username), login.getText().toString())
                     .whereEqualTo("login.password", password.getText().toString())
                     .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Timber.d("Verify : " + document.getId() + " ====> " + document.getData());
-                                }
-                            } else {
-                                Timber.d("check");
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Timber.d("Verify : " + document.getId() + " ====> " + document.getData());
+                                data = document.getData().toString();
+                                PreferencesHelper.saveUserSession(getContext(), data);
                             }
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            intent.putExtra("fragment", R.id.navigation_profile);
+                            startActivity(intent);
+                        } else {
+                            Timber.d("check");
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Timber.d("failed");
-                        }
-                    });
-
-
+                    .addOnFailureListener(e -> Timber.d("failed"));
         });
     }
 

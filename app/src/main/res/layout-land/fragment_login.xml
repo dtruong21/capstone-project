@@ -1,58 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/nav_icon"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="dalker.cmtruong.com.app.view.activity.LoginActivity">
 
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/nav_icon">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="350dp"
-        android:layout_marginTop="150dp"
-        android:src="@mipmap/ic_launcher_round" />
 
-    <EditText
-        android:id="@+id/login_id_et"
-        style="@android:style/TextAppearance.Material.Widget.EditText"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="@string/login_id"
-        android:inputType="text" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="350dp"
+            android:layout_marginTop="150dp"
+            android:src="@mipmap/ic_launcher_round" />
 
-    <EditText
-        android:id="@+id/password_et"
-        style="@android:style/TextAppearance.Material.Widget.EditText"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="80dp"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/login_id_et"
+            style="@android:style/TextAppearance.Material.Widget.EditText"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="@string/login_id"
+            android:inputType="text" />
 
-    <Button
-        android:id="@+id/login_bt"
-        style="@android:style/Widget.Material.Button"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="200dp"
-        android:background="@android:color/holo_green_dark"
-        android:text="@string/login" />
+        <EditText
+            android:id="@+id/password_et"
+            style="@android:style/TextAppearance.Material.Widget.EditText"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/signup_bt"
-        style="@android:style/Widget.Material.Button"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="320dp"
-        android:background="@android:color/holo_red_light"
-        android:text="@string/sign_up" />
+        <Button
+            android:id="@+id/login_bt"
+            style="@android:style/Widget.Material.Button"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="200dp"
+            android:background="@android:color/holo_green_dark"
+            android:text="@string/login" />
 
-</android.support.design.widget.CoordinatorLayout>
+        <Button
+            android:id="@+id/signup_bt"
+            style="@android:style/Widget.Material.Button"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="320dp"
+            android:background="@android:color/holo_red_light"
+            android:text="@string/sign_up" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</android.support.v4.widget.NestedScrollView>

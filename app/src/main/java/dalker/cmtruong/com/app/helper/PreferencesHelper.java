@@ -18,17 +18,20 @@ import dalker.cmtruong.com.app.model.User;
  */
 public class PreferencesHelper {
 
-    public static void saveUserSession(Context context, User user) {
+    public static void saveUserSession(Context context, String userSession) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-        editor.putString(context.getString(R.string.user_session), json);
+        editor.putString(context.getString(R.string.user_session), userSession);
         editor.apply();
     }
 
     public static String getUserSession(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(context.getString(R.string.user_session), "");
+    }
+
+    public static void deleteUserSession(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().clear().apply();
     }
 }

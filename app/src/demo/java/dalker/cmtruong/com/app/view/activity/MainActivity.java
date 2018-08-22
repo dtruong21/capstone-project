@@ -1,5 +1,6 @@
 package dalker.cmtruong.com.app.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.helper.PreferencesHelper;
 import dalker.cmtruong.com.app.view.fragment.ListDalkerFragment;
 import dalker.cmtruong.com.app.view.fragment.ListFavoriteDalkerFragment;
 import dalker.cmtruong.com.app.view.fragment.ProfileFragment;
@@ -58,7 +60,12 @@ public class MainActivity extends AppCompatActivity {
         //addNewFragment();
         if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) == null)
             navigation.setSelectedItemId(R.id.navigation_search);
-
+        Intent intent = getIntent();
+        int position = intent.getIntExtra("fragment", 0);
+        if (position == 0)
+            navigation.setSelectedItemId(R.id.navigation_search);
+        if (position == R.id.navigation_profile)
+            navigation.setSelectedItemId(R.id.navigation_profile);
     }
 
     private void addNewFragment() {

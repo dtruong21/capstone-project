@@ -62,6 +62,7 @@ public class ProfileFragment extends Fragment {
         ButterKnife.bind(this, view);
         populateUIForProfile(userSession);
         login();
+        logout();
         return view;
     }
 
@@ -87,6 +88,16 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getContext(), LoginActivity.class);
             intent.putExtra(getString(R.string.intent_login), getString(R.string.intent_user_default));
             startActivity(intent);
+        });
+    }
+
+    private void logout() {
+        logoutCard.setOnClickListener(v -> {
+            PreferencesHelper.deleteUserSession(getContext());
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment_container, ProfileFragment.getInstance())
+                    .addToBackStack(null)
+                    .commit();
         });
     }
 }
