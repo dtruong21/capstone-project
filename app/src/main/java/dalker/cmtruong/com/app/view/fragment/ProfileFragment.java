@@ -14,6 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.helper.PreferencesHelper;
+import dalker.cmtruong.com.app.view.activity.EditProfileActivity;
 import dalker.cmtruong.com.app.view.activity.LoginActivity;
 import timber.log.Timber;
 
@@ -102,11 +103,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void editProfile() {
-        editCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                
-            }
+        editCard.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), EditProfileActivity.class);
+            startActivity(intent);
         });
     }
 }
