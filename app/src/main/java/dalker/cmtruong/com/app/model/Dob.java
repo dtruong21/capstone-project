@@ -1,6 +1,5 @@
 package dalker.cmtruong.com.app.model;
 
-import android.arch.persistence.room.Ignore;
 import android.os.Parcel;
 import android.os.Parcelable;
 

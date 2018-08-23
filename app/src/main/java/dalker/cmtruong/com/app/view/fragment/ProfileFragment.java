@@ -100,4 +100,13 @@ public class ProfileFragment extends Fragment {
                     .commit();
         });
     }
+
+    private void editProfile() {
+        editCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+    }
 }

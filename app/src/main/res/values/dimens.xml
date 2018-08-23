@@ -41,4 +41,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="comment_size">200dp</dimen>
+    <dimen name="avatar_width">150dp</dimen>
+    <dimen name="avatar_height">150dp</dimen>
 </resources>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="dalker.cmtruong.com.app.view.activity.LoginActivity">
 
@@ -20,8 +20,8 @@
             android:text="@string/version_1_0" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="@dimen/avatar_width"
+            android:layout_height="@dimen/avatar_height"
             android:layout_gravity="center"
             android:layout_marginBottom="400dp"
             android:layout_marginTop="150dp"

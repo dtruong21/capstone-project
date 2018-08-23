@@ -6,8 +6,6 @@
     <string name="title_notifications">Profile</string>
     <string name="try_paris">Try \"Paris\" …</string>
     <string name="filter">Filter</string>
-    <string name="login_id">Login ID</string>
-    <string name="password">Password</string>
     <string name="dalker_photo">dalker photo</string>
     <string name="dalker_test_name">Alisson Plisson</string>
     <string name="dalker_age_test">24 years old</string>
@@ -30,7 +28,6 @@
     <string name="help_us_to_improve">Help us to improve</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="log_out">Log out</string>
-    <string name="Email">Email</string>
     <string name="re_type_your_password">Re-type your password</string>
     <string name="create_a_new_account">Create a new account</string>
     <string name="user_session">USER_SESSION</string>
@@ -42,7 +39,6 @@
     <string name="dalker_intent_position">POSITION_CLICKED</string>
     <string name="title_comment">Comment</string>
     <string name="share">share</string>
-    <string name="description">Description</string>
     <string name="demo">demo</string>
     <string name="description_empty_error">No description</string>
     <string name="tel">tel</string>
@@ -62,4 +58,30 @@
     <string name="username">username</string>
     <string name="login_username">login.username</string>
     <string name="login_password">login.password</string>
+
+    <!-- Profile-->
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="title">Gender</string>
+    <string name="login_id">Login ID</string>
+    <string name="password">Password</string>
+    <string name="Email">Email</string>
+    <string name="phone_number">Telephone number</string>
+    <string name="address">Address</string>
+    <string name="state">State</string>
+    <string name="code_postal">Post code</string>
+    <string name="city">City</string>
+    <string name="age">Age</string>
+    <string name="words_required">800 words required …</string>
+    <string name="description">Description</string>
+    <string name="price">Price per hour</string>
+    <string name="cancel">Cancel</string>
+    <string name="update">Update</string>
+
+    <!-- Spinner option-->
+    <string name="prompt"> </string>
+    <string-array name="title_arrays">
+        <item>Mr</item>
+        <item>Mme</item>
+    </string-array>
 </resources>

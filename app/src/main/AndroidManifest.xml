@@ -29,6 +29,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.activity.MainActivity" />
         </activity>
+        <activity android:name=".view.activity.EditProfileActivity" />
 
         <receiver android:name=".widget.DalkerWidgetProvider">
             <intent-filter>
