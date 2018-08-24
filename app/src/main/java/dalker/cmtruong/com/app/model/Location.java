@@ -87,7 +87,7 @@ public class Location implements Parcelable {
 
     @Override
     public String toString() {
-        return "Location{" +
+        return "{" +
                 "street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +

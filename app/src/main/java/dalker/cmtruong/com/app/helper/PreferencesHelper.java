@@ -25,6 +25,18 @@ public class PreferencesHelper {
         editor.apply();
     }
 
+    public static void saveDocumentReference(Context context, String reference) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(context.getString(R.string.reference), reference);
+        editor.apply();
+    }
+
+    public static String getDocumentReference(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(context.getString(R.string.reference), "");
+    }
+
     public static String getUserSession(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(context.getString(R.string.user_session), "");

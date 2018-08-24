@@ -33,6 +33,7 @@ import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.helper.PreferencesHelper;
 import dalker.cmtruong.com.app.model.Login;
+import dalker.cmtruong.com.app.model.User;
 import dalker.cmtruong.com.app.view.activity.MainActivity;
 import timber.log.Timber;
 
@@ -111,6 +112,7 @@ public class LoginFragment extends Fragment {
                                 Timber.d("Verify : " + document.getId() + " ====> " + document.getData());
                                 data = document.getData().toString();
                                 PreferencesHelper.saveUserSession(getContext(), data);
+                                PreferencesHelper.saveDocumentReference(getContext(), document.getId());
                             }
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             intent.putExtra("fragment", R.id.navigation_profile);

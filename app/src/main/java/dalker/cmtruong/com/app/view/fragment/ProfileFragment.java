@@ -64,6 +64,7 @@ public class ProfileFragment extends Fragment {
         populateUIForProfile(userSession);
         login();
         logout();
+        editProfile();
         return view;
     }
 

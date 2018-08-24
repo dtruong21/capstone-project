@@ -78,7 +78,7 @@ public class Review implements Parcelable {
 
     @Override
     public String toString() {
-        return "Review{" +
+        return "{" +
                 "id=" + id +
                 ", rate=" + rate +
                 ", comment='" + comment + '\'' +

@@ -80,7 +80,10 @@
 
     <!-- Spinner option-->
     <string name="prompt"> </string>
+    <string name="fragment">fragment</string>
+    <string name="reference">REFERENCE</string>
     <string-array name="title_arrays">
+        <item> </item>
         <item>Mr</item>
         <item>Mme</item>
     </string-array>

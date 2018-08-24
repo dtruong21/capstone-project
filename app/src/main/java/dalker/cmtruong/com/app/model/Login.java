@@ -74,7 +74,7 @@ public class Login implements Parcelable {
 
     @Override
     public String toString() {
-        return "Login{" +
+        return "{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

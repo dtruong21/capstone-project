@@ -79,7 +79,7 @@ public class Name implements Parcelable {
 
     @Override
     public String toString() {
-        return "Name{" +
+        return "{" +
                 "title='" + title + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

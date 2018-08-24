@@ -78,7 +78,7 @@ public class Picture implements Parcelable {
 
     @Override
     public String toString() {
-        return "Picture{" +
+        return "{" +
                 "large='" + large + '\'' +
                 ", medium='" + medium + '\'' +
                 ", thumbnail='" + thumbnail + '\'' +

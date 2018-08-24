@@ -14,8 +14,7 @@ public class Dob implements Parcelable {
 
     private int age;
 
-    public Dob(String date, int age) {
-        this.date = date;
+    public Dob(int age) {
         this.age = age;
     }
 
@@ -65,7 +64,7 @@ public class Dob implements Parcelable {
 
     @Override
     public String toString() {
-        return "Dob{" +
+        return "{" +
                 "date='" + date + '\'' +
                 ", age=" + age +
                 '}';

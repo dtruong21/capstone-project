@@ -1,6 +1,5 @@
 package dalker.cmtruong.com.app.view.fragment;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,10 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +36,7 @@ import dalker.cmtruong.com.app.model.User;
 import dalker.cmtruong.com.app.view.activity.LoginActivity;
 import timber.log.Timber;
 
-import static android.app.NotificationManager.*;
+import static android.app.NotificationManager.IMPORTANCE_HIGH;
 
 /**
  * TODO: Sign up form
@@ -164,7 +156,6 @@ public class SignUpFragment extends Fragment {
                             }
                             notificationManager.notify(NOTIFY_ID, mBuilder.build());
                             Timber.d("add new user");
-
 
                             getActivity().getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.profile_container, LoginFragment.getInstance())
