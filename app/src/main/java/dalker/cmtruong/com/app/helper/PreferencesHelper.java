@@ -46,4 +46,16 @@ public class PreferencesHelper {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().clear().apply();
     }
+
+    public static void saveDevideID(Context context, String device){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(context.getString(R.string.device_id), device);
+        editor.apply();
+    }
+
+    public static String getDeviceID(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(context.getString(R.string.device_id), "");
+    }
 }

@@ -11,6 +11,10 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    dexOptions {
+        preDexLibraries = false
+        javaMaxHeapSize "2g"
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -50,6 +54,7 @@ ext {
     espressoVersion = '3.0.2'
     firebaseCoreVersion = '16.0.1'
     firestoreVersion = '17.1.0'
+    firebaseStorage = '4.1.0'
     circleImageVersion = '2.2.0'
     androidAdmodVersion = '15.0.1'
     lifecycleVersion = '1.1.1'
@@ -58,6 +63,7 @@ ext {
     timberVersion = '4.7.1'
     gsonVersion = '2.8.5'
     picasso = '2.71828'
+    glide = '4.8.0'
 }
 
 dependencies {
@@ -66,10 +72,14 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportLibrariesVersion"
     implementation "com.android.support:support-compat:$supportLibrariesVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibrariesVersion"
+    implementation "com.android.support:support-fragment:$supportLibrariesVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintVersion"
     implementation "com.android.support:cardview-v7:$supportLibrariesVersion"
     implementation "com.android.support:design:$supportLibrariesVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintVersion"
+    implementation "com.google.firebase:firebase-storage:$firebaseCoreVersion"
+    implementation "com.google.firebase:firebase-auth:$firebaseCoreVersion"
+    implementation "com.firebaseui:firebase-ui-storage:$firebaseStorage"
     freeImplementation "com.google.firebase:firebase-ads:$androidAdmodVersion"
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "com.android.support.test:runner:$supportTestVersion"
@@ -89,6 +99,8 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation "com.google.code.gson:gson:$gsonVersion"
     implementation "com.squareup.picasso:picasso:$picasso"
+    implementation "com.github.bumptech.glide:glide:$glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide"
 }
 
 apply plugin: 'com.google.gms.google-services'

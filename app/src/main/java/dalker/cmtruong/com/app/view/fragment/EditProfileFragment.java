@@ -1,12 +1,10 @@
 package dalker.cmtruong.com.app.view.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -21,18 +19,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,10 +36,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.helper.GlideApp;
 import dalker.cmtruong.com.app.helper.PreferencesHelper;
 import dalker.cmtruong.com.app.model.Dob;
 import dalker.cmtruong.com.app.model.Location;
@@ -52,7 +49,6 @@ import dalker.cmtruong.com.app.model.Login;
 import dalker.cmtruong.com.app.model.Name;
 import dalker.cmtruong.com.app.model.Picture;
 import dalker.cmtruong.com.app.model.User;
-import dalker.cmtruong.com.app.view.activity.EditProfileActivity;
 import dalker.cmtruong.com.app.view.activity.MainActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
@@ -122,6 +118,13 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     private String genderValue;
     private User user;
     private String pictureFilePath;
+    private FirebaseStorage mStorage;
+    private StorageReference mRef;
+    private String deviceIdentifier;
+    private String cloudPath;
+    private FirebaseFirestore fb;
+    private FirebaseFirestoreSettings settings;
+
 
     public EditProfileFragment() {
     }
@@ -137,20 +140,27 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         setRetainInstance(true);
         ButterKnife.bind(this, view);
+        connectFirebase();
         loadData();
         getAvatar();
         cancel();
         update();
+        getInstallationIdentifier();
         return view;
+    }
+
+    private void connectFirebase() {
+        fb = FirebaseFirestore.getInstance();
+        settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        fb.setFirestoreSettings(settings);
+        mStorage = FirebaseStorage.getInstance();
+        mRef = mStorage.getReference();
     }
 
     private void loadData() {
         data = PreferencesHelper.getDocumentReference(getContext());
-        FirebaseFirestore fb = FirebaseFirestore.getInstance();
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
-                .build();
-        fb.setFirestoreSettings(settings);
         DocumentReference documentReference = fb.collection(getString(R.string.users)).document(data);
         documentReference.get()
                 .addOnCompleteListener(task -> {
@@ -161,22 +171,20 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                             JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
                             user = gson.fromJson(jsonElement, User.class);
                             Timber.d("data%s", user.toString());
-                            if (user.getName().getTitle().equals("Mr"))
-                                gender.setSelection(1);
-                            else
-                                gender.setSelection(2);
+
 
                             if (user.getPictureURL() != null) {
-                                File imgFile = new File(user.getPictureURL().getLarge());
-                                if (imgFile.exists())
-                                    Picasso.get()
-                                            .load(Uri.fromFile(imgFile))
-                                            .error(R.drawable.ic_photo_camera_black_24dp)
-                                            .placeholder(R.drawable.ic_photo_camera_black_24dp)
-                                            .into(circleImageView);
+                                if (user.getPictureURL().getLarge() != null) {
+                                    StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
+                                    GlideApp.with(getContext()).load(storageReference).error(R.drawable.ic_photo_camera_black_24dp).placeholder(R.drawable.ic_photo_camera_black_24dp).into(circleImageView);
+                                }
                             }
 
                             if (user.getName() != null) {
+                                if (user.getName().getTitle().equals("Mr"))
+                                    gender.setSelection(1);
+                                else
+                                    gender.setSelection(2);
                                 firstName.setText(user.getName().getFirstName());
                                 lastName.setText(user.getName().getLastName());
                             }
@@ -215,7 +223,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
 
     private void update() {
         update.setOnClickListener(v -> {
-            Picture picture = new Picture(pictureFilePath, pictureFilePath, pictureFilePath);
+            Picture picture = new Picture(cloudPath, pictureFilePath, pictureFilePath);
             user.setPictureURL(picture);
             Name name = new Name(gender.getSelectedItem().toString(), firstName.getText().toString(), lastName.getText().toString());
             user.setName(name);
@@ -238,15 +246,10 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
             }
 
             Timber.d("New user: %s", user.toString());
-
-            FirebaseFirestore fb = FirebaseFirestore.getInstance();
-            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                    .setTimestampsInSnapshotsEnabled(true)
-                    .build();
             fb.setFirestoreSettings(settings);
 
             String referenceID = PreferencesHelper.getDocumentReference(getContext());
-            Timber.d("ref: " + referenceID);
+            Timber.d("ref: %s", referenceID);
             DocumentReference documentReference = fb.collection(getString(R.string.users)).document(referenceID);
 
             String json = convertToJson(user);
@@ -258,6 +261,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                     .addOnSuccessListener(aVoid -> Snackbar.make(getView(), "Update finished", Snackbar.LENGTH_LONG).show())
                     .addOnFailureListener(e -> Snackbar.make(getView(), "Update data KO", Snackbar.LENGTH_LONG).show());
             PreferencesHelper.saveUserSession(getContext(), user.toString());
+            addToCloudStorage();
         });
     }
 
@@ -281,6 +285,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                     startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
                 }
                 addToGallery();
+                cloudPath = getCloudPath();
             }
 
         });
@@ -302,8 +307,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         if (requestCode == REQUEST_PICTURE_CAPTURE && resultCode == RESULT_OK) {
             File imgFile = new File(pictureFilePath);
             if (imgFile.exists()) {
-                Picasso.get().load(Uri.fromFile(imgFile)).error(R.drawable.ic_photo_camera_black_24dp).placeholder(R.drawable.ic_photo_camera_black_24dp).into(circleImageView);
-
+                GlideApp.with(getContext()).load(Uri.fromFile(imgFile)).error(R.drawable.ic_photo_camera_black_24dp).placeholder(R.drawable.ic_photo_camera_black_24dp).into(circleImageView);
             }
 
         }
@@ -311,7 +315,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
 
     private File getPicturePath() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String pictureFile = "dalker_" + timeStamp;
+        String pictureFile = "_" + timeStamp;
         File storage = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(pictureFile, ".jpg", storage);
         pictureFilePath = image.getAbsolutePath();
@@ -324,10 +328,38 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         startActivity(intent);
     }
 
+    private String getCloudPath() {
+        File file = new File(pictureFilePath);
+        Uri uri = Uri.fromFile(file);
+        return uri.getLastPathSegment();
+    }
+
+
+    private void addToCloudStorage() {
+        File file = new File(pictureFilePath);
+        Uri uri = Uri.fromFile(file);
+        StorageReference uploadRef = mRef.child(cloudPath);
+        uploadRef.putFile(uri).addOnFailureListener(e -> {
+            Timber.d("Failed to upload picture to cloud storage %s", e.getMessage());
+            Snackbar.make(getView(), "Failed to upload picture to cloud", Snackbar.LENGTH_LONG).show();
+        }).addOnSuccessListener(taskSnapshot -> {
+            Timber.d("Picture uploaded");
+            Snackbar.make(getView(), "Picture uploaded to cloud", Snackbar.LENGTH_LONG).show();
+        });
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         genderValue = parent.getItemAtPosition(position).toString();
         Timber.d(genderValue);
+    }
+
+    private void getInstallationIdentifier() {
+        if (deviceIdentifier == null) {
+            deviceIdentifier = UUID.randomUUID().toString();
+            Timber.d("device: %s", deviceIdentifier);
+            PreferencesHelper.saveDevideID(getContext(), deviceIdentifier);
+        }
     }
 
     @Override

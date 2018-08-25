@@ -82,6 +82,7 @@
     <string name="prompt"> </string>
     <string name="fragment">fragment</string>
     <string name="reference">REFERENCE</string>
+    <string name="device_id">DEVICE_ID</string>
     <string-array name="title_arrays">
         <item> </item>
         <item>Mr</item>
