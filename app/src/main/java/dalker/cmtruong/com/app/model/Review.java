@@ -1,6 +1,7 @@
 package dalker.cmtruong.com.app.model;
 
 
+import android.arch.persistence.room.Ignore;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,27 +12,34 @@ import android.os.Parcelable;
  */
 public class Review implements Parcelable {
 
-    private int id;
+    private String id;
 
-    private int rate;
+    private float rate;
 
     private String comment;
 
-    public Review(int rate, String comment) {
+    @Ignore
+    public Review(float rate, String comment) {
+        this.rate = rate;
+        this.comment = comment;
+    }
+
+    public Review(String id, float rate, String comment) {
+        this.id = id;
         this.rate = rate;
         this.comment = comment;
     }
 
     protected Review(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         rate = in.readInt();
         comment = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeInt(rate);
+        dest.writeString(id);
+        dest.writeFloat(rate);
         dest.writeString(comment);
     }
 
@@ -52,19 +60,19 @@ public class Review implements Parcelable {
         }
     };
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getRate() {
+    public float getRate() {
         return rate;
     }
 
-    public void setRate(int rate) {
+    public void setRate(float rate) {
         this.rate = rate;
     }
 

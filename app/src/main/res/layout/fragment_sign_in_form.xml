@@ -101,5 +101,5 @@
         android:layout_marginStart="@dimen/margin_et_sign_in"
         android:layout_marginTop="300dp"
         android:background="@android:color/holo_orange_dark"
-        android:text="@string/login" />
+        android:text="@string/create_account" />
 </android.support.design.widget.CoordinatorLayout>

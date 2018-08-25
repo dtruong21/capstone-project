@@ -123,7 +123,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     private String deviceIdentifier;
     private String cloudPath;
     private FirebaseFirestore fb;
-    private FirebaseFirestoreSettings settings;
 
 
     public EditProfileFragment() {
@@ -151,10 +150,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
 
     private void connectFirebase() {
         fb = FirebaseFirestore.getInstance();
-        settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
-                .build();
-        fb.setFirestoreSettings(settings);
         mStorage = FirebaseStorage.getInstance();
         mRef = mStorage.getReference();
     }
@@ -172,11 +167,16 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                             user = gson.fromJson(jsonElement, User.class);
                             Timber.d("data%s", user.toString());
 
-
                             if (user.getPictureURL() != null) {
                                 if (user.getPictureURL().getLarge() != null) {
-                                    StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
-                                    GlideApp.with(getContext()).load(storageReference).error(R.drawable.ic_photo_camera_black_24dp).placeholder(R.drawable.ic_photo_camera_black_24dp).into(circleImageView);
+
+                                    File f = new File(user.getPictureURL().getThumbnail());
+                                    Uri pictureUri = Uri.fromFile(f);
+                                    GlideApp.with(getContext())
+                                            .load(pictureUri)
+                                            .error(R.drawable.ic_photo_camera_black_24dp)
+                                            .placeholder(R.drawable.ic_photo_camera_black_24dp)
+                                            .into(circleImageView);
                                 }
                             }
 
@@ -242,12 +242,9 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
             }
             user.setDescription(description.getText().toString());
             if (!price.getText().toString().equals("")) {
-
+                user.setPrice(Integer.parseInt(price.getText().toString()));
             }
-
             Timber.d("New user: %s", user.toString());
-            fb.setFirestoreSettings(settings);
-
             String referenceID = PreferencesHelper.getDocumentReference(getContext());
             Timber.d("ref: %s", referenceID);
             DocumentReference documentReference = fb.collection(getString(R.string.users)).document(referenceID);

@@ -84,6 +84,7 @@
     <string name="reference">REFERENCE</string>
     <string name="device_id">DEVICE_ID</string>
     <string name="done">DONE</string>
+    <string name="create_account">Create account</string>
     <string-array name="title_arrays">
         <item> </item>
         <item>Mr</item>

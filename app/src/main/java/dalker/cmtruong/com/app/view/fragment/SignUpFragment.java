@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
@@ -47,11 +48,11 @@ import static android.app.NotificationManager.IMPORTANCE_HIGH;
  */
 public class SignUpFragment extends Fragment {
 
-    private static final Random random = new Random();
-    private static final String CHARS = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890";
-    private static final int TOKEN_LENGTH = 8;
     private static final int NOTIFY_ID = 1;
     private static final String CHANNEL_ID = "login";
+    private static final Random random = new Random();
+    private static final String CHARS = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890";
+    private static final int TOKEN_LENGTH = 16;
 
 
     @BindView(R.id.email_add_et)
@@ -74,6 +75,7 @@ public class SignUpFragment extends Fragment {
 
     @BindView(R.id.confirm_error)
     TextView confirmError;
+
 
     public SignUpFragment() {
     }
@@ -119,14 +121,13 @@ public class SignUpFragment extends Fragment {
     }
 
     private void signIn() {
-
         createAccount.setOnClickListener(v -> {
             if (isValidForm(email.getText().toString(), loginId.getText().toString(), password.getText().toString(), confirmPassword.getText().toString())) {
-
                 User user = new User();
                 user.setEmail(email.getText().toString());
-                String id = getToken(TOKEN_LENGTH);
                 Login login = new Login(loginId.getText().toString(), password.getText().toString());
+                String id = getToken(TOKEN_LENGTH) + "_" + loginId.getText().toString();
+                login.setId(id);
                 user.setLogin(login);
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 String json = convertToJson(user);
@@ -135,7 +136,8 @@ public class SignUpFragment extends Fragment {
                         }.getType()
                 );
                 db.collection(getString(R.string.users))
-                        .add(userFF)
+                        .document(id)
+                        .set(userFF)
                         .addOnSuccessListener(documentReference -> {
                             Intent notificationIntent = new Intent(getContext(), LoginActivity.class);
                             notificationIntent.putExtra(getString(R.string.intent_login), getString(R.string.intent_user_default));
@@ -155,19 +157,26 @@ public class SignUpFragment extends Fragment {
                                 notificationManager.createNotificationChannel(mChannel);
                             }
                             notificationManager.notify(NOTIFY_ID, mBuilder.build());
-                            Timber.d("add new user");
+                            Timber.d("add new user%s", id);
 
                             getActivity().getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.profile_container, LoginFragment.getInstance())
                                     .addToBackStack(null)
                                     .commit();
+                            Toast.makeText(getContext(), "Add user" + loginId.getText().toString() + " with successful", Toast.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> Timber.d("add failed"));
+
             } else {
                 handleError();
             }
         });
 
+    }
+
+    private String convertToJson(User user) {
+        Gson gson = new Gson();
+        return gson.toJson(user);
     }
 
     public static String getToken(int length) {
@@ -176,11 +185,6 @@ public class SignUpFragment extends Fragment {
             token.append(CHARS.charAt(random.nextInt(CHARS.length())));
         }
         return token.toString();
-    }
-
-    private String convertToJson(User user) {
-        Gson gson = new Gson();
-        return gson.toJson(user);
     }
 
 }

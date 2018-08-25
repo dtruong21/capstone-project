@@ -91,10 +91,6 @@ public class LoginFragment extends Fragment {
     private void logIn() {
         loginBt.setOnClickListener(v -> {
             FirebaseFirestore fb = FirebaseFirestore.getInstance();
-            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                    .setTimestampsInSnapshotsEnabled(true)
-                    .build();
-            fb.setFirestoreSettings(settings);
             Login loginUser = null;
             if (isValidLogin(login.getText().toString(), password.getText().toString())) {
                 loginUser = new Login(login.getText().toString(), password.getText().toString());
