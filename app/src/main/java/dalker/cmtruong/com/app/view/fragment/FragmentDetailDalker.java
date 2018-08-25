@@ -227,7 +227,8 @@ public class FragmentDetailDalker extends Fragment {
         });
 
         comment_bt.setOnClickListener(v -> {
-            openCommentDiaglog();
+            CommentFragment commentFragment = CommentFragment.getInstance();
+            commentFragment.show(getActivity().getSupportFragmentManager(), TAG);
         });
     }
 
@@ -253,20 +254,5 @@ public class FragmentDetailDalker extends Fragment {
         });
     }
 
-    private void openCommentDiaglog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View dialogView = inflater.inflate(R.layout.fragment_comment, null);
-        builder.setView(dialogView);
-        builder.setTitle(getString(R.string.comment));
-        builder.setCancelable(false);
-        builder.setPositiveButton(getString(R.string.done), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        }).setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
-        builder.show();
-    }
 
 }

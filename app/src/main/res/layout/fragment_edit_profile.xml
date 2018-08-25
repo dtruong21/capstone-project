@@ -273,9 +273,10 @@
         <EditText
             android:id="@+id/description_et"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/comment_size"
             android:layout_marginEnd="@dimen/activity_vertical_margin"
             android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:gravity="top|start"
             android:hint="@string/words_required"
             android:inputType="textMultiLine|textCapSentences"
             android:labelFor="@id/description_tv"
