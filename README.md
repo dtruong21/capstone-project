@@ -19,7 +19,7 @@ In the version 1.0, the application will concentrate to build a platform with al
 - Review the dalker's services
 - Share dalker's information in socials medias
 - Add to favorite dalker's list
-- Add a widget to the phone screen which displays the favorite dalker's list
+- Add a widget to the phone screen which displays the favorite dalker's list to call them faster
 - Free and paid version
 
 ## Libraires, API and tools
@@ -27,13 +27,12 @@ In the version 1.0, the application will concentrate to build a platform with al
 - Room
 - Live Data
 - Butterknife
-- Picasso
+- Glide
 - Cloud Firestore
-- Firebase Cloud Messaging
+- Firebase Storage
 - Google Play Service (Location & Admod)
 - Timber
 - Espresso Testing UI
-- Fastlane
 
 ## License
 
