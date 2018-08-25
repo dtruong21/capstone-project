@@ -46,7 +46,7 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
-    <string name="comment_here">Comment here</string>
+    <string name="comment_here">Comment here ...</string>
     <string name="intent_login">userSession</string>
     <string name="intent_user_default">No user</string>
     <string name="password_required">Your password requires minimum 8 characters at least 1 Alphabet, 1 number and 1 special character</string>
@@ -83,6 +83,7 @@
     <string name="fragment">fragment</string>
     <string name="reference">REFERENCE</string>
     <string name="device_id">DEVICE_ID</string>
+    <string name="done">DONE</string>
     <string-array name="title_arrays">
         <item> </item>
         <item>Mr</item>

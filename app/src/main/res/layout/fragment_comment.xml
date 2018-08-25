@@ -3,20 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/comment_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_comment" />
 
     <RatingBar
         android:id="@+id/comment_rb"
         style="?android:attr/ratingBarStyleIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_vertical_margin"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/location_et_margin"
         android:isIndicator="true"
         android:numStars="5"
         android:stepSize="0.1"
@@ -26,11 +22,16 @@
         android:id="@+id/comment_et"
         android:layout_width="match_parent"
         android:layout_height="@dimen/comment_size"
+        android:layout_marginEnd="@dimen/activity_vertical_margin"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:layout_marginTop="-70dp"
         android:hint="@string/comment_here"
         android:imeOptions="actionDone"
         android:inputType="textMultiLine|textCapSentences"
         android:maxLength="2000"
         android:maxLines="5"
+        android:textColor="@android:color/black"
         tools:text="@string/text_test" />
+
 
 </LinearLayout>

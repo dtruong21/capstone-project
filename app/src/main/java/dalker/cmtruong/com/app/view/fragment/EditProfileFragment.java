@@ -336,16 +336,18 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
 
 
     private void addToCloudStorage() {
-        File file = new File(pictureFilePath);
-        Uri uri = Uri.fromFile(file);
-        StorageReference uploadRef = mRef.child(cloudPath);
-        uploadRef.putFile(uri).addOnFailureListener(e -> {
-            Timber.d("Failed to upload picture to cloud storage %s", e.getMessage());
-            Snackbar.make(getView(), "Failed to upload picture to cloud", Snackbar.LENGTH_LONG).show();
-        }).addOnSuccessListener(taskSnapshot -> {
-            Timber.d("Picture uploaded");
-            Snackbar.make(getView(), "Picture uploaded to cloud", Snackbar.LENGTH_LONG).show();
-        });
+        if (pictureFilePath != null){
+            File file = new File(pictureFilePath);
+            Uri uri = Uri.fromFile(file);
+            StorageReference uploadRef = mRef.child(cloudPath);
+            uploadRef.putFile(uri).addOnFailureListener(e -> {
+                Timber.d("Failed to upload picture to cloud storage %s", e.getMessage());
+                Snackbar.make(getView(), "Failed to upload picture to cloud", Snackbar.LENGTH_LONG).show();
+            }).addOnSuccessListener(taskSnapshot -> {
+                Timber.d("Picture uploaded");
+                Snackbar.make(getView(), "Picture uploaded to cloud", Snackbar.LENGTH_LONG).show();
+            });
+        }
     }
 
     @Override

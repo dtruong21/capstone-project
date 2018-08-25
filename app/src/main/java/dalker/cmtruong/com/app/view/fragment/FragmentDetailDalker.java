@@ -1,7 +1,9 @@
 package dalker.cmtruong.com.app.view.fragment;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -222,6 +225,10 @@ public class FragmentDetailDalker extends Fragment {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts(getString(R.string.tel), 0 + user.getPhone(), null));
             startActivity(intent);
         });
+
+        comment_bt.setOnClickListener(v -> {
+            openCommentDiaglog();
+        });
     }
 
     @Override
@@ -244,8 +251,22 @@ public class FragmentDetailDalker extends Fragment {
                 Timber.d("check 1");
             }
         });
+    }
 
+    private void openCommentDiaglog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View dialogView = inflater.inflate(R.layout.fragment_comment, null);
+        builder.setView(dialogView);
+        builder.setTitle(getString(R.string.comment));
+        builder.setCancelable(false);
+        builder.setPositiveButton(getString(R.string.done), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+            }
+        }).setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
+        builder.show();
     }
 
 }
