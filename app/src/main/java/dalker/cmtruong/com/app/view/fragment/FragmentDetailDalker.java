@@ -227,7 +227,7 @@ public class FragmentDetailDalker extends Fragment {
         });
 
         comment_bt.setOnClickListener(v -> {
-            CommentFragment commentFragment = CommentFragment.getInstance();
+            CommentFragment commentFragment = CommentFragment.getInstance(user);
             commentFragment.show(getActivity().getSupportFragmentManager(), TAG);
         });
     }

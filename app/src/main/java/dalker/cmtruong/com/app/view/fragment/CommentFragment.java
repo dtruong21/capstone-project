@@ -21,6 +21,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.model.User;
 import timber.log.Timber;
 
 /**
@@ -29,6 +30,8 @@ import timber.log.Timber;
  * @since 2018 August, 17th
  */
 public class CommentFragment extends DialogFragment {
+
+    private static final String DALKER_KEY = "DALKER_KEY";
     @BindView(R.id.comment_rb)
     RatingBar mRatingBar;
 
@@ -39,23 +42,32 @@ public class CommentFragment extends DialogFragment {
     String review;
     String id;
 
+    User user;
+
     public CommentFragment() {
     }
 
-    public static CommentFragment getInstance() {
+    public static CommentFragment getInstance(User dalker) {
         CommentFragment commentFragment = new CommentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(DALKER_KEY, dalker);
+        commentFragment.setArguments(bundle);
         return commentFragment;
     }
-
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        setRetainInstance(true);
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.fragment_comment, null);
-        builder.setView(view);
         ButterKnife.bind(this, view);
+        if (getArguments() != null) {
+            Timber.d("Arguments: %s", getArguments().toString());
+            user = getArguments().getParcelable(DALKER_KEY);
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(view);
         builder.setTitle(getString(R.string.comment));
         mRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             Timber.d("Rating: %s", ratingBar.getRating());
