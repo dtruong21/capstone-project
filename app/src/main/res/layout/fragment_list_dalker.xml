@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true">
@@ -36,6 +37,7 @@
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:background="@drawable/borders"
                     android:hint="@string/try_paris"
+                    android:imeOptions="actionDone"
                     android:inputType="text"
                     android:labelFor="@id/main_fragment_container"
                     android:textColor="@android:color/darker_gray"

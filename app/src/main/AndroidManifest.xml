@@ -20,6 +20,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".view.activity.MainActivity"
             android:label="@string/title_activity_main">
@@ -51,9 +55,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/dalker_widget_provider_info" />
         </receiver>
-        <service
-            android:name=".widget.FavoriteDalkerIService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="dalker.cmtruong.com.app.fileprovider"
