@@ -17,7 +17,7 @@ import timber.log.Timber;
  * @version 1.0
  * @since 31th July, 2018
  */
-@Database(entities = {User.class}, version = 2, exportSchema = false)
+@Database(entities = {User.class}, version = 3, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class DalkerDatabase extends RoomDatabase {
     private static final String TAG = DalkerDatabase.class.getSimpleName();

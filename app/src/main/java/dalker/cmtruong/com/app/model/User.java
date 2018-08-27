@@ -7,7 +7,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -64,13 +63,15 @@ public class User implements Parcelable {
 
     private String description;
 
-    private int price;
+    private float price;
+
+    private int dogNumber;
 
     @Embedded
     private ArrayList<Review> reviews;
 
     @Ignore
-    public User(String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, int price, ArrayList<Review> reviews) {
+    public User(String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, float price, int dogNumber, ArrayList<Review> reviews) {
         this.gender = gender;
         this.login = login;
         this.name = name;
@@ -82,6 +83,7 @@ public class User implements Parcelable {
         this.nat = nat;
         this.description = description;
         this.price = price;
+        this.dogNumber = dogNumber;
         this.reviews = reviews;
     }
 
@@ -100,8 +102,9 @@ public class User implements Parcelable {
         pictureURL = in.readParcelable(Picture.class.getClassLoader());
         nat = in.readString();
         description = in.readString();
-        price = in.readInt();
+        price = in.readFloat();
         reviews = in.createTypedArrayList(Review.CREATOR);
+        dogNumber = in.readInt();
     }
 
     @Override
@@ -117,8 +120,9 @@ public class User implements Parcelable {
         dest.writeParcelable(pictureURL, flags);
         dest.writeString(nat);
         dest.writeString(description);
-        dest.writeInt(price);
+        dest.writeFloat(price);
         dest.writeTypedList(reviews);
+        dest.writeInt(dogNumber);
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -132,6 +136,14 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+    public int getDogNumber() {
+        return dogNumber;
+    }
+
+    public void setDogNumber(int dogNumber) {
+        this.dogNumber = dogNumber;
+    }
 
     public String getIdUser() {
         return idUser;
@@ -221,12 +233,11 @@ public class User implements Parcelable {
         this.description = description;
     }
 
-
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
@@ -238,20 +249,23 @@ public class User implements Parcelable {
         this.reviews = reviews;
     }
 
+
     @Override
     public String toString() {
         return "{" +
-                "gender='" + gender + '\'' +
-                ", login=" + login +
+                "idUser='" + idUser + '\'' +
+                ", gender='" + gender + '\'' +
                 ", name=" + name +
                 ", location=" + location +
                 ", email='" + email + '\'' +
-                ", dob='" + dob + '\'' +
-                ", phone=" + phone +
-                ", pictureURL='" + pictureURL + '\'' +
+                ", login=" + login +
+                ", dob=" + dob +
+                ", phone='" + phone + '\'' +
+                ", pictureURL=" + pictureURL +
                 ", nat='" + nat + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
+                ", dogNumber=" + dogNumber +
                 ", reviews=" + reviews +
                 '}';
     }

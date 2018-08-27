@@ -1,5 +1,6 @@
 package dalker.cmtruong.com.app.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,14 +12,19 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.event.OnDalkerHandledListener;
+import dalker.cmtruong.com.app.helper.GlideApp;
+import dalker.cmtruong.com.app.model.Review;
 import dalker.cmtruong.com.app.model.User;
 import timber.log.Timber;
+
+import static java.lang.String.format;
 
 public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.DalkerViewHolder> {
 
@@ -87,19 +93,25 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
             itemView.setOnClickListener(this);
         }
 
-
         void bind(User user) {
 
-            Picasso.get()
+            GlideApp.with(itemView)
                     .load(user.getPictureURL().getLarge())
                     .error(R.drawable.ic_launcher_foreground)
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(mImageView);
-            mDalkerName.setText(String.format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
-            mDalkerAge.setText("Age: " + String.valueOf(user.getDob().getAge()));
-            mDalkerService.setText(R.string.fake_service_user);
-            mDalkerRate.setText(R.string.rate_fake_user);
-            mDalkerPrice.setText(R.string.dalker_price_test);
+            mDalkerName.setText(format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
+            mDalkerAge.setText(format("Age: %s", String.valueOf(user.getDob().getAge())));
+            mDalkerService.setText(format("%d doggo possible", user.getDogNumber()));
+            ArrayList<Review> reviews = user.getReviews();
+            int rateSum = 0;
+            float rateAverage = 0.0f;
+            if (reviews.size() > 0) {
+                for (Review review : reviews) rateSum += review.getRate();
+                rateAverage = rateSum / reviews.size();
+            }
+            mDalkerRate.setText(String.format("%s/5", String.valueOf(rateAverage)));
+            mDalkerPrice.setText(format("%s per hour", String.valueOf(user.getPrice())));
         }
 
         @Override

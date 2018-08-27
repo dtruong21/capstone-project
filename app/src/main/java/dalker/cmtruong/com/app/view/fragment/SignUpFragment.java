@@ -9,11 +9,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -121,6 +123,8 @@ public class SignUpFragment extends Fragment {
     }
 
     private void signIn() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         createAccount.setOnClickListener(v -> {
             if (isValidForm(email.getText().toString(), loginId.getText().toString(), password.getText().toString(), confirmPassword.getText().toString())) {
                 User user = new User();
@@ -163,9 +167,12 @@ public class SignUpFragment extends Fragment {
                                     .replace(R.id.profile_container, LoginFragment.getInstance())
                                     .addToBackStack(null)
                                     .commit();
-                            Toast.makeText(getContext(), "Add user" + loginId.getText().toString() + " with successful", Toast.LENGTH_LONG).show();
+                            Snackbar.make(getActivity().findViewById(R.id.main_fragment_container), "Add user" + loginId.getText().toString() + " with successful", Toast.LENGTH_LONG).show();
                         })
-                        .addOnFailureListener(e -> Timber.d("add failed"));
+                        .addOnFailureListener(e -> {
+                            Timber.d("add failed");
+                            Snackbar.make(getActivity().findViewById(R.id.main_fragment_container), "Failed to add user" + loginId.getText().toString() + " to the database", Toast.LENGTH_LONG).show();
+                        });
 
             } else {
                 handleError();

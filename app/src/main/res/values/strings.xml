@@ -58,6 +58,7 @@
     <string name="username">username</string>
     <string name="login_username">login.username</string>
     <string name="login_password">login.password</string>
+    <string name="location_city">location.city</string>
 
     <!-- Profile-->
     <string name="first_name">First name</string>
@@ -105,4 +106,12 @@
 
     <string name="admob_app_id">ca-app-pub-8390944528541948~9296512467</string>
     <string name="ad_unit_id">ca-app-pub-8390944528541948/5241717385</string>
+    <string name="latitude">LATITUDE</string>
+    <string name="longitude">LONGITUDE</string>
+    <string name="current_location">CURRENT_LOCATION</string>
+    <string name="user_list">USER_LIST</string>
+    <string name="user_list_location">USER_LIST_BY_LOCATION</string>
+    <string name="doggo_service_number">Doggo service number</string>
+    <string name="no_review">No review</string>
+
 </resources>

@@ -1,15 +1,19 @@
 package dalker.cmtruong.com.app.view.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -89,6 +93,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void logIn() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         loginBt.setOnClickListener(v -> {
             FirebaseFirestore fb = FirebaseFirestore.getInstance();
             Login loginUser = null;
@@ -113,11 +119,16 @@ public class LoginFragment extends Fragment {
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             intent.putExtra("fragment", R.id.navigation_profile);
                             startActivity(intent);
+                            Snackbar.make(getActivity().findViewById(R.id.main_fragment_container),
+                                    "Error in login with user " + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
                         } else {
                             Timber.d("check");
+                            Snackbar.make(getActivity().findViewById(R.id.main_fragment_container),
+                                    "Error in login with user " + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(e -> Timber.d("failed"));
+
         });
     }
 

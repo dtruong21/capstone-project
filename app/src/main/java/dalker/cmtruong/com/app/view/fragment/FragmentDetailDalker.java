@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.BuildConfig;
 import dalker.cmtruong.com.app.R;
+import dalker.cmtruong.com.app.adapter.DalkerReviewAdapter;
 import dalker.cmtruong.com.app.database.AppExecutors;
 import dalker.cmtruong.com.app.database.DalkerDatabase;
 import dalker.cmtruong.com.app.model.Review;
@@ -96,6 +98,10 @@ public class FragmentDetailDalker extends Fragment {
     @BindView(R.id.insert_to_fav)
     ImageView insert_bt;
 
+    @BindView(R.id.comment_error)
+    TextView mError;
+
+    private DalkerReviewAdapter mAdapter;
     private DalkerDatabase mDB;
 
     private static final int DEFAULT_TASK_ID = -1;
@@ -156,10 +162,21 @@ public class FragmentDetailDalker extends Fragment {
             dalkerDescription.setText(user.getDescription());
         reviews = user.getReviews();
         rateAverage = getRateAverage(reviews);
-        if (user.getReviews() == null && BuildConfig.FLAVOR.equals(getString(R.string.demo)))
-            dalkerRatingBar.setRating(4.5f);
-        else
+        if (user.getReviews() == null) {
+            if (BuildConfig.FLAVOR.equals(getString(R.string.demo)))
+                dalkerRatingBar.setRating(4.5f);
+            else
+                showError();
+        } else {
             dalkerRatingBar.setRating((float) rateAverage);
+            reviewRV.setLayoutManager(new LinearLayoutManager(getContext()));
+            reviewRV.setHasFixedSize(true);
+            mAdapter = new DalkerReviewAdapter(user.getReviews());
+            reviewRV.setAdapter(mAdapter);
+            setupReview();
+        }
+
+
         setupButton(user);
         setupFavorite(user);
         Timber.d("Call the event here");
@@ -170,7 +187,7 @@ public class FragmentDetailDalker extends Fragment {
                     Timber.d("Something wrong here");
                     mDB.userDAO().insertUser(user);
                     String text = "Add " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
-                    Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getActivity().findViewById(R.id.detail_dalker_container), text, Snackbar.LENGTH_LONG).show();
                     Timber.d("user:%s", user.toString());
                     insert_bt.setImageResource(R.drawable.ic_favorite_black_48dp);
                     getActivity().getApplicationContext().sendBroadcast(intent);
@@ -186,6 +203,16 @@ public class FragmentDetailDalker extends Fragment {
                 }
             });
         });
+    }
+
+    private void setupReview() {
+        reviewRV.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.GONE);
+    }
+
+    private void showError() {
+        reviewRV.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
     }
 
     /**

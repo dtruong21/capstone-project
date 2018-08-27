@@ -1,14 +1,17 @@
 package dalker.cmtruong.com.app.view.fragment;
 
 import android.Manifest;
-import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -18,15 +21,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
@@ -48,6 +52,7 @@ import dalker.cmtruong.com.app.BuildConfig;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.adapter.DalkerListAdapter;
 import dalker.cmtruong.com.app.model.User;
+import dalker.cmtruong.com.app.service.DalkerRequestService;
 import dalker.cmtruong.com.app.view.activity.DetailDalkerActivity;
 import timber.log.Timber;
 
@@ -57,7 +62,6 @@ import timber.log.Timber;
  * @since 1st August, 2018
  */
 public class ListDalkerFragment extends Fragment {
-    private static final String TAG = ListDalkerFragment.class.getSimpleName();
     @BindView(R.id.dalker_list_rv)
     RecyclerView mDalkerRV;
 
@@ -69,6 +73,9 @@ public class ListDalkerFragment extends Fragment {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.dalker_pb)
+    ProgressBar mProgressBar;
 
     @BindView(R.id.location_et)
     EditText locationET;
@@ -83,7 +90,14 @@ public class ListDalkerFragment extends Fragment {
     String mLatitudeLabel;
     String mLongitudeLabel;
 
+    double mLatitude;
+    double mLongtitude;
+
+    String mCurrentLocation;
+
     private RewardedVideoAd rewardedVideoAd;
+
+    private DalkerReceiver mReceiver;
 
 
     @Override
@@ -170,29 +184,37 @@ public class ListDalkerFragment extends Fragment {
 
     private void initData() {
         openAds();
-        makeFakeUserQuery();
+        getUserList(mCurrentLocation);
+        registerDalkerReceiver();
     }
 
     private void showDalkerList() {
         mDalkerRV.setVisibility(View.VISIBLE);
         mLayout.setRefreshing(false);
         mErrorMessage.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private void showMessageError() {
         mDalkerRV.setVisibility(View.GONE);
         mLayout.setRefreshing(false);
         mErrorMessage.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private void waitingForResult() {
         mDalkerRV.setVisibility(View.GONE);
         mLayout.setRefreshing(true);
         mErrorMessage.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
-    private void makeFakeUserQuery() {
-
+    private void getUserList(String location) {
+        Intent mIntent = new Intent(getContext(), DalkerRequestService.class);
+        mIntent.putExtra(getString(R.string.latitude), mLatitude);
+        mIntent.putExtra(getString(R.string.longitude), mLongtitude);
+        mIntent.putExtra(getString(R.string.current_location), location);
+        getContext().startService(mIntent);
     }
 
     private void showDetailDalker(DalkerListAdapter adapter) {
@@ -238,7 +260,7 @@ public class ListDalkerFragment extends Fragment {
     }
 
     private void showSnackbar(final String text) {
-        View container = getView().findViewById(R.id.my_ll);
+        View container = getActivity().findViewById(R.id.main_fragment_container);
         if (container != null) {
             Snackbar.make(container, text, Snackbar.LENGTH_LONG).show();
         }
@@ -252,6 +274,8 @@ public class ListDalkerFragment extends Fragment {
                         mLastLocation = task.getResult();
                         Timber.d("My location is: " + mLastLocation.getLatitude() + "_" + mLastLocation.getLongitude());
                         getAddressFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                        mLatitude = mLastLocation.getLatitude();
+                        mLongtitude = mLastLocation.getLongitude();
                     } else {
                         showSnackbar(getString(R.string.no_location_detected));
                     }
@@ -264,6 +288,7 @@ public class ListDalkerFragment extends Fragment {
         try {
             List<Address> addresses = geocoder.getFromLocation(latitude, longtitude, 1);
             Address fetchAddress = addresses.get(0);
+            mCurrentLocation = fetchAddress.getSubAdminArea();
             Timber.d("Current location: %s", fetchAddress.getSubAdminArea());
         } catch (IOException e) {
             e.printStackTrace();
@@ -308,7 +333,7 @@ public class ListDalkerFragment extends Fragment {
 
             @Override
             public void onRewardedVideoAdFailedToLoad(int i) {
-                Timber.d("Ad failed " + i);
+                Timber.d("Ad failed %s", i);
             }
 
             @Override
@@ -318,6 +343,7 @@ public class ListDalkerFragment extends Fragment {
         });
 
         rewardedVideoAd.loadAd(getString(R.string.ad_unit_id), new AdRequest.Builder().build());
+        rewardedVideoAd.show();
     }
 
     @Override
@@ -337,4 +363,66 @@ public class ListDalkerFragment extends Fragment {
         rewardedVideoAd.destroy(getContext());
         super.onDestroy();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getContext().unregisterReceiver(mReceiver);
+    }
+
+    private void registerDalkerReceiver() {
+        mReceiver = new DalkerReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(getString(R.string.user_list_location));
+        getContext().registerReceiver(mReceiver, intentFilter);
+    }
+
+
+    /**
+     * @author davidetruong
+     * @version 1.0
+     * @since 2018 August, 25th
+     */
+    public class DalkerReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final PendingResult pendingResult = goAsync();
+            @SuppressLint("StaticFieldLeak")
+            AsyncTask<String, Integer, String> asyncTask = new AsyncTask<String, Integer, String>() {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    waitingForResult();
+                }
+
+                @Override
+                protected String doInBackground(String... strings) {
+
+
+                    return intent.toUri(Intent.URI_INTENT_SCHEME);
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    users = intent.getParcelableArrayListExtra(getString(R.string.user_list));
+                    if (users != null && users.size() != 0) {
+                        Timber.d("users: %s", users.toString());
+                        mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        mDalkerRV.setHasFixedSize(true);
+                        adapter = new DalkerListAdapter(users);
+                        mDalkerRV.setAdapter(adapter);
+                        showDetailDalker(adapter);
+                        showDalkerList();
+                    } else {
+                        showMessageError();
+                    }
+
+                    pendingResult.finish();
+                }
+            };
+            asyncTask.execute();
+        }
+    }
+
 }

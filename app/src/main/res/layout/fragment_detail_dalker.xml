@@ -190,6 +190,13 @@
 
             </android.support.v7.widget.RecyclerView>
 
+            <TextView
+                android:id="@+id/comment_error"
+                style="@android:style/Widget.Material.TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_review"
+                android:textAlignment="center" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

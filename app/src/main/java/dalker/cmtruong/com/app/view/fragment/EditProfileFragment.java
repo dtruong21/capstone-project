@@ -1,5 +1,6 @@
 package dalker.cmtruong.com.app.view.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,16 +14,19 @@ import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -108,6 +112,9 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     @BindView(R.id.price_et)
     EditText price;
 
+    @BindView(R.id.doggo_et)
+    EditText doggo;
+
     @BindView(R.id.bt_cancel)
     Button cancel;
 
@@ -124,6 +131,11 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     private String cloudPath;
     private FirebaseFirestore fb;
 
+    @BindView(R.id.edit_layout)
+    LinearLayout mLayout;
+
+    @BindView(R.id.edit_pb)
+    ProgressBar mProgressBar;
 
     public EditProfileFragment() {
     }
@@ -154,9 +166,20 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         mRef = mStorage.getReference();
     }
 
+    private void loading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mLayout.setVisibility(View.GONE);
+    }
+
+    private void display() {
+        mProgressBar.setVisibility(View.GONE);
+        mLayout.setVisibility(View.VISIBLE);
+    }
+
     private void loadData() {
         data = PreferencesHelper.getDocumentReference(getContext());
         DocumentReference documentReference = fb.collection(getString(R.string.users)).document(data);
+        loading();
         documentReference.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -168,16 +191,13 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                             Timber.d("data%s", user.toString());
 
                             if (user.getPictureURL() != null) {
-                                if (user.getPictureURL().getLarge() != null) {
 
-                                    File f = new File(user.getPictureURL().getThumbnail());
-                                    Uri pictureUri = Uri.fromFile(f);
-                                    GlideApp.with(getContext())
-                                            .load(pictureUri)
-                                            .error(R.drawable.ic_photo_camera_black_24dp)
-                                            .placeholder(R.drawable.ic_photo_camera_black_24dp)
-                                            .into(circleImageView);
-                                }
+                                StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
+                                GlideApp.with(getContext())
+                                        .load(storageReference)
+                                        .error(R.drawable.ic_photo_camera_black_24dp)
+                                        .placeholder(R.drawable.ic_photo_camera_black_24dp)
+                                        .into(circleImageView);
                             }
 
                             if (user.getName() != null) {
@@ -196,12 +216,18 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                                 phone.setText(user.getPhone());
                             }
 
+                            if (user.getDob() != null) {
+                                age.setText(String.valueOf(user.getDob().getAge()));
+                            }
+
                             if (user.getLocation() != null) {
                                 address.setText(user.getLocation().getStreet());
-                                postCode.setText(user.getLocation().getPostCode());
+                                postCode.setText(String.valueOf(user.getLocation().getPostCode()));
                                 city.setText(user.getLocation().getCity());
                                 state.setText(user.getLocation().getState());
                             }
+
+                            doggo.setText(String.valueOf(user.getDogNumber()));
 
                             if (user.getDescription() != null) {
                                 description.setText(user.getDescription());
@@ -210,6 +236,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                         }
                     }
                 });
+        display();
     }
 
     private String convertToJson(User user) {
@@ -222,6 +249,8 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     }
 
     private void update() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         update.setOnClickListener(v -> {
             Picture picture = new Picture(cloudPath, pictureFilePath, pictureFilePath);
             user.setPictureURL(picture);
@@ -237,13 +266,16 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
             user.setLogin(account);
             user.setPhone(phone.getText().toString());
             if (!postCode.getText().toString().equals("")) {
-                Location mLocation = new Location(address.getText().toString(), city.getText().toString(), state.getText().toString(), Integer.parseInt(postCode.getText().toString()));
+                Location mLocation = new Location(address.getText().toString(),
+                        city.getText().toString(), state.getText().toString(), Integer.parseInt(postCode.getText().toString()));
                 user.setLocation(mLocation);
             }
             user.setDescription(description.getText().toString());
             if (!price.getText().toString().equals("")) {
-                user.setPrice(Integer.parseInt(price.getText().toString()));
+                user.setPrice(Float.parseFloat(price.getText().toString()));
             }
+            if (!doggo.getText().toString().equals(""))
+                user.setDogNumber(Integer.parseInt(doggo.getText().toString()));
             Timber.d("New user: %s", user.toString());
             String referenceID = PreferencesHelper.getDocumentReference(getContext());
             Timber.d("ref: %s", referenceID);
@@ -254,9 +286,11 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                     json, new TypeToken<HashMap<String, Object>>() {
                     }.getType()
             );
+            loading();
             documentReference.update(userFF)
                     .addOnSuccessListener(aVoid -> Snackbar.make(getView(), "Update finished", Snackbar.LENGTH_LONG).show())
                     .addOnFailureListener(e -> Snackbar.make(getView(), "Update data KO", Snackbar.LENGTH_LONG).show());
+            display();
             PreferencesHelper.saveUserSession(getContext(), user.toString());
             addToCloudStorage();
         });
@@ -304,7 +338,11 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         if (requestCode == REQUEST_PICTURE_CAPTURE && resultCode == RESULT_OK) {
             File imgFile = new File(pictureFilePath);
             if (imgFile.exists()) {
-                GlideApp.with(getContext()).load(Uri.fromFile(imgFile)).error(R.drawable.ic_photo_camera_black_24dp).placeholder(R.drawable.ic_photo_camera_black_24dp).into(circleImageView);
+                GlideApp.with(getContext())
+                        .load(Uri.fromFile(imgFile))
+                        .error(R.drawable.ic_photo_camera_black_24dp)
+                        .placeholder(R.drawable.ic_photo_camera_black_24dp)
+                        .into(circleImageView);
             }
 
         }

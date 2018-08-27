@@ -67,6 +67,17 @@
 
             </meta-data>
         </provider>
+        <service
+            android:name=".service.DalkerRequestService"
+            android:exported="false" />
+        <receiver
+            android:name=".view.fragment.ListDalkerFragment$DalkerReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
