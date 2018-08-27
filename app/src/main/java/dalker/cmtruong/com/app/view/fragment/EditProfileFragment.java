@@ -191,7 +191,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                             Timber.d("data%s", user.toString());
 
                             if (user.getPictureURL() != null) {
-
                                 StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
                                 GlideApp.with(getContext())
                                         .load(storageReference)
@@ -219,13 +218,13 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                             if (user.getDob() != null) {
                                 age.setText(String.valueOf(user.getDob().getAge()));
                             }
-
                             if (user.getLocation() != null) {
                                 address.setText(user.getLocation().getStreet());
                                 postCode.setText(String.valueOf(user.getLocation().getPostCode()));
                                 city.setText(user.getLocation().getCity());
                                 state.setText(user.getLocation().getState());
                             }
+
 
                             doggo.setText(String.valueOf(user.getDogNumber()));
 

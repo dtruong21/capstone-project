@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -62,6 +63,9 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.signup_bt)
     Button signupBt;
 
+    @BindView(R.id.login_pb)
+    ProgressBar mProgress;
+
     String data;
 
     public LoginFragment() {
@@ -79,6 +83,7 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
         openSignUpForm();
+        showData();
         logIn();
         return view;
     }
@@ -104,6 +109,7 @@ public class LoginFragment extends Fragment {
             Gson gson = new Gson();
             String loginJson = gson.toJson(loginUser);
             Timber.d(loginJson);
+            loadingData();
             fb.collection(getString(R.string.users))
                     .whereEqualTo(getString(R.string.login_username), login.getText().toString())
                     .whereEqualTo("login.password", password.getText().toString())
@@ -119,11 +125,11 @@ public class LoginFragment extends Fragment {
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             intent.putExtra("fragment", R.id.navigation_profile);
                             startActivity(intent);
-                            Snackbar.make(getActivity().findViewById(R.id.main_fragment_container),
+                            Snackbar.make(getView(),
                                     "Error in login with user " + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
                         } else {
                             Timber.d("check");
-                            Snackbar.make(getActivity().findViewById(R.id.main_fragment_container),
+                            Snackbar.make(getView(),
                                     "Error in login with user " + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
                         }
                     })
@@ -136,5 +142,12 @@ public class LoginFragment extends Fragment {
         return !id.isEmpty() && !password.isEmpty();
     }
 
+    private void loadingData() {
+        mProgress.setVisibility(View.VISIBLE);
+    }
+
+    private void showData() {
+        mProgress.setVisibility(View.GONE);
+    }
 
 }

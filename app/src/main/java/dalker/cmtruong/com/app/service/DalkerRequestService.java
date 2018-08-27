@@ -49,6 +49,7 @@ public class DalkerRequestService extends IntentService {
             currentLocation = intent.getStringExtra(getString(R.string.current_location));
             mLatitude = intent.getDoubleExtra(getString(R.string.latitude), 0.0d);
             mLongitude = intent.getDoubleExtra(getString(R.string.longitude), 0.0d);
+            Timber.d("location: " + currentLocation);
         }
         getDataByLocation(currentLocation);
         sendUsersToUI(users);
@@ -63,12 +64,13 @@ public class DalkerRequestService extends IntentService {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            Timber.d(documentSnapshot.getId() + " ====> " + documentSnapshot.getData());
                             Gson gson = new Gson();
                             JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
                             User user = gson.fromJson(jsonElement, User.class);
                             users.add(user);
                         }
-                        Timber.d("Request users with successful");
+                        Timber.d("Request users with successful " + users.toString());
                     }
                 });
     }
