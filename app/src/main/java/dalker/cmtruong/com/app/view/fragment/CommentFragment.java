@@ -3,6 +3,7 @@ package dalker.cmtruong.com.app.view.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -81,6 +82,7 @@ public class CommentFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         setRetainInstance(true);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.fragment_comment, null);
         ButterKnife.bind(this, view);
@@ -90,40 +92,51 @@ public class CommentFragment extends DialogFragment {
             user = getArguments().getParcelable(DALKER_KEY);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(view);
-        builder.setTitle(getString(R.string.comment));
-        mRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-            Timber.d("Rating: %s", ratingBar.getRating());
-            rate = (int) ratingBar.getRating();
-        });
+        if (savedInstanceState == null) {
+            builder.setView(view);
+            builder.setTitle(getString(R.string.comment));
+            mRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+                Timber.d("Rating: %s", ratingBar.getRating());
+                rate = (int) ratingBar.getRating();
+            });
 
-        id = "_" + getIDReview();
-        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
-                .setPositiveButton(getString(R.string.done), (dialog, which) -> {
-                    review = editText.getText().toString();
-                    Review reviewContent = new Review(id, rate, review);
-                    ArrayList<Review> reviews;
-                    if (user.getReviews() != null) {
-                        reviews = user.getReviews();
-                    } else {
-                        reviews = new ArrayList<>();
-                    }
-                    reviews.add(reviewContent);
-                    Map<String, ArrayList<Review>> data = new HashMap<>();
-                    data.put("reviews", reviews);
-                    Gson gson = new Gson();
-                    String json = gson.toJson(reviewContent);
-                    Map<String, Object> reviewFF = new Gson().fromJson(
-                            json, new TypeToken<HashMap<String, Object>>() {
-                            }.getType()
-                    );
-                    fb.collection(getString(R.string.users)).document(user.getIdUser())
-                            .update("reviews", FieldValue.arrayUnion(reviewFF))
-                            .addOnSuccessListener(aVoid -> Timber.d("Comment add"))
-                            .addOnFailureListener(e -> Timber.d("Comment add failed"));
+            id = "_" + getIDReview();
+            builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
+                    .setPositiveButton(getString(R.string.done), (dialog, which) -> {
+                        review = editText.getText().toString();
+                        Review reviewContent = new Review(id, rate, review);
+                        ArrayList<Review> reviews;
+                        if (user.getReviews() != null) {
+                            reviews = user.getReviews();
+                        } else {
+                            reviews = new ArrayList<>();
+                        }
+                        reviews.add(reviewContent);
+                        Map<String, ArrayList<Review>> data = new HashMap<>();
+                        data.put("reviews", reviews);
+                        Gson gson = new Gson();
+                        String json = gson.toJson(reviewContent);
+                        Map<String, Object> reviewFF = new Gson().fromJson(
+                                json, new TypeToken<HashMap<String, Object>>() {
+                                }.getType()
+                        );
+                        fb.collection(getString(R.string.users)).document(user.getIdUser())
+                                .update("reviews", FieldValue.arrayUnion(reviewFF))
+                                .addOnSuccessListener(aVoid -> Timber.d("Comment add"))
+                                .addOnFailureListener(e -> Timber.d("Comment add failed"));
 
-                });
+                    });
+        } else {
+            Timber.d("State changed");
+        }
+
         return builder.create();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 
     private String getIDReview() {

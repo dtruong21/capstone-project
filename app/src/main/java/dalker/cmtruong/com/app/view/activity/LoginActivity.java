@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             addFragment();
         }
-
     }
 
     private void addFragment() {

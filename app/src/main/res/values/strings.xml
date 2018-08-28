@@ -122,5 +122,9 @@
     <string name="login_key">LOGIN_KEY</string>
     <string name="pasword_key">PASSWORD_KEY</string>
     <string name="confirm_key">CONFIRM_KEY</string>
+    <string name="user_key">USER_KEY</string>
+    <string name="fragment_key">FRAGMENT_KEY</string>
+    <string name="main_fragment">MAIN_FRAGMENT</string>
+    <string name="user_list_session">USER_LIST_SESSION</string>
 
 </resources>

@@ -87,7 +87,6 @@ public class ListFavoriteDalkerFragment extends Fragment {
                 showMessageError();
             } else {
                 mAdapter = new DalkerListAdapter(users);
-                Timber.d("Hala: " + users.toString());
                 favRV.setLayoutManager(new LinearLayoutManager(getActivity()));
                 favRV.setHasFixedSize(true);
                 favRV.setAdapter(mAdapter);

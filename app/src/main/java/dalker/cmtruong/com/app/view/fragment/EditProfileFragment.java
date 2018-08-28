@@ -153,13 +153,26 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         setRetainInstance(true);
         ButterKnife.bind(this, view);
-        connectFirebase();
-        loadData();
-        getAvatar();
+        if (savedInstanceState == null) {
+            connectFirebase();
+            loadData();
+            getAvatar();
+            getInstallationIdentifier();
+        } else {
+            display();
+            user = savedInstanceState.getParcelable(getString(R.string.user_key));
+            populateUI(user);
+            Timber.d("save state = %s", user.toString());
+        }
         cancel();
         update();
-        getInstallationIdentifier();
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(getString(R.string.user_key), user);
     }
 
     private void connectFirebase() {
@@ -191,53 +204,56 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                             JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
                             user = gson.fromJson(jsonElement, User.class);
                             Timber.d("data%s", user.toString());
-
-                            if (user.getPictureURL() != null) {
-                                StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
-                                GlideApp.with(getContext())
-                                        .load(storageReference)
-                                        .error(R.drawable.ic_photo_camera_black_24dp)
-                                        .placeholder(R.drawable.ic_photo_camera_black_24dp)
-                                        .into(circleImageView);
-                            }
-
-                            if (user.getName() != null) {
-                                if (user.getName().getTitle().equals("Mr"))
-                                    gender.setSelection(1);
-                                else
-                                    gender.setSelection(2);
-                                firstName.setText(user.getName().getFirstName());
-                                lastName.setText(user.getName().getLastName());
-                            }
-                            email.setText(user.getEmail());
-                            login.setText(user.getLogin().getUsername());
-                            login.setEnabled(false);
-                            password.setText(user.getLogin().getPassword());
-                            if (user.getPhone() != null) {
-                                phone.setText(user.getPhone());
-                            }
-
-                            if (user.getDob() != null) {
-                                age.setText(String.valueOf(user.getDob().getAge()));
-                            }
-                            if (user.getLocation() != null) {
-                                address.setText(user.getLocation().getStreet());
-                                postCode.setText(String.valueOf(user.getLocation().getPostCode()));
-                                city.setText(user.getLocation().getCity());
-                                state.setText(user.getLocation().getState());
-                            }
-
-
-                            doggo.setText(String.valueOf(user.getDogNumber()));
-
-                            if (user.getDescription() != null) {
-                                description.setText(user.getDescription());
-                            }
-                            price.setText(String.valueOf(user.getPrice()));
+                            populateUI(user);
                         }
                     }
                 });
         display();
+    }
+
+    private void populateUI(User user) {
+        if (user.getPictureURL() != null) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
+            GlideApp.with(getContext())
+                    .load(storageReference)
+                    .error(R.drawable.ic_photo_camera_black_24dp)
+                    .placeholder(R.drawable.ic_photo_camera_black_24dp)
+                    .into(circleImageView);
+        }
+
+        if (user.getName() != null) {
+            if (user.getName().getTitle().equals("Mr"))
+                gender.setSelection(1);
+            else
+                gender.setSelection(2);
+            firstName.setText(user.getName().getFirstName());
+            lastName.setText(user.getName().getLastName());
+        }
+        email.setText(user.getEmail());
+        login.setText(user.getLogin().getUsername());
+        login.setEnabled(false);
+        password.setText(user.getLogin().getPassword());
+        if (user.getPhone() != null) {
+            phone.setText(user.getPhone());
+        }
+
+        if (user.getDob() != null) {
+            age.setText(String.valueOf(user.getDob().getAge()));
+        }
+        if (user.getLocation() != null) {
+            address.setText(user.getLocation().getStreet());
+            postCode.setText(String.valueOf(user.getLocation().getPostCode()));
+            city.setText(user.getLocation().getCity());
+            state.setText(user.getLocation().getState());
+        }
+
+
+        doggo.setText(String.valueOf(user.getDogNumber()));
+
+        if (user.getDescription() != null) {
+            description.setText(user.getDescription());
+        }
+        price.setText(String.valueOf(user.getPrice()));
     }
 
     private String convertToJson(User user) {
@@ -250,56 +266,58 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     }
 
     private void update() {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        update.setOnClickListener(v -> {
-            if (imageChanged) {
-                Picture picture = new Picture(cloudPath, pictureFilePath, pictureFilePath);
-                user.setPictureURL(picture);
-            }
+        update.setOnClickListener(v ->
+                sendData(user)
+        );
+    }
 
-            Name name = new Name(gender.getSelectedItem().toString(), firstName.getText().toString(), lastName.getText().toString());
-            user.setName(name);
-            user.setEmail(email.getText().toString());
-            Dob ageValue = new Dob(0);
-            if (!age.getText().toString().equals("")) {
-                ageValue.setAge(Integer.parseInt(age.getText().toString()));
-            }
-            user.setDob(ageValue);
-            user.setPhone(phone.getText().toString());
-            if (!postCode.getText().toString().equals("")) {
-                Location mLocation = new Location(address.getText().toString(),
-                        city.getText().toString(), state.getText().toString(), Integer.parseInt(postCode.getText().toString()));
-                user.setLocation(mLocation);
-            }
-            if (!description.getText().toString().equals("")) {
-                user.setDescription(description.getText().toString());
-            }
+    private void sendData(User user) {
+        if (imageChanged) {
+            Picture picture = new Picture(cloudPath, pictureFilePath, pictureFilePath);
+            user.setPictureURL(picture);
+        }
+
+        Name name = new Name(gender.getSelectedItem().toString(), firstName.getText().toString(), lastName.getText().toString());
+        user.setName(name);
+        user.setEmail(email.getText().toString());
+        Dob ageValue = new Dob(0);
+        if (!age.getText().toString().equals("")) {
+            ageValue.setAge(Integer.parseInt(age.getText().toString()));
+        }
+        user.setDob(ageValue);
+        user.setPhone(phone.getText().toString());
+        if (!postCode.getText().toString().equals("")) {
+            Location mLocation = new Location(address.getText().toString(),
+                    city.getText().toString(), state.getText().toString(), Integer.parseInt(postCode.getText().toString()));
+            user.setLocation(mLocation);
+        }
+        if (!description.getText().toString().equals("")) {
+            user.setDescription(description.getText().toString());
+        }
 
 
-            if (!price.getText().toString().equals("")) {
-                user.setPrice(Float.parseFloat(price.getText().toString()));
-            }
-            if (!doggo.getText().toString().equals(""))
-                user.setDogNumber(Integer.parseInt(doggo.getText().toString()));
-            Timber.d("New user: %s", user.toString());
-            String referenceID = PreferencesHelper.getDocumentReference(getContext());
-            Timber.d("ref: %s", referenceID);
-            DocumentReference documentReference = fb.collection(getString(R.string.users)).document(referenceID);
+        if (!price.getText().toString().equals("")) {
+            user.setPrice(Float.parseFloat(price.getText().toString()));
+        }
+        if (!doggo.getText().toString().equals(""))
+            user.setDogNumber(Integer.parseInt(doggo.getText().toString()));
+        Timber.d("New user: %s", user.toString());
+        String referenceID = PreferencesHelper.getDocumentReference(getContext());
+        Timber.d("ref: %s", referenceID);
+        DocumentReference documentReference = fb.collection(getString(R.string.users)).document(referenceID);
 
-            String json = convertToJson(user);
-            Map<String, Object> userFF = new Gson().fromJson(
-                    json, new TypeToken<HashMap<String, Object>>() {
-                    }.getType()
-            );
-            loading();
-            documentReference.update(userFF)
-                    .addOnSuccessListener(aVoid -> Snackbar.make(getView(), "Update finished", Snackbar.LENGTH_LONG).show())
-                    .addOnFailureListener(e -> Snackbar.make(getView(), "Update data KO", Snackbar.LENGTH_LONG).show());
-            display();
-            PreferencesHelper.saveUserSession(getContext(), user.toString());
-            addToCloudStorage();
-        });
+        String json = convertToJson(user);
+        Map<String, Object> userFF = new Gson().fromJson(
+                json, new TypeToken<HashMap<String, Object>>() {
+                }.getType()
+        );
+        loading();
+        documentReference.update(userFF)
+                .addOnSuccessListener(aVoid -> Snackbar.make(getView(), "Update finished", Snackbar.LENGTH_LONG).show())
+                .addOnFailureListener(e -> Snackbar.make(getView(), "Update data KO", Snackbar.LENGTH_LONG).show());
+        display();
+        PreferencesHelper.saveUserSession(getContext(), user.toString());
+        addToCloudStorage();
     }
 
     private void getAvatar() {

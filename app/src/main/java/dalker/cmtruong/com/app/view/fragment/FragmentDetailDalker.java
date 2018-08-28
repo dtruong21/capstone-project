@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -146,7 +147,6 @@ public class FragmentDetailDalker extends Fragment {
         mStorage = FirebaseStorage.getInstance();
         mRef = mStorage.getReference();
         initData(users.get(position));
-        Timber.d("Halo:" + users.get(position));
         return view;
     }
 
@@ -268,6 +268,7 @@ public class FragmentDetailDalker extends Fragment {
         comment_bt.setOnClickListener(v -> {
             CommentFragment commentFragment = CommentFragment.getInstance(user);
             commentFragment.show(getActivity().getSupportFragmentManager(), TAG);
+
         });
     }
 
@@ -293,5 +294,8 @@ public class FragmentDetailDalker extends Fragment {
         });
     }
 
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

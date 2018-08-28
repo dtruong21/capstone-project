@@ -3,6 +3,7 @@ package dalker.cmtruong.com.app.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
@@ -28,14 +29,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_fragment_container)
     FrameLayout fragmentContainer;
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    int id;
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-        id = item.getItemId();
-        switch (id) {
+        switch (item.getItemId()) {
             case R.id.navigation_search:
                 Timber.d("SearchActivity is created");
                 addNewFragment();
@@ -60,31 +56,27 @@ public class MainActivity extends AppCompatActivity {
         Timber.plant(new Timber.DebugTree());
         Timber.tag(TAG);
         Timber.d("Create once");
-        if (findViewById(R.id.main_fragment_container) != null) {
-            if (savedInstanceState == null) {
-                addNewFragment();
-            } else {
-                Intent intent = getIntent();
-                if (intent != null) {
-                    int position = intent.getIntExtra("fragment", 0);
-                    if (position == 0)
-                        navigation.setSelectedItemId(R.id.navigation_search);
-                    if (position == R.id.navigation_profile)
-                        navigation.setSelectedItemId(R.id.navigation_profile);
-                }
-            }
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        if (savedInstanceState == null) {
+            navigation.setSelectedItemId(R.id.navigation_search);
+        }
+        Intent intent = getIntent();
+        if (intent != null && intent.getAction().equals("fragment")) {
+            Timber.d("Intent: %s", intent.toString());
+            int position = intent.getIntExtra("fragment", 0);
+            if (position == 0)
+                navigation.setSelectedItemId(R.id.navigation_search);
+            if (position == R.id.navigation_profile)
+                navigation.setSelectedItemId(R.id.navigation_profile);
         }
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //addNewFragment();
-
+        //addNewFragent();
     }
 
     private void addNewFragment() {
         Timber.d("Add new fragment");
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_container, ListDalkerFragment.getInstance())
-                .addToBackStack(null)
                 .commit();
 
 
@@ -115,17 +107,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null) {
-            id = savedInstanceState.getInt(getString(R.string.fragment_id));
-            Timber.d("state " + savedInstanceState.toString());
-        }
+
 
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(getString(R.string.fragment_id), id);
 
     }
 }

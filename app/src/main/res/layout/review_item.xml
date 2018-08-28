@@ -12,7 +12,7 @@
 
         <RatingBar
             android:id="@+id/m_rating"
-            style="@android:style/Widget.Material.RatingBar.Indicator"
+            style="@android:style/Widget.Material.Light.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/location_et_margin"

@@ -51,6 +51,7 @@ import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.BuildConfig;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.adapter.DalkerListAdapter;
+import dalker.cmtruong.com.app.helper.PreferencesHelper;
 import dalker.cmtruong.com.app.model.User;
 import dalker.cmtruong.com.app.service.DalkerRequestService;
 import dalker.cmtruong.com.app.view.activity.DetailDalkerActivity;
@@ -62,6 +63,7 @@ import timber.log.Timber;
  * @since 1st August, 2018
  */
 public class ListDalkerFragment extends Fragment {
+
     @BindView(R.id.dalker_list_rv)
     RecyclerView mDalkerRV;
 
@@ -92,6 +94,7 @@ public class ListDalkerFragment extends Fragment {
     private RewardedVideoAd rewardedVideoAd;
 
     private DalkerReceiver mReceiver;
+    private boolean isRegistered;
 
 
     @Override
@@ -124,12 +127,21 @@ public class ListDalkerFragment extends Fragment {
 //        } else {
         openAds();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-        Timber.d("state1 here:");
-        if (!checkPermissions()) {
-            requestPermissions();
+        if (savedInstanceState == null) {
+            Timber.d("state1 here:");
+            if (!checkPermissions()) {
+                requestPermissions();
+            } else {
+                getLastLocation();
+            }
+            registerDalkerReceiver();
+            isRegistered = true;
         } else {
-            getLastLocation();
+            Timber.d("have state %s", savedInstanceState.getParcelableArrayList(getString(R.string.user_list)));
+            populateUI(savedInstanceState.getParcelableArrayList(getString(R.string.user_state_list)));
         }
+
+
         //  }
         locationET.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -137,14 +149,36 @@ public class ListDalkerFragment extends Fragment {
                 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                 mCurrentLocation = v.getText().toString();
                 getUserList(v.getText().toString());
+                registerDalkerReceiver();
+                isRegistered = true;
                 return true;
             }
             return false;
         });
-        registerDalkerReceiver();
         return view;
     }
 
+    private void populateUI(ArrayList<User> users) {
+        if (users != null && users.size() != 0) {
+            Timber.d("users: %s", users.toString());
+            mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mDalkerRV.setHasFixedSize(true);
+            adapter = new DalkerListAdapter(users);
+            mDalkerRV.setAdapter(adapter);
+            showDetailDalker(adapter);
+            showDalkerList();
+        } else {
+            showMessageError();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Timber.d("Check state here%s", getUsersList().toString());
+        outState.putParcelableArrayList(getString(R.string.user_state_list), getUsersList());
+        outState.putString(getString(R.string.location_state), mCurrentLocation);
+    }
 
     private boolean checkPermissions() {
         int permissionState = ActivityCompat.checkSelfPermission(getContext(),
@@ -343,8 +377,8 @@ public class ListDalkerFragment extends Fragment {
 
     @Override
     public void onPause() {
-
         super.onPause();
+
     }
 
     @Override
@@ -356,7 +390,10 @@ public class ListDalkerFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        getContext().unregisterReceiver(mReceiver);
+        if (mReceiver != null && isRegistered) {
+            getContext().unregisterReceiver(mReceiver);
+            isRegistered = false;
+        }
     }
 
     private void registerDalkerReceiver() {
@@ -366,6 +403,13 @@ public class ListDalkerFragment extends Fragment {
         getContext().registerReceiver(mReceiver, intentFilter);
     }
 
+    private void setUsersList(ArrayList<User> users) {
+        this.users = users;
+    }
+
+    private ArrayList<User> getUsersList() {
+        return users;
+    }
 
     /**
      * @author davidetruong
@@ -375,42 +419,23 @@ public class ListDalkerFragment extends Fragment {
     public class DalkerReceiver extends BroadcastReceiver {
 
         public DalkerReceiver() {
-            showDalkerList();
+            waitingForResult();
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
             users = intent.getParcelableArrayListExtra(getString(R.string.user_list));
-            if (users != null && users.size() != 0) {
-                Timber.d("users: %s", users.toString());
-                mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-                mDalkerRV.setHasFixedSize(true);
-                adapter = new DalkerListAdapter(users);
-                mDalkerRV.setAdapter(adapter);
-                showDetailDalker(adapter);
-                showDalkerList();
+            if (intent != null) {
+                populateUI(users);
+                PreferencesHelper.saveUserList(getContext(), users.toString());
+                setUsersList(users);
+                Timber.d("This is %s", users.toString());
             } else {
                 showMessageError();
             }
+
         }
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(getString(R.string.user_state_list), users);
-        outState.putString(getString(R.string.location_state), mCurrentLocation);
-    }
 }
