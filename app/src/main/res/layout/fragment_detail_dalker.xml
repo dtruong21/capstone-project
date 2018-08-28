@@ -23,10 +23,10 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/dalker_detail_photo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:scaleType="centerCrop"
                 tools:src="@mipmap/ic_launcher_foreground" />
 
             <android.support.v7.widget.Toolbar
@@ -173,6 +173,7 @@
                 android:background="@color/view_color" />
 
             <TextView
+                android:id="@+id/review_title"
                 style="@android:style/TextAppearance.Material.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -26,7 +26,7 @@ import timber.log.Timber;
  */
 public class DalkerWidgetProvider extends AppWidgetProvider {
 
-    private static final String TAG = DalkerWidgetProvider.class.getSimpleName();
+    public static final String ACTION_UPDATE = "dalker.cmtruong.com.app.widget.ACTION_UPDATE";
     Context mContext;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -36,19 +36,24 @@ public class DalkerWidgetProvider extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.dalker_widget_provider);
         views.setTextViewText(R.id.appwidget_text, widgetText);
-        Timber.d("Widget created");
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
         // Instruct the widget manager to update the widget
         setRemoteAdapter(context, views);
 
-        Intent favIntent = new Intent(context, DetailDalkerActivity.class);
-        PendingIntent pendingIntentFav = TaskStackBuilder.create(context)
-                .addNextIntentWithParentStack(favIntent).getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setPendingIntentTemplate(R.id.favorite_lv, pendingIntentFav);
         appWidgetManager.updateAppWidget(appWidgetId, views);
-        Timber.d("checked");
+
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        if (intent.getAction().equals(ACTION_UPDATE)) {
+            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+
+        }
+        super.onReceive(context, intent);
     }
 
     @Override
@@ -75,21 +80,8 @@ public class DalkerWidgetProvider extends AppWidgetProvider {
         mContext.startActivity(intent);
     }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
-        Timber.d("Get intent action");
-        if (intent.getAction().equals(FragmentDetailDalker.ACTION_UPDATED)) {
-            Timber.d("Run");
-            AppWidgetManager manager = AppWidgetManager.getInstance(context);
-            int[] widgetIds = manager.getAppWidgetIds(new ComponentName(context, getClass()));
-            manager.notifyAppWidgetViewDataChanged(widgetIds, R.id.favorite_lv);
-            onUpdate(context, manager, widgetIds);
-        }
-
-    }
-
     private static void setRemoteAdapter(Context context, RemoteViews remoteViews) {
+        Timber.d("set adapter");
         remoteViews.setRemoteAdapter(R.id.favorite_lv, new Intent(context, FavoriteDalkerIService.class));
     }
 }

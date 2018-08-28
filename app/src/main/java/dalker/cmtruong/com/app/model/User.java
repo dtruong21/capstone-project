@@ -5,6 +5,7 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -14,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import dalker.cmtruong.com.app.database.ListConverter;
+
 /**
  * User model
  *
@@ -22,6 +25,7 @@ import java.util.ArrayList;
  * @since 31th July, 2018
  */
 @Entity(tableName = "users")
+@TypeConverters(ListConverter.class)
 public class User implements Parcelable {
 
     @PrimaryKey
@@ -67,8 +71,8 @@ public class User implements Parcelable {
 
     private int dogNumber;
 
-    @Embedded
-    private ArrayList<Review> reviews;
+
+    private ArrayList<Review> reviews = new ArrayList<>();
 
     @Ignore
     public User(String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, float price, int dogNumber, ArrayList<Review> reviews) {
@@ -84,7 +88,7 @@ public class User implements Parcelable {
         this.description = description;
         this.price = price;
         this.dogNumber = dogNumber;
-        this.reviews = reviews;
+        this.reviews.addAll(reviews);
     }
 
     public User() {

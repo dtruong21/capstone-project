@@ -5,16 +5,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.bumptech.glide.request.target.AppWidgetTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.database.DalkerDatabase;
+import dalker.cmtruong.com.app.helper.GlideApp;
 import dalker.cmtruong.com.app.model.User;
 import timber.log.Timber;
 
@@ -27,62 +37,70 @@ import timber.log.Timber;
  */
 public class FavoriteDalkerIService extends RemoteViewsService {
 
-    private static final String TAG = FavoriteDalkerIService.class.getSimpleName();
-
-    public FavoriteDalkerIService() {
-    }
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new DalkerRemoteViewFactory(this.getApplicationContext(), intent);
+        return new MyRemoteFactory(this.getApplicationContext(), intent);
     }
 
-    public class DalkerRemoteViewFactory implements RemoteViewsFactory {
+    class MyRemoteFactory implements RemoteViewsFactory {
 
+        private List<User> users = new ArrayList<>();
         private Context mContext;
+        private DalkerDatabase mDb;
         private int mAppWidgetId;
-        private List<User> users;
 
-        public DalkerRemoteViewFactory(Context mContext, Intent intent) {
+
+        public MyRemoteFactory(Context mContext, Intent intent) {
             this.mContext = mContext;
             mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            Timber.d("Create new Service factory");
+            Timber.d("on Create Service");
         }
 
         @Override
         public void onCreate() {
-            users = DalkerDatabase.getsInstance(mContext).userDAO().loadFavUser();
-            Timber.d(users.toString());
+            mDb = DalkerDatabase.getsInstance(mContext);
+            users = mDb.userDAO().loadFavUser();
+            Timber.d("List user: " + users.toString());
         }
 
         @Override
         public void onDataSetChanged() {
-            users = DalkerDatabase.getsInstance(mContext).userDAO().loadFavUser();
+            users = mDb.userDAO().loadFavUser();
         }
 
         @Override
         public void onDestroy() {
-
+            users.clear();
         }
 
         @Override
         public int getCount() {
-            if (users == null)
-                return 0;
             return users.size();
         }
 
         @Override
         public RemoteViews getViewAt(int position) {
-            RemoteViews rm = new RemoteViews(mContext.getPackageName(), R.layout.dalker_wiget_row);
+            final RemoteViews mRemoteView = new RemoteViews(mContext.getPackageName(), R.layout.dalker_wiget_row);
+            if (users.size() > 0) {
+                User user = users.get(position);
+                Timber.d("List user: " + user.toString());
+                mRemoteView.setTextViewText(R.id.name_fav, user.getName().getFirstName() + " " + user.getName().getLastName());
+                StorageReference storageReference = null;
+                if (user.getPictureURL() != null) {
+                    storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
+                }
+                try {
+                    Bitmap bitmap = GlideApp.with(mContext).asBitmap().load(storageReference).submit().get();
+                    mRemoteView.setImageViewBitmap(R.id.dalker_fav_photo, bitmap);
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
 
-            User user = users.get(position);
-            String name = user.getName().getFirstName() + " " + user.getName().getLastName();
-            rm.setTextViewText(R.id.name_fav, name);
-            Picasso.get()
-                    .load(user.getPictureURL().getLarge())
-                    .into(rm, R.id.dalker_fav_photo, new int[]{mAppWidgetId});
-            return rm;
+
+
+            }
+            return mRemoteView;
         }
 
         @Override
@@ -105,5 +123,4 @@ public class FavoriteDalkerIService extends RemoteViewsService {
             return true;
         }
     }
-
 }

@@ -81,11 +81,13 @@ public class ListFavoriteDalkerFragment extends Fragment {
         Timber.d("Open favorite fragment");
         FavoriteDalkerViewModel viewModel = ViewModelProviders.of(this).get(FavoriteDalkerViewModel.class);
         viewModel.getUsers().observe(this, users -> {
+            Timber.d("Request data");
             if (users == null || users.size() == 0) {
+                Timber.d("Check 0");
                 showMessageError();
             } else {
                 mAdapter = new DalkerListAdapter(users);
-                Timber.d(users.toString());
+                Timber.d("Hala: " + users.toString());
                 favRV.setLayoutManager(new LinearLayoutManager(getActivity()));
                 favRV.setHasFixedSize(true);
                 favRV.setAdapter(mAdapter);

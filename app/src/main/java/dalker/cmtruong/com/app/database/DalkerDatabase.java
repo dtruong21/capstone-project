@@ -7,6 +7,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
+import dalker.cmtruong.com.app.model.Review;
 import dalker.cmtruong.com.app.model.User;
 import timber.log.Timber;
 
@@ -17,8 +18,7 @@ import timber.log.Timber;
  * @version 1.0
  * @since 31th July, 2018
  */
-@Database(entities = {User.class}, version = 3, exportSchema = false)
-@TypeConverters(DateConverter.class)
+@Database(entities = {User.class}, version = 8, exportSchema = false)
 public abstract class DalkerDatabase extends RoomDatabase {
     private static final String TAG = DalkerDatabase.class.getSimpleName();
 

@@ -10,6 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.helper.PreferencesHelper;
+import dalker.cmtruong.com.app.service.DalkerRequestService;
 import dalker.cmtruong.com.app.view.fragment.ListDalkerFragment;
 import dalker.cmtruong.com.app.view.fragment.ListFavoriteDalkerFragment;
 import dalker.cmtruong.com.app.view.fragment.ProfileFragment;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             = item -> {
         switch (item.getItemId()) {
             case R.id.navigation_search:
-                Timber.d("MainActivity is created");
+                Timber.d("SearchActivity is created");
                 addNewFragment();
                 return true;
             case R.id.navigation_favorite:
@@ -55,17 +56,19 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Timber.plant(new Timber.DebugTree());
         Timber.tag(TAG);
-
+        Timber.d("Create once");
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //addNewFragment();
-        if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) == null)
-            navigation.setSelectedItemId(R.id.navigation_search);
+
         Intent intent = getIntent();
-        int position = intent.getIntExtra("fragment", 0);
-        if (position == 0)
-            navigation.setSelectedItemId(R.id.navigation_search);
-        if (position == R.id.navigation_profile)
-            navigation.setSelectedItemId(R.id.navigation_profile);
+        if (intent != null) {
+            int position = intent.getIntExtra("fragment", 0);
+            if (position == 0)
+                navigation.setSelectedItemId(R.id.navigation_search);
+            if (position == R.id.navigation_profile)
+                navigation.setSelectedItemId(R.id.navigation_profile);
+        }
+
     }
 
     private void addNewFragment() {
@@ -90,5 +93,10 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.main_fragment_container, ProfileFragment.getInstance())
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

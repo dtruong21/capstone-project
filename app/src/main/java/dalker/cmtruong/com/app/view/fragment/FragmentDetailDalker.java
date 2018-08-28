@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.adapter.DalkerReviewAdapter;
 import dalker.cmtruong.com.app.database.AppExecutors;
 import dalker.cmtruong.com.app.database.DalkerDatabase;
+import dalker.cmtruong.com.app.helper.GlideApp;
 import dalker.cmtruong.com.app.model.Review;
 import dalker.cmtruong.com.app.model.User;
 import dalker.cmtruong.com.app.viewmodel.AddFavoriteDalkerVMFactory;
@@ -51,7 +54,7 @@ import timber.log.Timber;
 public class FragmentDetailDalker extends Fragment {
 
     private static final String TAG = FragmentDetailDalker.class.getSimpleName();
-    public static final String ACTION_UPDATED = "dalker.cmtruong.com.app.view.activity.ACTION_UPDATE";
+    public static final String ACTION_UPDATED = "ACTION_UPDATE";
     View view;
 
     private static final String USER_LIST = "USER_LIST";
@@ -81,7 +84,7 @@ public class FragmentDetailDalker extends Fragment {
     RecyclerView reviewRV;
 
     ArrayList<Review> reviews;
-    double rateAverage;
+    float rateAverage;
 
     @BindView(R.id.mToolbar)
     Toolbar mToolbar;
@@ -101,8 +104,14 @@ public class FragmentDetailDalker extends Fragment {
     @BindView(R.id.comment_error)
     TextView mError;
 
+    @BindView(R.id.review_title)
+    TextView textView;
+
     private DalkerReviewAdapter mAdapter;
     private DalkerDatabase mDB;
+
+    private FirebaseStorage mStorage;
+    private StorageReference mRef;
 
     private static final int DEFAULT_TASK_ID = -1;
 
@@ -134,7 +143,10 @@ public class FragmentDetailDalker extends Fragment {
             users = getArguments().getParcelableArrayList(USER_LIST);
             position = getArguments().getInt(USER_POSITION);
         }
+        mStorage = FirebaseStorage.getInstance();
+        mRef = mStorage.getReference();
         initData(users.get(position));
+        Timber.d("Halo:" + users.get(position));
         return view;
     }
 
@@ -144,10 +156,10 @@ public class FragmentDetailDalker extends Fragment {
      * @param user
      */
     private void initData(final User user) {
-        Picasso.get()
-                .load(user.getPictureURL().getLarge())
-                .error(R.mipmap.ic_launcher_foreground)
-                .placeholder(R.mipmap.ic_launcher_foreground)
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
+        GlideApp.with(getContext())
+                .load(storageReference)
+                .error(R.mipmap.ic_launcher)
                 .into(mDalkerPhoto);
         dalkerNameTv.setText(String.format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
         dalkerAddressTv.setText(String.format("%s, %s", user.getLocation().getStreet(), user.getLocation().getCity()));
@@ -162,13 +174,14 @@ public class FragmentDetailDalker extends Fragment {
             dalkerDescription.setText(user.getDescription());
         reviews = user.getReviews();
         rateAverage = getRateAverage(reviews);
+        textView.setText(String.format("%s (%d)", getString(R.string.dalker_review), reviews.size()));
         if (user.getReviews() == null) {
             if (BuildConfig.FLAVOR.equals(getString(R.string.demo)))
                 dalkerRatingBar.setRating(4.5f);
             else
                 showError();
         } else {
-            dalkerRatingBar.setRating((float) rateAverage);
+            dalkerRatingBar.setRating(rateAverage);
             reviewRV.setLayoutManager(new LinearLayoutManager(getContext()));
             reviewRV.setHasFixedSize(true);
             mAdapter = new DalkerReviewAdapter(user.getReviews());
@@ -176,21 +189,20 @@ public class FragmentDetailDalker extends Fragment {
             setupReview();
         }
 
-
         setupButton(user);
         setupFavorite(user);
         Timber.d("Call the event here");
         insert_bt.setOnClickListener(v -> {
             AppExecutors.getInstance().diskIO().execute(() -> {
                 if (mUserId == DEFAULT_TASK_ID) {
-                    Intent intent = new Intent(ACTION_UPDATED);
                     Timber.d("Something wrong here");
                     mDB.userDAO().insertUser(user);
                     String text = "Add " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
                     Snackbar.make(getActivity().findViewById(R.id.detail_dalker_container), text, Snackbar.LENGTH_LONG).show();
                     Timber.d("user:%s", user.toString());
                     insert_bt.setImageResource(R.drawable.ic_favorite_black_48dp);
-                    getActivity().getApplicationContext().sendBroadcast(intent);
+                    Intent intent = new Intent(ACTION_UPDATED);
+                    getActivity().getBaseContext().sendBroadcast(intent);
                 } else {
                     Timber.d("user ID: %s", String.valueOf(mUserId));
                     insert_bt.setClickable(false);
@@ -221,10 +233,10 @@ public class FragmentDetailDalker extends Fragment {
      * @param reviews
      * @return average|sum
      */
-    private double getRateAverage(ArrayList<Review> reviews) {
+    private float getRateAverage(ArrayList<Review> reviews) {
         int sum = 0;
-        double average;
-        if (reviews != null) {
+        float average;
+        if (reviews != null && reviews.size() > 0) {
             for (Review review : reviews)
                 sum += review.getRate();
             average = sum / reviews.size();
@@ -249,7 +261,7 @@ public class FragmentDetailDalker extends Fragment {
         });
 
         call_bt.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts(getString(R.string.tel), 0 + user.getPhone(), null));
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts(getString(R.string.tel), user.getPhone(), null));
             startActivity(intent);
         });
 

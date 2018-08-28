@@ -47,10 +47,8 @@
 
         <receiver android:name=".widget.DalkerWidgetProvider">
             <intent-filter>
-                <action android:name="dalker.cmtruong.com.app.view.activity.ACTION_UPDATE" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/dalker_widget_provider_info" />
@@ -67,15 +65,18 @@
 
             </meta-data>
         </provider>
+
+        <service android:name=".service.DalkerRequestService" />
         <service
-            android:name=".service.DalkerRequestService"
-            android:exported="false" />
+            android:name=".widget.FavoriteDalkerIService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <receiver
             android:name=".view.fragment.ListDalkerFragment$DalkerReceiver"
-            android:exported="true">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
     </application>

@@ -137,6 +137,8 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     @BindView(R.id.edit_pb)
     ProgressBar mProgressBar;
 
+    boolean imageChanged = false;
+
     public EditProfileFragment() {
     }
 
@@ -251,8 +253,11 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         update.setOnClickListener(v -> {
-            Picture picture = new Picture(cloudPath, pictureFilePath, pictureFilePath);
-            user.setPictureURL(picture);
+            if (imageChanged) {
+                Picture picture = new Picture(cloudPath, pictureFilePath, pictureFilePath);
+                user.setPictureURL(picture);
+            }
+
             Name name = new Name(gender.getSelectedItem().toString(), firstName.getText().toString(), lastName.getText().toString());
             user.setName(name);
             user.setEmail(email.getText().toString());
@@ -261,15 +266,17 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                 ageValue.setAge(Integer.parseInt(age.getText().toString()));
             }
             user.setDob(ageValue);
-            Login account = new Login(login.getText().toString(), password.getText().toString());
-            user.setLogin(account);
             user.setPhone(phone.getText().toString());
             if (!postCode.getText().toString().equals("")) {
                 Location mLocation = new Location(address.getText().toString(),
                         city.getText().toString(), state.getText().toString(), Integer.parseInt(postCode.getText().toString()));
                 user.setLocation(mLocation);
             }
-            user.setDescription(description.getText().toString());
+            if (!description.getText().toString().equals("")) {
+                user.setDescription(description.getText().toString());
+            }
+
+
             if (!price.getText().toString().equals("")) {
                 user.setPrice(Float.parseFloat(price.getText().toString()));
             }
@@ -316,11 +323,9 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                 }
                 addToGallery();
                 cloudPath = getCloudPath();
+                imageChanged = true;
             }
-
         });
-
-
     }
 
     private void addToGallery() {

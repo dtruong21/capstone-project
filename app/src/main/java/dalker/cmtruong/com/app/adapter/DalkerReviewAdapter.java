@@ -53,7 +53,7 @@ public class DalkerReviewAdapter extends RecyclerView.Adapter<DalkerReviewAdapte
     public int getItemCount() {
         if (reviews.size() == 0)
             return 0;
-        return reviews.size();
+        return 5;
     }
 
     class ReviewViewHolder extends RecyclerView.ViewHolder {

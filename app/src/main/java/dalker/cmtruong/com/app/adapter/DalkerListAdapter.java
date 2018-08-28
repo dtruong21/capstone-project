@@ -1,6 +1,5 @@
 package dalker.cmtruong.com.app.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,11 @@ import timber.log.Timber;
 
 import static java.lang.String.format;
 
+/**
+ * @author davidetruong
+ * @version 1.0
+ * @since 2018 August, 27th
+ */
 public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.DalkerViewHolder> {
 
     private static final String TAG = DalkerListAdapter.class.getSimpleName();
@@ -86,32 +91,45 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
 
         @BindView(R.id.dalker_price_tv)
         TextView mDalkerPrice;
+        FirebaseStorage mStorage;
+        StorageReference mRef;
 
         public DalkerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            mStorage = FirebaseStorage.getInstance();
+            mRef = mStorage.getReference();
         }
 
         void bind(User user) {
-
-            GlideApp.with(itemView)
-                    .load(user.getPictureURL().getLarge())
-                    .error(R.drawable.ic_launcher_foreground)
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(mImageView);
+            if (user.getPictureURL() != null) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
+                GlideApp.with(itemView.getContext())
+                        .load(storageReference)
+                        .error(R.mipmap.ic_launcher)
+                        .into(mImageView);
+            }
             mDalkerName.setText(format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
             mDalkerAge.setText(format("Age: %s", String.valueOf(user.getDob().getAge())));
             mDalkerService.setText(format("%d doggo possible", user.getDogNumber()));
-            ArrayList<Review> reviews = user.getReviews();
+            List<Review> reviews;
             int rateSum = 0;
-            float rateAverage = 0.0f;
-            if (reviews.size() > 0) {
-                for (Review review : reviews) rateSum += review.getRate();
+            float rateAverage;
+            if (user.getReviews() != null && user.getReviews().size() > 0) {
+                reviews = user.getReviews();
+                Timber.d("Size review: " + reviews.toString());
+                for (int i = 0; i < reviews.size(); i++) {
+                    rateSum += reviews.get(i).getRate();
+                    Timber.d("Rate: " + reviews.get(i).getRate());
+                }
+                Timber.d("Rate sum: " + rateSum);
                 rateAverage = rateSum / reviews.size();
+                mDalkerRate.setText(String.format("%s/5", String.valueOf(rateAverage)));
+            } else {
+                mDalkerRate.setText(String.format("0/5"));
             }
-            mDalkerRate.setText(String.format("%s/5", String.valueOf(rateAverage)));
-            mDalkerPrice.setText(format("%s per hour", String.valueOf(user.getPrice())));
+            mDalkerPrice.setText(format("$%s/h", String.valueOf(user.getPrice())));
         }
 
         @Override

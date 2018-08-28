@@ -26,10 +26,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -54,7 +59,7 @@ public class CommentFragment extends DialogFragment {
     @BindView(R.id.comment_et)
     EditText editText;
 
-    Float rate;
+    int rate;
     String review;
     String id;
     User user;
@@ -89,17 +94,33 @@ public class CommentFragment extends DialogFragment {
         builder.setTitle(getString(R.string.comment));
         mRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             Timber.d("Rating: %s", ratingBar.getRating());
-            rate = ratingBar.getRating();
+            rate = (int) ratingBar.getRating();
         });
-        review = editText.getText().toString();
+
         id = "_" + getIDReview();
         builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
                 .setPositiveButton(getString(R.string.done), (dialog, which) -> {
+                    review = editText.getText().toString();
                     Review reviewContent = new Review(id, rate, review);
-                    fb.collection(getString(R.string.users)).document(user.getLogin().getId())
-                            .update("reviews", FieldValue.arrayUnion(reviewContent))
-                            .addOnSuccessListener(aVoid -> Snackbar.make(getView(), "Failed to add comment", Snackbar.LENGTH_LONG).show())
-                            .addOnFailureListener(e -> Snackbar.make(getView(), "Failed to add comment", Snackbar.LENGTH_LONG).show());
+                    ArrayList<Review> reviews;
+                    if (user.getReviews() != null) {
+                        reviews = user.getReviews();
+                    } else {
+                        reviews = new ArrayList<>();
+                    }
+                    reviews.add(reviewContent);
+                    Map<String, ArrayList<Review>> data = new HashMap<>();
+                    data.put("reviews", reviews);
+                    Gson gson = new Gson();
+                    String json = gson.toJson(reviewContent);
+                    Map<String, Object> reviewFF = new Gson().fromJson(
+                            json, new TypeToken<HashMap<String, Object>>() {
+                            }.getType()
+                    );
+                    fb.collection(getString(R.string.users)).document(user.getIdUser())
+                            .update("reviews", FieldValue.arrayUnion(reviewFF))
+                            .addOnSuccessListener(aVoid -> Timber.d("Comment add"))
+                            .addOnFailureListener(e -> Timber.d("Comment add failed"));
 
                 });
         return builder.create();

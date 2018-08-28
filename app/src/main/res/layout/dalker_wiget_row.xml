@@ -2,17 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/mItem"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/location_et_margin"
     android:background="@android:color/transparent">
 
     <ImageView
         android:id="@+id/dalker_fav_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
         tools:src="@mipmap/ic_launcher_foreground" />
 
     <TextView
@@ -24,5 +26,6 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_toEndOf="@+id/dalker_fav_photo"
         android:textSize="@dimen/name_size"
+        android:textStyle="bold|italic"
         tools:text="@string/dalker_test_name" />
 </RelativeLayout>

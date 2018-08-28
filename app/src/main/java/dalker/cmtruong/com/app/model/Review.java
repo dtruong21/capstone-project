@@ -14,17 +14,15 @@ public class Review implements Parcelable {
 
     private String id;
 
-    private float rate;
+    private int rate;
 
     private String comment;
 
     @Ignore
-    public Review(float rate, String comment) {
-        this.rate = rate;
-        this.comment = comment;
+    public Review() {
     }
 
-    public Review(String id, float rate, String comment) {
+    public Review(String id, int rate, String comment) {
         this.id = id;
         this.rate = rate;
         this.comment = comment;
@@ -39,7 +37,7 @@ public class Review implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeFloat(rate);
+        dest.writeInt(rate);
         dest.writeString(comment);
     }
 
@@ -68,11 +66,11 @@ public class Review implements Parcelable {
         this.id = id;
     }
 
-    public float getRate() {
+    public int getRate() {
         return rate;
     }
 
-    public void setRate(float rate) {
+    public void setRate(int rate) {
         this.rate = rate;
     }
 

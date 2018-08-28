@@ -87,12 +87,6 @@ public class ListDalkerFragment extends Fragment {
 
     protected Location mLastLocation;
 
-    String mLatitudeLabel;
-    String mLongitudeLabel;
-
-    double mLatitude;
-    double mLongtitude;
-
     String mCurrentLocation;
 
     private RewardedVideoAd rewardedVideoAd;
@@ -117,31 +111,30 @@ public class ListDalkerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_dalker, container, false);
+        openAds();
         setRetainInstance(true);
         ButterKnife.bind(this, view);
         Timber.d("Fragment Free ListDalker is created");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowCustomEnabled(true);
-        initData();
+
         mLayout.setOnRefreshListener(this::disableRefresh);
-        mLatitudeLabel = getResources().getString(R.string.latitude_label);
-        mLongitudeLabel = getResources().getString(R.string.longitude_label);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         if (!checkPermissions()) {
             requestPermissions();
         } else {
             getLastLocation();
         }
-
         locationET.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                Timber.d("handle abc " + v.getText());
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                getUserList(v.getText().toString());
                 return true;
             }
             return false;
         });
+        registerDalkerReceiver();
         return view;
     }
 
@@ -182,12 +175,6 @@ public class ListDalkerFragment extends Fragment {
         mLayout.setRefreshing(false);
     }
 
-    private void initData() {
-        openAds();
-        getUserList(mCurrentLocation);
-        registerDalkerReceiver();
-    }
-
     private void showDalkerList() {
         mDalkerRV.setVisibility(View.VISIBLE);
         mLayout.setRefreshing(false);
@@ -204,16 +191,15 @@ public class ListDalkerFragment extends Fragment {
 
     private void waitingForResult() {
         mDalkerRV.setVisibility(View.GONE);
-        mLayout.setRefreshing(true);
+        mLayout.setRefreshing(false);
         mErrorMessage.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
-    private void getUserList(String location) {
+    private void getUserList(String mCurrentLocation) {
         Intent mIntent = new Intent(getContext(), DalkerRequestService.class);
-        mIntent.putExtra(getString(R.string.latitude), mLatitude);
-        mIntent.putExtra(getString(R.string.longitude), mLongtitude);
-        mIntent.putExtra(getString(R.string.current_location), location);
+        mIntent.putExtra(getString(R.string.current_location), mCurrentLocation);
+        Timber.d("Sending location: %s", mCurrentLocation);
         getContext().startService(mIntent);
     }
 
@@ -273,9 +259,17 @@ public class ListDalkerFragment extends Fragment {
                     if (task.isSuccessful() && task.getResult() != null) {
                         mLastLocation = task.getResult();
                         Timber.d("My location is: " + mLastLocation.getLatitude() + "_" + mLastLocation.getLongitude());
-                        getAddressFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                        mLatitude = mLastLocation.getLatitude();
-                        mLongtitude = mLastLocation.getLongitude();
+                        Timber.d("Location name: %s", mCurrentLocation);
+                        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                        try {
+                            List<Address> addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1);
+                            Address fetchAddress = addresses.get(0);
+                            mCurrentLocation = fetchAddress.getLocality();
+                            Timber.d("Current location: %s", mCurrentLocation);
+                            getUserList(mCurrentLocation);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         showSnackbar(getString(R.string.no_location_detected));
                     }
@@ -283,17 +277,6 @@ public class ListDalkerFragment extends Fragment {
                 .addOnFailureListener(e -> Timber.d("Failed to get location"));
     }
 
-    private void getAddressFromLocation(double latitude, double longtitude) {
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latitude, longtitude, 1);
-            Address fetchAddress = addresses.get(0);
-            mCurrentLocation = fetchAddress.getSubAdminArea();
-            Timber.d("Current location: %s", fetchAddress.getSubAdminArea());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void openAds() {
         MobileAds.initialize(getContext(), getString(R.string.admob_app_id));
@@ -355,19 +338,20 @@ public class ListDalkerFragment extends Fragment {
     @Override
     public void onPause() {
         rewardedVideoAd.pause(getContext());
+
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
         rewardedVideoAd.destroy(getContext());
+        getContext().unregisterReceiver(mReceiver);
         super.onDestroy();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        getContext().unregisterReceiver(mReceiver);
     }
 
     private void registerDalkerReceiver() {
@@ -385,43 +369,24 @@ public class ListDalkerFragment extends Fragment {
      */
     public class DalkerReceiver extends BroadcastReceiver {
 
+        public DalkerReceiver() {
+
+        }
+
         @Override
         public void onReceive(Context context, Intent intent) {
-            final PendingResult pendingResult = goAsync();
-            @SuppressLint("StaticFieldLeak")
-            AsyncTask<String, Integer, String> asyncTask = new AsyncTask<String, Integer, String>() {
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
-                    waitingForResult();
-                }
-
-                @Override
-                protected String doInBackground(String... strings) {
-
-
-                    return intent.toUri(Intent.URI_INTENT_SCHEME);
-                }
-
-                @Override
-                protected void onPostExecute(String s) {
-                    users = intent.getParcelableArrayListExtra(getString(R.string.user_list));
-                    if (users != null && users.size() != 0) {
-                        Timber.d("users: %s", users.toString());
-                        mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        mDalkerRV.setHasFixedSize(true);
-                        adapter = new DalkerListAdapter(users);
-                        mDalkerRV.setAdapter(adapter);
-                        showDetailDalker(adapter);
-                        showDalkerList();
-                    } else {
-                        showMessageError();
-                    }
-
-                    pendingResult.finish();
-                }
-            };
-            asyncTask.execute();
+            users = intent.getParcelableArrayListExtra(getString(R.string.user_list));
+            if (users != null && users.size() != 0) {
+                Timber.d("users: %s", users.toString());
+                mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mDalkerRV.setHasFixedSize(true);
+                adapter = new DalkerListAdapter(users);
+                mDalkerRV.setAdapter(adapter);
+                showDetailDalker(adapter);
+                showDalkerList();
+            } else {
+                showMessageError();
+            }
         }
     }
 

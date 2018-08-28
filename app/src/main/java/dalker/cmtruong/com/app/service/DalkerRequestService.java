@@ -15,6 +15,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.model.User;
@@ -39,7 +41,7 @@ public class DalkerRequestService extends IntentService {
      */
     public DalkerRequestService() {
         super(DalkerRequestService.class.getSimpleName());
-        mFF = FirebaseFirestore.getInstance();
+        setIntentRedelivery(true);
     }
 
     @Override
@@ -49,36 +51,42 @@ public class DalkerRequestService extends IntentService {
             currentLocation = intent.getStringExtra(getString(R.string.current_location));
             mLatitude = intent.getDoubleExtra(getString(R.string.latitude), 0.0d);
             mLongitude = intent.getDoubleExtra(getString(R.string.longitude), 0.0d);
-            Timber.d("location: " + currentLocation);
+            Timber.d("location: %s", currentLocation);
+            getDataByLocation(currentLocation);
         }
-        getDataByLocation(currentLocation);
-        sendUsersToUI(users);
+
     }
 
     private void getDataByLocation(String location) {
+        mFF = FirebaseFirestore.getInstance();
         users = new ArrayList<>();
         mFF.collection(getString(R.string.users))
                 .whereEqualTo(getString(R.string.location_city), location)
                 .get()
                 .addOnFailureListener(e -> Timber.d("Failed to get data"))
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && task.isComplete()) {
+                        Timber.d("Size: " + task.getResult().getDocuments());
                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                            Timber.d(documentSnapshot.getId() + " ====> " + documentSnapshot.getData());
+                            Timber.d("Document: " + documentSnapshot.getId() + " ====> " + documentSnapshot.getData());
                             Gson gson = new Gson();
                             JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
                             User user = gson.fromJson(jsonElement, User.class);
                             users.add(user);
                         }
-                        Timber.d("Request users with successful " + users.toString());
+                        Timber.d("Request users with successful %s", users.toString());
+                        sendUsersToUI(users);
                     }
                 });
     }
+
 
     private void sendUsersToUI(ArrayList<User> users) {
         Intent intent = new Intent();
         intent.setAction(getString(R.string.user_list_location));
         intent.putExtra(getString(R.string.user_list), users);
+        Timber.d("Checked: %s", users.toString());
         sendBroadcast(intent);
     }
+
 }

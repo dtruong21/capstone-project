@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import timber.log.Timber;
+
 /**
  * Executor to run in main thread for Room and LiveData
  *
@@ -30,8 +32,9 @@ public class AppExecutors {
     public static AppExecutors getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
+                Timber.d("Run database");
                 sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),
-                        Executors.newFixedThreadPool(3),
+                        Executors.newFixedThreadPool(5),
                         new MainThreadExecutor());
             }
         }

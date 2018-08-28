@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -35,6 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
 import dalker.cmtruong.com.app.model.Login;
+import dalker.cmtruong.com.app.model.Review;
 import dalker.cmtruong.com.app.model.User;
 import dalker.cmtruong.com.app.view.activity.LoginActivity;
 import timber.log.Timber;
@@ -78,6 +81,8 @@ public class SignUpFragment extends Fragment {
     @BindView(R.id.confirm_error)
     TextView confirmError;
 
+    @BindView(R.id.signup_pb)
+    ProgressBar mProgressBar;
 
     public SignUpFragment() {
     }
@@ -93,7 +98,7 @@ public class SignUpFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_in_form, container, false);
         ButterKnife.bind(this, view);
         Timber.d("Sign up fragment");
-
+        hide();
         signIn();
         return view;
     }
@@ -122,15 +127,27 @@ public class SignUpFragment extends Fragment {
         return !email.isEmpty() && !id.isEmpty() && isConfirmed(password, passwordConfirm);
     }
 
+    void hide() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    void show() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
     private void signIn() {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         createAccount.setOnClickListener(v -> {
+            show();
             if (isValidForm(email.getText().toString(), loginId.getText().toString(), password.getText().toString(), confirmPassword.getText().toString())) {
                 User user = new User();
                 user.setEmail(email.getText().toString());
                 Login login = new Login(loginId.getText().toString(), password.getText().toString());
                 String id = getToken(TOKEN_LENGTH) + "_" + loginId.getText().toString();
+                user.setIdUser(id);
+                ArrayList<Review> reviews = new ArrayList<>();
+                user.setReviews(reviews);
                 login.setId(id);
                 user.setLogin(login);
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -167,13 +184,13 @@ public class SignUpFragment extends Fragment {
                                     .replace(R.id.profile_container, LoginFragment.getInstance())
                                     .addToBackStack(null)
                                     .commit();
-                            Snackbar.make(getActivity().findViewById(R.id.main_fragment_container), "Add user" + loginId.getText().toString() + " with successful", Toast.LENGTH_LONG).show();
+                            Snackbar.make(getView(), "Add user" + loginId.getText().toString() + " with successful", Toast.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> {
                             Timber.d("add failed");
-                            Snackbar.make(getActivity().findViewById(R.id.main_fragment_container), "Failed to add user" + loginId.getText().toString() + " to the database", Toast.LENGTH_LONG).show();
+                            Snackbar.make(getView(), "Failed to add user" + loginId.getText().toString() + " to the database", Toast.LENGTH_LONG).show();
                         });
-
+                hide();
             } else {
                 handleError();
             }
