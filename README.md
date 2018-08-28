@@ -19,8 +19,8 @@ In the version 1.0, the application will concentrate to build a platform with al
 - Review the dalker's services
 - Share dalker's information in socials medias
 - Add to favorite dalker's list
-- Add a widget to the phone screen which displays the favorite dalker's list to call them faster
-- Free and paid version
+- Add a widget to the phone screen to display the favorite dalker's list to call them faster
+- Free version
 
 ## Libraires, API and tools
 

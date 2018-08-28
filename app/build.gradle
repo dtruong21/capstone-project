@@ -1,6 +1,22 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "dalker.cmtruong.com.app"
@@ -19,6 +35,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.config
+        }
+        debug {
+            debuggable false
+            signingConfig signingConfigs.config
+            minifyEnabled false
         }
     }
     lintOptions {
@@ -34,6 +58,7 @@ android {
         free {
             dimension 'version'
             applicationIdSuffix '.free'
+            signingConfig signingConfigs.config
         }
 //        paid {
 //            dimension 'version'
@@ -68,6 +93,7 @@ ext {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:$supportLibrariesVersion"
     implementation "com.android.support:support-compat:$supportLibrariesVersion"
