@@ -136,7 +136,6 @@ public class LoginFragment extends Fragment {
                                 PreferencesHelper.saveDocumentReference(getContext(), document.getId());
                             }
                             Intent intent = new Intent(getContext(), MainActivity.class);
-                            intent.putExtra("fragment", R.id.navigation_profile);
                             startActivity(intent);
                             Snackbar.make(getView(),
                                     "Error in login with user " + login.getText().toString(), Snackbar.LENGTH_SHORT).show();

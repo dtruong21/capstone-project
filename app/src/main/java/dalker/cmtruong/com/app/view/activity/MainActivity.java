@@ -60,15 +60,15 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             navigation.setSelectedItemId(R.id.navigation_search);
         }
-        Intent intent = getIntent();
-        if (intent != null && intent.getAction().equals("fragment")) {
-            Timber.d("Intent: %s", intent.toString());
-            int position = intent.getIntExtra("fragment", 0);
-            if (position == 0)
-                navigation.setSelectedItemId(R.id.navigation_search);
-            if (position == R.id.navigation_profile)
-                navigation.setSelectedItemId(R.id.navigation_profile);
-        }
+//        Intent intent = getIntent();
+//        if (intent != null && intent.getIntExtra("fragment", 0) == R.id.navigation_profile) {
+//            Timber.d("Intent: %s", intent.toString());
+//            int position = intent.getIntExtra("fragment", 0);
+//            if (position == 0)
+//                navigation.setSelectedItemId(R.id.navigation_search);
+//            if (position == R.id.navigation_profile)
+//                navigation.setSelectedItemId(R.id.navigation_profile);
+//        }
 
         //addNewFragent();
     }

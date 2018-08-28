@@ -296,7 +296,7 @@ public class ListDalkerFragment extends Fragment {
     @SuppressWarnings("MissingPermission")
     private void getLastLocation() {
         mFusedLocationClient.getLastLocation()
-                .addOnCompleteListener(getActivity(), task -> {
+                .addOnCompleteListener(this.getActivity(), task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         mLastLocation = task.getResult();
                         Timber.d("My location is: " + mLastLocation.getLatitude() + "_" + mLastLocation.getLongitude());
