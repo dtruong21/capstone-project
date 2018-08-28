@@ -32,7 +32,10 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Timber.tag(TAG);
         Timber.d("Open login activity");
-        addFragment();
+        if (savedInstanceState == null) {
+            addFragment();
+        }
+
     }
 
     private void addFragment() {

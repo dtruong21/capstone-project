@@ -29,10 +29,13 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout fragmentContainer;
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    int id;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-        switch (item.getItemId()) {
+        id = item.getItemId();
+        switch (id) {
             case R.id.navigation_search:
                 Timber.d("SearchActivity is created");
                 addNewFragment();
@@ -57,17 +60,23 @@ public class MainActivity extends AppCompatActivity {
         Timber.plant(new Timber.DebugTree());
         Timber.tag(TAG);
         Timber.d("Create once");
+        if (findViewById(R.id.main_fragment_container) != null) {
+            if (savedInstanceState == null) {
+                addNewFragment();
+            } else {
+                Intent intent = getIntent();
+                if (intent != null) {
+                    int position = intent.getIntExtra("fragment", 0);
+                    if (position == 0)
+                        navigation.setSelectedItemId(R.id.navigation_search);
+                    if (position == R.id.navigation_profile)
+                        navigation.setSelectedItemId(R.id.navigation_profile);
+                }
+            }
+        }
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //addNewFragment();
-
-        Intent intent = getIntent();
-        if (intent != null) {
-            int position = intent.getIntExtra("fragment", 0);
-            if (position == 0)
-                navigation.setSelectedItemId(R.id.navigation_search);
-            if (position == R.id.navigation_profile)
-                navigation.setSelectedItemId(R.id.navigation_profile);
-        }
 
     }
 
@@ -77,26 +86,46 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.main_fragment_container, ListDalkerFragment.getInstance())
                 .addToBackStack(null)
                 .commit();
+
+
     }
 
     private void openDalkerDetail() {
         Timber.d("Open Dalker detail activity");
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_container, ListFavoriteDalkerFragment.getInstance())
-                .addToBackStack(null)
                 .commit();
+
     }
 
     private void addProfileFragment() {
         Timber.d("Open profile fragment");
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_container, ProfileFragment.getInstance())
-                .addToBackStack(null)
                 .commit();
+
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            id = savedInstanceState.getInt(getString(R.string.fragment_id));
+            Timber.d("state " + savedInstanceState.toString());
+        }
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(getString(R.string.fragment_id), id);
+
     }
 }

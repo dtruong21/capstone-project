@@ -67,6 +67,8 @@ public class LoginFragment extends Fragment {
     ProgressBar mProgress;
 
     String data;
+    String loginText;
+    String passwordText;
 
     public LoginFragment() {
     }
@@ -81,20 +83,31 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Timber.d("Open login fragment");
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        setRetainInstance(true);
         ButterKnife.bind(this, view);
+
         openSignUpForm();
         showData();
         logIn();
         return view;
     }
 
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState == null) {
+
+        } else {
+            login.setText(savedInstanceState.getString(getString(R.string.login_state)));
+            password.setText(savedInstanceState.getString(getString(R.string.password_state)));
+        }
+    }
+
     private void openSignUpForm() {
-        signupBt.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.profile_container, SignUpFragment.getInstance())
-                    .addToBackStack(null)
-                    .commit();
-        });
+        signupBt.setOnClickListener(v -> getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.profile_container, SignUpFragment.getInstance())
+                .addToBackStack(null)
+                .commit());
     }
 
     private void logIn() {
@@ -150,4 +163,15 @@ public class LoginFragment extends Fragment {
         mProgress.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        loginText = login.getText().toString();
+        passwordText = password.getText().toString();
+        if (outState != null) {
+            outState.putString(getString(R.string.login_state), loginText);
+            outState.putString(getString(R.string.password_state), passwordText);
+        }
+
+    }
 }

@@ -96,11 +96,18 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_in_form, container, false);
+        setRetainInstance(true);
         ButterKnife.bind(this, view);
         Timber.d("Sign up fragment");
         hide();
         signIn();
         return view;
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
     }
 
     private void handleError() {
@@ -211,4 +218,14 @@ public class SignUpFragment extends Fragment {
         return token.toString();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null) {
+            outState.putString(getString(R.string.email_key), email.getText().toString());
+            outState.putString(getString(R.string.login_key), loginId.getText().toString());
+            outState.putString(getString(R.string.pasword_key), password.getText().toString());
+            outState.putString(getString(R.string.confirm_key), confirmPassword.getText().toString());
+        }
+    }
 }

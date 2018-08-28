@@ -111,24 +111,31 @@ public class ListDalkerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_dalker, container, false);
-        openAds();
         setRetainInstance(true);
         ButterKnife.bind(this, view);
         Timber.d("Fragment Free ListDalker is created");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowCustomEnabled(true);
-
         mLayout.setOnRefreshListener(this::disableRefresh);
+//        if (savedInstanceState != null) {
+//            users = savedInstanceState.getParcelableArrayList(getString(R.string.user_state_list));
+//            mCurrentLocation = savedInstanceState.getString(getString(R.string.location_state));
+//            Timber.d("state here: " + users.toString());
+//        } else {
+        openAds();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        Timber.d("state1 here:");
         if (!checkPermissions()) {
             requestPermissions();
         } else {
             getLastLocation();
         }
+        //  }
         locationET.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                mCurrentLocation = v.getText().toString();
                 getUserList(v.getText().toString());
                 return true;
             }
@@ -259,7 +266,6 @@ public class ListDalkerFragment extends Fragment {
                     if (task.isSuccessful() && task.getResult() != null) {
                         mLastLocation = task.getResult();
                         Timber.d("My location is: " + mLastLocation.getLatitude() + "_" + mLastLocation.getLongitude());
-                        Timber.d("Location name: %s", mCurrentLocation);
                         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
                         try {
                             List<Address> addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1);
@@ -331,27 +337,26 @@ public class ListDalkerFragment extends Fragment {
 
     @Override
     public void onResume() {
-        rewardedVideoAd.resume(getContext());
+
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        rewardedVideoAd.pause(getContext());
 
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        rewardedVideoAd.destroy(getContext());
-        getContext().unregisterReceiver(mReceiver);
+//        getContext().unregisterReceiver(mReceiver);
         super.onDestroy();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        getContext().unregisterReceiver(mReceiver);
     }
 
     private void registerDalkerReceiver() {
@@ -370,7 +375,7 @@ public class ListDalkerFragment extends Fragment {
     public class DalkerReceiver extends BroadcastReceiver {
 
         public DalkerReceiver() {
-
+            showDalkerList();
         }
 
         @Override
@@ -390,4 +395,22 @@ public class ListDalkerFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(getString(R.string.user_state_list), users);
+        outState.putString(getString(R.string.location_state), mCurrentLocation);
+    }
 }

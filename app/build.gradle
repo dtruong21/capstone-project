@@ -35,10 +35,10 @@ android {
             dimension 'version'
             applicationIdSuffix '.free'
         }
-        paid {
-            dimension 'version'
-            applicationIdSuffix '.paid'
-        }
+//        paid {
+//            dimension 'version'
+//            applicationIdSuffix '.paid'
+//        }
         demo {
             dimension 'version'
             applicationIdSuffix '.demo'
