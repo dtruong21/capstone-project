@@ -440,7 +440,7 @@ public class ListDalkerFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Timber.d("Nothing 1");
-            if (intent != null) {
+            if (intent != null && intent.getAction().equals(getString(R.string.user_list_location))) {
                 users = intent.getParcelableArrayListExtra(getString(R.string.user_list));
                 populateUI(users);
                 PreferencesHelper.saveUserList(getContext(), users.toString());

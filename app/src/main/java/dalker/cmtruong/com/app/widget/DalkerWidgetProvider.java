@@ -81,12 +81,6 @@ public class DalkerWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        Intent intent = new Intent(context, FavoriteDalkerIService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ContextCompat.startForegroundService(context, intent);
-        } else {
-            context.startService(intent);
-        }
     }
 
     @Override
