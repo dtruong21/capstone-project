@@ -124,8 +124,8 @@ public class CommentFragment extends DialogFragment {
                                 json, new TypeToken<HashMap<String, Object>>() {
                                 }.getType()
                         );
-                        fb.collection(getString(R.string.users)).document(user.getIdUser())
-                                .update(getString(R.string.reviews_filed), FieldValue.arrayUnion(reviewFF));
+//                        fb.collection(getString(R.string.users)).document(user.getIdUser())
+//                                .update(getString(R.string.reviews_filed), FieldValue.arrayUnion(reviewFF));
 
                         mDB.child(user.getIdUser()).child(getString(R.string.m_reviews))
                                 .setValue(reviews)
