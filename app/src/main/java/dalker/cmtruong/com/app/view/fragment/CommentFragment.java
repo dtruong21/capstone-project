@@ -128,7 +128,9 @@ public class CommentFragment extends DialogFragment {
                                 .update(getString(R.string.reviews_filed), FieldValue.arrayUnion(reviewFF));
 
                         mDB.child(user.getIdUser()).child(getString(R.string.m_reviews))
-                                .setValue(reviews);
+                                .setValue(reviews)
+                                .addOnCompleteListener(task -> Timber.d("Yeah"))
+                                .addOnFailureListener(e -> Timber.d("Error adding comment"));
 
                     });
         } else {
