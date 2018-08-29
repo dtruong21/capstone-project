@@ -4,19 +4,11 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.bumptech.glide.request.target.AppWidgetTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +88,6 @@ public class FavoriteDalkerIService extends RemoteViewsService {
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
-
 
 
             }

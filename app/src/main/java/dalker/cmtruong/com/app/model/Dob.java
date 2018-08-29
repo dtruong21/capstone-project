@@ -1,13 +1,17 @@
 package dalker.cmtruong.com.app.model;
 
+import android.arch.persistence.room.Ignore;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
  * @author davidetruong
  * @version 1.0
  * @since 02 August 2018
  */
+
 public class Dob implements Parcelable {
 
     private String date;
@@ -21,6 +25,10 @@ public class Dob implements Parcelable {
     protected Dob(Parcel in) {
         date = in.readString();
         age = in.readInt();
+    }
+
+    @Ignore
+    public Dob() {
     }
 
     @Override

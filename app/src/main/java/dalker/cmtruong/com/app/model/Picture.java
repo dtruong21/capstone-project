@@ -1,13 +1,17 @@
 package dalker.cmtruong.com.app.model;
 
+import android.arch.persistence.room.Ignore;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
  * @author davidetruong
  * @version 1.0
  * @since 02 August 2018
  */
+
 public class Picture implements Parcelable {
 
     private String large;
@@ -20,6 +24,10 @@ public class Picture implements Parcelable {
         this.large = large;
         this.medium = medium;
         this.thumbnail = thumbnail;
+    }
+
+    @Ignore
+    public Picture() {
     }
 
     protected Picture(Parcel in) {

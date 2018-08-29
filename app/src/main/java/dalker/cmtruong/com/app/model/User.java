@@ -9,6 +9,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
@@ -74,6 +75,7 @@ public class User implements Parcelable {
 
     private ArrayList<Review> reviews = new ArrayList<>();
 
+
     @Ignore
     public User(String gender, Login login, Name name, Location location, String email, Dob dob, String phone, Picture pictureURL, String nat, String description, float price, int dogNumber, ArrayList<Review> reviews) {
         this.gender = gender;
@@ -90,6 +92,7 @@ public class User implements Parcelable {
         this.dogNumber = dogNumber;
         this.reviews.addAll(reviews);
     }
+
 
     public User() {
     }

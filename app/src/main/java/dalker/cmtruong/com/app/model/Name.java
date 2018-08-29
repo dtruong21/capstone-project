@@ -3,6 +3,7 @@ package dalker.cmtruong.com.app.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -12,6 +13,7 @@ import com.google.gson.annotations.SerializedName;
  * @version 1.0
  * @since July 31th, 2018
  */
+
 public class Name implements Parcelable {
 
     private String title;

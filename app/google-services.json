@@ -136,7 +136,8 @@
         "ads_service": {
           "status": 2
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-8390944528541948~9296512467"
     },
     {
       "client_info": {
