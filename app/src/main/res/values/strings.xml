@@ -145,5 +145,8 @@
     <string name="with_success">with successful</string>
     <string name="failed_add">Failed to add user</string>
     <string name="to_the_database">to the database</string>
+    <string name="m_login_user">login/username</string>
+    <string name="m_location_city">location/city</string>
+    <string name="m_reviews">reviews</string>
 
 </resources>

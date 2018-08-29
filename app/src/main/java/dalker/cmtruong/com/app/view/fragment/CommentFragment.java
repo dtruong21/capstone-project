@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -66,6 +68,7 @@ public class CommentFragment extends DialogFragment {
     User user;
 
     FirebaseFirestore fb;
+    DatabaseReference mDB;
 
     public CommentFragment() {
     }
@@ -87,6 +90,7 @@ public class CommentFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_comment, null);
         ButterKnife.bind(this, view);
         fb = FirebaseFirestore.getInstance();
+        mDB = FirebaseDatabase.getInstance().getReference(getString(R.string.users));
         if (getArguments() != null) {
             Timber.d("Arguments: %s", getArguments().toString());
             user = getArguments().getParcelable(DALKER_KEY);
@@ -122,6 +126,9 @@ public class CommentFragment extends DialogFragment {
                         );
                         fb.collection(getString(R.string.users)).document(user.getIdUser())
                                 .update(getString(R.string.reviews_filed), FieldValue.arrayUnion(reviewFF));
+
+                        mDB.child(user.getIdUser()).child(getString(R.string.m_reviews))
+                                .setValue(reviews);
 
                     });
         } else {

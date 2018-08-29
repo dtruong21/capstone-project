@@ -8,6 +8,11 @@ import android.support.annotation.Nullable;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,6 +41,8 @@ public class DalkerRequestService extends IntentService {
 
     FirebaseFirestore mFF;
 
+    DatabaseReference mDB;
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      */
@@ -58,22 +65,43 @@ public class DalkerRequestService extends IntentService {
     }
 
     private void getDataByLocation(String location) {
-        mFF = FirebaseFirestore.getInstance();
+        //mFF = FirebaseFirestore.getInstance();
         users = new ArrayList<>();
-        mFF.collection(getString(R.string.users))
-                .whereEqualTo(getString(R.string.location_city), location)
-                .get()
-                .addOnFailureListener(e -> Timber.d("Failed to get data"))
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.isComplete()) {
-                        Timber.d("Size: " + task.getResult().getDocuments());
-                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                            Gson gson = new Gson();
-                            JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
-                            User user = gson.fromJson(jsonElement, User.class);
-                            users.add(user);
+//        mFF.collection(getString(R.string.users))
+//                .whereEqualTo(getString(R.string.location_city), location)
+//                .get()
+//                .addOnFailureListener(e -> Timber.d("Failed to get data"))
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful() && task.isComplete()) {
+//                        Timber.d("Size: " + task.getResult().getDocuments());
+//                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+//                            Gson gson = new Gson();
+//                            JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
+//                            User user = gson.fromJson(jsonElement, User.class);
+//                            users.add(user);
+//                        }
+//                        sendUsersToUI(users);
+//                    }
+//                });
+
+        mDB = FirebaseDatabase.getInstance().getReference(getString(R.string.users));
+        mDB.orderByChild(getString(R.string.m_location_city)).equalTo(location)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                User user = data.getValue(User.class);
+                                users.add(user);
+                            }
+                            sendUsersToUI(users);
                         }
-                        sendUsersToUI(users);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Timber.d("Failed to get data");
                     }
                 });
     }

@@ -24,6 +24,14 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -131,6 +139,8 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     private String cloudPath;
     private FirebaseFirestore fb;
 
+    private DatabaseReference mDb;
+
     @BindView(R.id.edit_layout)
     LinearLayout mLayout;
 
@@ -178,6 +188,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         fb = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance();
         mRef = mStorage.getReference();
+        mDb = FirebaseDatabase.getInstance().getReference(getString(R.string.users));
     }
 
     private void loading() {
@@ -192,20 +203,40 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
 
     private void loadData() {
         data = PreferencesHelper.getDocumentReference(getContext());
-        DocumentReference documentReference = fb.collection(getString(R.string.users)).document(data);
+        //    DocumentReference documentReference = fb.collection(getString(R.string.users)).document(data);
         loading();
-        documentReference.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if (documentSnapshot.exists()) {
-                            Gson gson = new Gson();
-                            JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
-                            user = gson.fromJson(jsonElement, User.class);
+//        documentReference.get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        DocumentSnapshot documentSnapshot = task.getResult();
+//                        if (documentSnapshot.exists()) {
+//                            Gson gson = new Gson();
+//                            JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
+//                            user = gson.fromJson(jsonElement, User.class);
+//                            populateUI(user);
+//                        }
+//                    }
+//                });
+
+        mDb.orderByChild("idUser").equalTo(data).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot mData : dataSnapshot.getChildren()) {
+                        user = mData.getValue(User.class);
+                        if (user != null)
                             populateUI(user);
-                        }
+                        else
+                            Timber.d("Error by loading user data");
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Timber.d("Error by requesting user data");
+            }
+        });
         display();
     }
 
@@ -308,9 +339,14 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                 }.getType()
         );
         loading();
-        documentReference.update(userFF)
-                .addOnSuccessListener(aVoid -> Snackbar.make(getView(), R.string.update_finish, Snackbar.LENGTH_LONG).show())
+
+        mDb.child(referenceID)
+                .setValue(user)
+                .addOnCompleteListener(task -> Snackbar.make(getView(), R.string.update_finish, Snackbar.LENGTH_LONG).show())
                 .addOnFailureListener(e -> Snackbar.make(getView(), R.string.update_ko, Snackbar.LENGTH_LONG).show());
+//        documentReference.update(userFF)
+//                .addOnSuccessListener(aVoid -> Snackbar.make(getView(), R.string.update_finish, Snackbar.LENGTH_LONG).show())
+//                .addOnFailureListener(e -> Snackbar.make(getView(), R.string.update_ko, Snackbar.LENGTH_LONG).show());
         display();
         PreferencesHelper.saveUserSession(getContext(), user.toString());
         addToCloudStorage();

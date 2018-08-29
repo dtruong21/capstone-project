@@ -1,5 +1,6 @@
 package dalker.cmtruong.com.app.model;
 
+import android.arch.persistence.room.Ignore;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -28,6 +29,10 @@ public class Name implements Parcelable {
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    @Ignore
+    public Name() {
     }
 
     protected Name(Parcel in) {

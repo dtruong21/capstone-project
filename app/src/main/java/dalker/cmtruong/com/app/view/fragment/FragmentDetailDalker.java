@@ -153,11 +153,27 @@ public class FragmentDetailDalker extends Fragment {
      * @param user
      */
     private void initData(final User user) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
-        GlideApp.with(getContext())
-                .load(storageReference)
-                .error(R.mipmap.ic_launcher)
-                .into(mDalkerPhoto);
+        if (user.getPictureURL() != null) {
+            if (!user.getPictureURL().getLarge().equals("")) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
+                GlideApp.with(getContext())
+                        .load(storageReference)
+                        .error(R.mipmap.ic_launcher)
+                        .into(mDalkerPhoto);
+            } else {
+                GlideApp.with(getContext())
+                        .load(R.mipmap.ic_launcher_foreground)
+                        .error(R.mipmap.ic_launcher)
+                        .into(mDalkerPhoto);
+            }
+
+        } else {
+            GlideApp.with(getContext())
+                    .load(R.mipmap.ic_launcher_foreground)
+                    .error(R.mipmap.ic_launcher)
+                    .into(mDalkerPhoto);
+        }
+
         dalkerNameTv.setText(String.format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
         dalkerAddressTv.setText(String.format("%s, %s", user.getLocation().getStreet(), user.getLocation().getCity()));
         dalkerPriceTv.setText(String.format("Price: %s", getString(R.string.dalker_price_test)));

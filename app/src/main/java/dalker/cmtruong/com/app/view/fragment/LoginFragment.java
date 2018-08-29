@@ -167,7 +167,7 @@ public class LoginFragment extends Fragment {
 //                    })
 //                    .addOnFailureListener(e -> Timber.d("failed"));
             DatabaseReference mDB = FirebaseDatabase.getInstance().getReference(getString(R.string.users));
-            mDB.orderByChild("login/username").equalTo(login.getText().toString())
+            mDB.orderByChild(getString(R.string.m_login_user)).equalTo(login.getText().toString())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

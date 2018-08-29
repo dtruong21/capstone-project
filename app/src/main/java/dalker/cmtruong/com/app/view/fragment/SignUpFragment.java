@@ -150,7 +150,7 @@ public class SignUpFragment extends Fragment {
     private void signIn() {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        createAccount.setOnClickListener(v -> {
+        createAccount.setOnClickListener((View v) -> {
             show();
             if (isValidForm(email.getText().toString(), loginId.getText().toString(), password.getText().toString(), confirmPassword.getText().toString())) {
                 User user = new User();
