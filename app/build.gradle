@@ -40,7 +40,7 @@ android {
             signingConfig signingConfigs.config
         }
     }
-    task installRelease(group:'install', dependsOn:'installFreeRelease') {
+    task installRelease(group: 'install', dependsOn: 'installFreeRelease') {
         println 'installRelease call forwarded to installFreeRelease'
     }
 
@@ -63,10 +63,10 @@ android {
 //            dimension 'version'
 //            applicationIdSuffix '.paid'
 //        }
-        demo {
-            dimension 'version'
-            applicationIdSuffix '.demo'
-        }
+//        demo {
+//            dimension 'version'
+//            applicationIdSuffix '.demo'
+//        }
     }
 }
 

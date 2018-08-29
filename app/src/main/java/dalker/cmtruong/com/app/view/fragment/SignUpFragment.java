@@ -173,8 +173,8 @@ public class SignUpFragment extends Fragment {
                             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(v.getContext())
                                     .setSmallIcon(R.mipmap.ic_launcher_foreground)
                                     .setContentTitle(getString(R.string.app_name))
-                                    .setContentText("Add user " + loginId.getText().toString() + " with successful")
-                                    .setStyle(new NotificationCompat.BigTextStyle().bigText("Add user " + loginId.getText().toString() + " with successful"))
+                                    .setContentText(getString(R.string.add_user) + loginId.getText().toString() + getString(R.string.with_success))
+                                    .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.add_user) + loginId.getText().toString() + getString(R.string.with_success)))
                                     .setPriority(NotificationCompat.PRIORITY_MAX);
                             mBuilder.setContentIntent(contentIntent);
 
@@ -191,11 +191,11 @@ public class SignUpFragment extends Fragment {
                                     .replace(R.id.profile_container, LoginFragment.getInstance())
                                     .addToBackStack(null)
                                     .commit();
-                            Snackbar.make(getView(), "Add user" + loginId.getText().toString() + " with successful", Toast.LENGTH_LONG).show();
+                            Snackbar.make(getView(), getString(R.string.add_user) + loginId.getText().toString() + getString(R.string.with_success), Toast.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> {
                             Timber.d("add failed");
-                            Snackbar.make(getView(), "Failed to add user" + loginId.getText().toString() + " to the database", Toast.LENGTH_LONG).show();
+                            Snackbar.make(getView(), getString(R.string.failed_add) + loginId.getText().toString() + getString(R.string.to_the_database), Toast.LENGTH_LONG).show();
                         });
                 hide();
             } else {

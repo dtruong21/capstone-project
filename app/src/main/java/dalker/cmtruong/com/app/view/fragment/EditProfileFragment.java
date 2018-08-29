@@ -162,7 +162,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
             display();
             user = savedInstanceState.getParcelable(getString(R.string.user_key));
             populateUI(user);
-            Timber.d("save state = %s", user.toString());
         }
         cancel();
         update();
@@ -203,7 +202,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                             Gson gson = new Gson();
                             JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
                             user = gson.fromJson(jsonElement, User.class);
-                            Timber.d("data%s", user.toString());
                             populateUI(user);
                         }
                     }
@@ -222,7 +220,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         }
 
         if (user.getName() != null) {
-            if (user.getName().getTitle().equals("Mr"))
+            if (user.getName().getTitle().equals(getString(R.string.title_mr)))
                 gender.setSelection(1);
             else
                 gender.setSelection(2);
@@ -301,9 +299,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         }
         if (!doggo.getText().toString().equals(""))
             user.setDogNumber(Integer.parseInt(doggo.getText().toString()));
-        Timber.d("New user: %s", user.toString());
         String referenceID = PreferencesHelper.getDocumentReference(getContext());
-        Timber.d("ref: %s", referenceID);
         DocumentReference documentReference = fb.collection(getString(R.string.users)).document(referenceID);
 
         String json = convertToJson(user);
@@ -313,8 +309,8 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         );
         loading();
         documentReference.update(userFF)
-                .addOnSuccessListener(aVoid -> Snackbar.make(getView(), "Update finished", Snackbar.LENGTH_LONG).show())
-                .addOnFailureListener(e -> Snackbar.make(getView(), "Update data KO", Snackbar.LENGTH_LONG).show());
+                .addOnSuccessListener(aVoid -> Snackbar.make(getView(), R.string.update_finish, Snackbar.LENGTH_LONG).show())
+                .addOnFailureListener(e -> Snackbar.make(getView(), R.string.update_ko, Snackbar.LENGTH_LONG).show());
         display();
         PreferencesHelper.saveUserSession(getContext(), user.toString());
         addToCloudStorage();
@@ -330,12 +326,12 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                 try {
                     pictureFile = getPicturePath();
                 } catch (IOException e) {
-                    Timber.e("Photo can't be create: %s", e.getMessage());
+                    Timber.e(getString(R.string.photo_error), e.getMessage());
                     return;
                 }
 
                 if (pictureFile != null) {
-                    Uri photoURI = FileProvider.getUriForFile(getActivity(), "dalker.cmtruong.com.app.fileprovider", pictureFile);
+                    Uri photoURI = FileProvider.getUriForFile(getActivity(), getString(R.string.provider), pictureFile);
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
                 }
@@ -351,7 +347,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         File f = new File(pictureFilePath);
         Uri pictureUri = Uri.fromFile(f);
         galleryIntent.setData(pictureUri);
-        Timber.d("Path: %s", pictureUri.toString());
         Objects.requireNonNull(getActivity()).sendBroadcast(galleryIntent);
     }
 
@@ -374,7 +369,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String pictureFile = "_" + timeStamp;
         File storage = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(pictureFile, ".jpg", storage);
+        File image = File.createTempFile(pictureFile, getString(R.string.jpg_suffix), storage);
         pictureFilePath = image.getAbsolutePath();
         return image;
     }

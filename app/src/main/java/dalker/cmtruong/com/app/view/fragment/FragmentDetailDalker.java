@@ -194,7 +194,7 @@ public class FragmentDetailDalker extends Fragment {
                 if (mUserId == DEFAULT_TASK_ID) {
                     Timber.d("Something wrong here");
                     mDB.userDAO().insertUser(user);
-                    String text = "Add " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
+                    String text = getString(R.string.add) + user.getName().getFirstName() + " " + user.getName().getLastName() + getString(R.string.success);
                     Snackbar.make(getActivity().findViewById(R.id.detail_dalker_container), text, Snackbar.LENGTH_LONG).show();
                     Timber.d("user:%s", user.toString());
                     insert_bt.setImageResource(R.drawable.ic_favorite_black_48dp);
@@ -250,7 +250,7 @@ public class FragmentDetailDalker extends Fragment {
     private void setupButton(final User user) {
         fab.setOnClickListener(v -> {
             Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("text/plain");
+            share.setType(getString(R.string.type_text));
             share.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
             share.putExtra(Intent.EXTRA_TEXT, user.getName().getFirstName() + " " + user.getName().getLastName());

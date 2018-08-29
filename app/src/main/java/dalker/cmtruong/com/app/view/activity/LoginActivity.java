@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         Timber.tag(TAG);
-        Timber.d("Open login activity");
         if (savedInstanceState == null) {
             addFragment();
         }
@@ -45,7 +44,5 @@ public class LoginActivity extends AppCompatActivity {
                     .replace(R.id.profile_container, LoginFragment.getInstance())
                     .addToBackStack(null)
                     .commit();
-        else
-            Timber.d("checked");
     }
 }

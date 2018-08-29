@@ -68,13 +68,11 @@ public class DalkerRequestService extends IntentService {
                     if (task.isSuccessful() && task.isComplete()) {
                         Timber.d("Size: " + task.getResult().getDocuments());
                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                            Timber.d("Document: " + documentSnapshot.getId() + " ====> " + documentSnapshot.getData());
                             Gson gson = new Gson();
                             JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
                             User user = gson.fromJson(jsonElement, User.class);
                             users.add(user);
                         }
-                        Timber.d("Request users with successful %s", users.toString());
                         sendUsersToUI(users);
                     }
                 });

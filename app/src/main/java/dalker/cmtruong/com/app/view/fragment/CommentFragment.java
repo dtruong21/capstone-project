@@ -113,7 +113,7 @@ public class CommentFragment extends DialogFragment {
                         }
                         reviews.add(reviewContent);
                         Map<String, ArrayList<Review>> data = new HashMap<>();
-                        data.put("reviews", reviews);
+                        data.put(getString(R.string.reviews_filed), reviews);
                         Gson gson = new Gson();
                         String json = gson.toJson(reviewContent);
                         Map<String, Object> reviewFF = new Gson().fromJson(
@@ -121,9 +121,7 @@ public class CommentFragment extends DialogFragment {
                                 }.getType()
                         );
                         fb.collection(getString(R.string.users)).document(user.getIdUser())
-                                .update("reviews", FieldValue.arrayUnion(reviewFF))
-                                .addOnSuccessListener(aVoid -> Timber.d("Comment add"))
-                                .addOnFailureListener(e -> Timber.d("Comment add failed"));
+                                .update(getString(R.string.reviews_filed), FieldValue.arrayUnion(reviewFF));
 
                     });
         } else {

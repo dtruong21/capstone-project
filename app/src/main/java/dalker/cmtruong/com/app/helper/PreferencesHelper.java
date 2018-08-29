@@ -84,7 +84,6 @@ public class PreferencesHelper {
         Type type = new TypeToken<List<User>>() {
         }.getType();
         users = gson.fromJson(json, type);
-        Timber.d("My preferences user %s", users.toString());
         return users;
     }
 }

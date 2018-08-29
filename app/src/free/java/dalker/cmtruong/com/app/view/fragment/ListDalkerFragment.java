@@ -96,6 +96,10 @@ public class ListDalkerFragment extends Fragment {
     private DalkerReceiver mReceiver;
     private boolean isRegistered;
 
+    LinearLayoutManager mLayoutManager;
+    public static int index = -1;
+    public static int top = -1;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,6 +124,7 @@ public class ListDalkerFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowCustomEnabled(true);
         mLayout.setOnRefreshListener(this::disableRefresh);
+        mLayoutManager = new LinearLayoutManager(getContext());
 //        if (savedInstanceState != null) {
 //            users = savedInstanceState.getParcelableArrayList(getString(R.string.user_state_list));
 //            mCurrentLocation = savedInstanceState.getString(getString(R.string.location_state));
@@ -161,7 +166,7 @@ public class ListDalkerFragment extends Fragment {
     private void populateUI(ArrayList<User> users) {
         if (users != null && users.size() != 0) {
             Timber.d("users: %s", users.toString());
-            mDalkerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mDalkerRV.setLayoutManager(mLayoutManager);
             mDalkerRV.setHasFixedSize(true);
             adapter = new DalkerListAdapter(users);
             mDalkerRV.setAdapter(adapter);
@@ -371,14 +376,18 @@ public class ListDalkerFragment extends Fragment {
 
     @Override
     public void onResume() {
-
         super.onResume();
+        if (index != -1) {
+            mLayoutManager.scrollToPositionWithOffset(index, top);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
+        index = mLayoutManager.findFirstVisibleItemPosition();
+        View v = mDalkerRV.getChildAt(0);
+        top = (v == null) ? 0 : (v.getTop() - mDalkerRV.getPaddingTop());
     }
 
     @Override

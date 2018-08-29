@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             navigation.setSelectedItemId(R.id.navigation_search);
         }
+
 //        Intent intent = getIntent();
 //        if (intent != null && intent.getIntExtra("fragment", 0) == R.id.navigation_profile) {
 //            Timber.d("Intent: %s", intent.toString());

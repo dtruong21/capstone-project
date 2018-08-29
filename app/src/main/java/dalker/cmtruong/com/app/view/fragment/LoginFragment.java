@@ -141,7 +141,7 @@ public class LoginFragment extends Fragment {
                                 int key = 3;
                                 Intent intent = new Intent(getContext(), MainActivity.class);
                                 Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                                bundle.putInt("TRANSITION_KEY", key);
+                                bundle.putInt(getString(R.string.transition_key), key);
                                 startActivity(intent, bundle);
                                 Snackbar.make(getView(),
                                         getString(R.string.welcome) + login.getText().toString(), Snackbar.LENGTH_SHORT).show();

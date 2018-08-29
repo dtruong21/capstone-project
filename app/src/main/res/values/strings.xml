@@ -129,5 +129,21 @@
     <string name="login_failed">User login failed</string>
     <string name="welcome">Welcome</string>
     <string name="error_in_login">Error in login with user</string>
+    <string name="transition_key">TRANSITION_KEY</string>
+    <string name="title_mr">Mr</string>
+    <string name="update_finish">Update finished</string>
+    <string name="update_ko">Update data KO</string>
+    <string name="photo_error">Photo can\'t be create: %s</string>
+    <string name="provider">dalker.cmtruong.com.app.fileprovider</string>
+    <string name="jpg_suffix">.jpg</string>
+    <string name="reviews_filed">reviews</string>
+    <string name="type_text">text/plain</string>
+    <string name="success">with successfull to favorite list</string>
+    <string name="add">Add</string>
+    <string name="delete_fav">Delete with sucessful</string>
+    <string name="add_user">Add user</string>
+    <string name="with_success">with successful</string>
+    <string name="failed_add">Failed to add user</string>
+    <string name="to_the_database">to the database</string>
 
 </resources>

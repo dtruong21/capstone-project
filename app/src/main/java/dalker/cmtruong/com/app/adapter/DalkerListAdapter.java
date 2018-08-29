@@ -109,21 +109,28 @@ public class DalkerListAdapter extends RecyclerView.Adapter<DalkerListAdapter.Da
                         .load(storageReference)
                         .error(R.mipmap.ic_launcher)
                         .into(mImageView);
+            } else {
+                GlideApp.with(itemView.getContext())
+                        .asBitmap()
+                        .load(R.mipmap.ic_launcher_foreground)
+                        .into(mImageView);
             }
-            mDalkerName.setText(format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
-            mDalkerAge.setText(format("Age: %s", String.valueOf(user.getDob().getAge())));
+
+            if (user.getName() != null) {
+                mDalkerName.setText(format("%s %s", user.getName().getFirstName(), user.getName().getLastName()));
+                mDalkerAge.setText(format("Age: %s", String.valueOf(user.getDob().getAge())));
+            } else {
+
+            }
             mDalkerService.setText(format("%d doggo possible", user.getDogNumber()));
             List<Review> reviews;
             int rateSum = 0;
             float rateAverage;
             if (user.getReviews() != null && user.getReviews().size() > 0) {
                 reviews = user.getReviews();
-                Timber.d("Size review: " + reviews.toString());
                 for (int i = 0; i < reviews.size(); i++) {
                     rateSum += reviews.get(i).getRate();
-                    Timber.d("Rate: " + reviews.get(i).getRate());
                 }
-                Timber.d("Rate sum: " + rateSum);
                 rateAverage = rateSum / reviews.size();
                 mDalkerRate.setText(String.format("%s/5", String.valueOf(rateAverage)));
             } else {

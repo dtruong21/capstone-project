@@ -109,7 +109,7 @@ public class ListFavoriteDalkerFragment extends Fragment {
                     int position = viewHolder.getAdapterPosition();
                     List<User> userList = mAdapter.getUsers();
                     mDB.userDAO().deleteUser(userList.get(position));
-                    Snackbar.make(getActivity().findViewById(R.id.main_fragment_container), "Delete with sucessful", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(getActivity().findViewById(R.id.main_fragment_container), R.string.delete_fav, Snackbar.LENGTH_SHORT).show();
                 });
             }
         }).attachToRecyclerView(favRV);
