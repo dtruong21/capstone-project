@@ -126,5 +126,8 @@
     <string name="fragment_key">FRAGMENT_KEY</string>
     <string name="main_fragment">MAIN_FRAGMENT</string>
     <string name="user_list_session">USER_LIST_SESSION</string>
+    <string name="login_failed">User login failed</string>
+    <string name="welcome">Welcome</string>
+    <string name="error_in_login">Error in login with user</string>
 
 </resources>

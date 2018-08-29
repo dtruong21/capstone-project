@@ -22,8 +22,8 @@ android {
         applicationId "dalker.cmtruong.com.app"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -39,12 +39,11 @@ android {
             jniDebuggable false
             signingConfig signingConfigs.config
         }
-        debug {
-            debuggable false
-            signingConfig signingConfigs.config
-            minifyEnabled false
-        }
     }
+    task installRelease(group:'install', dependsOn:'installFreeRelease') {
+        println 'installRelease call forwarded to installFreeRelease'
+    }
+
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
@@ -104,6 +103,7 @@ dependencies {
     implementation "com.android.support:design:$supportLibrariesVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintVersion"
     implementation "com.google.firebase:firebase-storage:$firebaseCoreVersion"
+    implementation "com.google.firebase:firebase-database:$firebaseCoreVersion"
     implementation "com.google.firebase:firebase-auth:$firebaseCoreVersion"
     implementation "com.firebaseui:firebase-ui-storage:$firebaseStorage"
     freeImplementation "com.google.firebase:firebase-ads:$androidAdmodVersion"

@@ -1,5 +1,6 @@
 package dalker.cmtruong.com.app.view.fragment;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -135,14 +136,27 @@ public class LoginFragment extends Fragment {
                                 PreferencesHelper.saveUserSession(getContext(), data);
                                 PreferencesHelper.saveDocumentReference(getContext(), document.getId());
                             }
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            startActivity(intent);
-                            Snackbar.make(getView(),
-                                    "Error in login with user " + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
+
+                            if (data != null) {
+                                int key = 3;
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+                                bundle.putInt("TRANSITION_KEY", key);
+                                startActivity(intent, bundle);
+                                Snackbar.make(getView(),
+                                        getString(R.string.welcome) + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(getView(),
+                                        R.string.login_failed, Snackbar.LENGTH_SHORT).show();
+                                showData();
+                            }
+
+
                         } else {
                             Timber.d("check");
                             Snackbar.make(getView(),
-                                    "Error in login with user " + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
+                                    getString(R.string.error_in_login) + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
+                            showData();
                         }
                     })
                     .addOnFailureListener(e -> Timber.d("failed"));

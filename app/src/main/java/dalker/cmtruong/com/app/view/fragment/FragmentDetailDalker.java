@@ -1,9 +1,8 @@
 package dalker.cmtruong.com.app.view.fragment;
 
-import android.app.AlertDialog;
+import android.app.ActivityOptions;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +26,6 @@ import android.widget.TextView;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -262,7 +259,8 @@ public class FragmentDetailDalker extends Fragment {
 
         call_bt.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts(getString(R.string.tel), user.getPhone(), null));
-            startActivity(intent);
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+            startActivity(intent, bundle);
         });
 
         comment_bt.setOnClickListener(v -> {
