@@ -3,7 +3,6 @@
 .env
 client-secret.json
 key.json
-android.jks
 /local.properties
 /.idea/libraries
 /.idea/modules.xml

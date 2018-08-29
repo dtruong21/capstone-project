@@ -53,12 +53,8 @@
     <string name="confirm_error">Not the same password</string>
 
 
-    <!-- Firestore indice -->
     <string name="users">users</string>
     <string name="username">username</string>
-    <string name="login_username">login.username</string>
-    <string name="login_password">login.password</string>
-    <string name="location_city">location.city</string>
 
     <!-- Profile-->
     <string name="first_name">First name</string>
@@ -148,5 +144,6 @@
     <string name="m_login_user">login/username</string>
     <string name="m_location_city">location/city</string>
     <string name="m_reviews">reviews</string>
+    <string name="update_widgert">update</string>
 
 </resources>

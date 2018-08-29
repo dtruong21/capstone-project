@@ -1,17 +1,13 @@
 package dalker.cmtruong.com.app.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dalker.cmtruong.com.app.R;
-import dalker.cmtruong.com.app.helper.PreferencesHelper;
-import dalker.cmtruong.com.app.service.DalkerRequestService;
 import dalker.cmtruong.com.app.view.fragment.ListDalkerFragment;
 import dalker.cmtruong.com.app.view.fragment.ListFavoriteDalkerFragment;
 import dalker.cmtruong.com.app.view.fragment.ProfileFragment;

@@ -1,6 +1,5 @@
 package dalker.cmtruong.com.app.view.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -23,22 +21,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
@@ -57,7 +47,6 @@ import dalker.cmtruong.com.app.helper.GlideApp;
 import dalker.cmtruong.com.app.helper.PreferencesHelper;
 import dalker.cmtruong.com.app.model.Dob;
 import dalker.cmtruong.com.app.model.Location;
-import dalker.cmtruong.com.app.model.Login;
 import dalker.cmtruong.com.app.model.Name;
 import dalker.cmtruong.com.app.model.Picture;
 import dalker.cmtruong.com.app.model.User;
@@ -137,7 +126,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     private StorageReference mRef;
     private String deviceIdentifier;
     private String cloudPath;
-    private FirebaseFirestore fb;
 
     private DatabaseReference mDb;
 
@@ -185,7 +173,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
     }
 
     private void connectFirebase() {
-        fb = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance();
         mRef = mStorage.getReference();
         mDb = FirebaseDatabase.getInstance().getReference(getString(R.string.users));
@@ -203,20 +190,7 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
 
     private void loadData() {
         data = PreferencesHelper.getDocumentReference(getContext());
-        //    DocumentReference documentReference = fb.collection(getString(R.string.users)).document(data);
         loading();
-//        documentReference.get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot documentSnapshot = task.getResult();
-//                        if (documentSnapshot.exists()) {
-//                            Gson gson = new Gson();
-//                            JsonElement jsonElement = gson.toJsonTree(documentSnapshot.getData());
-//                            user = gson.fromJson(jsonElement, User.class);
-//                            populateUI(user);
-//                        }
-//                    }
-//                });
 
         mDb.orderByChild("idUser").equalTo(data).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -331,7 +305,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
         if (!doggo.getText().toString().equals(""))
             user.setDogNumber(Integer.parseInt(doggo.getText().toString()));
         String referenceID = PreferencesHelper.getDocumentReference(getContext());
-        DocumentReference documentReference = fb.collection(getString(R.string.users)).document(referenceID);
 
         String json = convertToJson(user);
         Map<String, Object> userFF = new Gson().fromJson(
@@ -344,9 +317,6 @@ public class EditProfileFragment extends Fragment implements OnItemSelectedListe
                 .setValue(user)
                 .addOnCompleteListener(task -> Snackbar.make(getView(), R.string.update_finish, Snackbar.LENGTH_LONG).show())
                 .addOnFailureListener(e -> Snackbar.make(getView(), R.string.update_ko, Snackbar.LENGTH_LONG).show());
-//        documentReference.update(userFF)
-//                .addOnSuccessListener(aVoid -> Snackbar.make(getView(), R.string.update_finish, Snackbar.LENGTH_LONG).show())
-//                .addOnFailureListener(e -> Snackbar.make(getView(), R.string.update_ko, Snackbar.LENGTH_LONG).show());
         display();
         PreferencesHelper.saveUserSession(getContext(), user.toString());
         addToCloudStorage();

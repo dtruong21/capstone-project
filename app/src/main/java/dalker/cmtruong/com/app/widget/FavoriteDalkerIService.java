@@ -81,12 +81,22 @@ public class FavoriteDalkerIService extends RemoteViewsService {
                 StorageReference storageReference = null;
                 if (user.getPictureURL() != null) {
                     storageReference = FirebaseStorage.getInstance().getReference(user.getPictureURL().getLarge());
-                }
-                try {
-                    Bitmap bitmap = GlideApp.with(mContext).asBitmap().load(storageReference).submit().get();
-                    mRemoteView.setImageViewBitmap(R.id.dalker_fav_photo, bitmap);
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
+                    try {
+                        Bitmap bitmap = GlideApp.with(mContext).asBitmap().load(storageReference).submit().get();
+                        mRemoteView.setImageViewBitmap(R.id.dalker_fav_photo, bitmap);
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        Bitmap bitmap = GlideApp.with(mContext).asBitmap().load(R.mipmap.ic_launcher_foreground).submit().get();
+                        mRemoteView.setImageViewBitmap(R.id.dalker_fav_photo, bitmap);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
 

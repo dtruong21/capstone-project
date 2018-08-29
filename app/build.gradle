@@ -77,7 +77,7 @@ ext {
     supportTestVersion = '1.0.2'
     espressoVersion = '3.0.2'
     firebaseCoreVersion = '16.0.1'
-    firestoreVersion = '17.1.0'
+
     firebaseStorage = '4.1.0'
     circleImageVersion = '2.2.0'
     androidAdmodVersion = '15.0.1'
@@ -111,7 +111,6 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:$supportTestVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
-    implementation "com.google.firebase:firebase-firestore:$firestoreVersion"
     implementation "de.hdodenhof:circleimageview:$circleImageVersion"
     freeImplementation "com.google.android.gms:play-services-ads:$androidAdmodVersion"
     implementation "com.google.android.gms:play-services-location:$androidAdmodVersion"

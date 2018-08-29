@@ -15,30 +15,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,8 +31,6 @@ import dalker.cmtruong.com.app.model.Login;
 import dalker.cmtruong.com.app.model.User;
 import dalker.cmtruong.com.app.view.activity.MainActivity;
 import timber.log.Timber;
-
-import static android.support.constraint.Constraints.TAG;
 
 /**
  * @author davidetruong
@@ -121,7 +102,6 @@ public class LoginFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         loginBt.setOnClickListener(v -> {
-            FirebaseFirestore fb = FirebaseFirestore.getInstance();
             Login loginUser = null;
             if (isValidLogin(login.getText().toString(), password.getText().toString())) {
                 loginUser = new Login(login.getText().toString(), password.getText().toString());
@@ -130,42 +110,6 @@ public class LoginFragment extends Fragment {
             String loginJson = gson.toJson(loginUser);
             Timber.d(loginJson);
             loadingData();
-//            fb.collection(getString(R.string.users))
-//                    .whereEqualTo(getString(R.string.login_username), login.getText().toString())
-//                    .whereEqualTo("login.password", password.getText().toString())
-//                    .get()
-//                    .addOnCompleteListener(task -> {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Timber.d("Verify : " + document.getId() + " ====> " + document.getData());
-//                                data = document.getData().toString();
-//                                PreferencesHelper.saveUserSession(getContext(), data);
-//                                PreferencesHelper.saveDocumentReference(getContext(), document.getId());
-//                            }
-//
-//                            if (data != null) {
-//                                int key = 3;
-//                                Intent intent = new Intent(getContext(), MainActivity.class);
-//                                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-//                                bundle.putInt(getString(R.string.transition_key), key);
-//                                startActivity(intent, bundle);
-//                                Snackbar.make(getView(),
-//                                        getString(R.string.welcome) + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
-//                            } else {
-//                                Snackbar.make(getView(),
-//                                        R.string.login_failed, Snackbar.LENGTH_SHORT).show();
-//                                showData();
-//                            }
-//
-//
-//                        } else {
-//                            Timber.d("check");
-//                            Snackbar.make(getView(),
-//                                    getString(R.string.error_in_login) + login.getText().toString(), Snackbar.LENGTH_SHORT).show();
-//                            showData();
-//                        }
-//                    })
-//                    .addOnFailureListener(e -> Timber.d("failed"));
             DatabaseReference mDB = FirebaseDatabase.getInstance().getReference(getString(R.string.users));
             mDB.orderByChild(getString(R.string.m_login_user)).equalTo(login.getText().toString())
                     .addListenerForSingleValueEvent(new ValueEventListener() {

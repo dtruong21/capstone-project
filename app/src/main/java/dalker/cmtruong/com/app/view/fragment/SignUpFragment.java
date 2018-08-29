@@ -22,18 +22,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -162,46 +155,6 @@ public class SignUpFragment extends Fragment {
                 user.setReviews(reviews);
                 login.setId(id);
                 user.setLogin(login);
-                //FirebaseFirestore db = FirebaseFirestore.getInstance();
-                //String json = convertToJson(user);
-//                Map<String, Object> userFF = new Gson().fromJson(
-//                        json, new TypeToken<HashMap<String, Object>>() {
-//                        }.getType()
-//                );
-//                db.collection(getString(R.string.users))
-//                        .document(id)
-//                        .set(userFF)
-//                        .addOnSuccessListener(documentReference -> {
-//                            Intent notificationIntent = new Intent(getContext(), LoginActivity.class);
-//                            notificationIntent.putExtra(getString(R.string.intent_login), getString(R.string.intent_user_default));
-//                            PendingIntent contentIntent = PendingIntent.getActivity(v.getContext(), 0, notificationIntent, 0);
-//                            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(v.getContext())
-//                                    .setSmallIcon(R.mipmap.ic_launcher_foreground)
-//                                    .setContentTitle(getString(R.string.app_name))
-//                                    .setContentText(getString(R.string.add_user) + loginId.getText().toString() + getString(R.string.with_success))
-//                                    .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.add_user) + loginId.getText().toString() + getString(R.string.with_success)))
-//                                    .setPriority(NotificationCompat.PRIORITY_MAX);
-//                            mBuilder.setContentIntent(contentIntent);
-//
-//                            NotificationManager notificationManager =
-//                                    (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                                NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, getString(R.string.app_name), IMPORTANCE_HIGH);
-//                                notificationManager.createNotificationChannel(mChannel);
-//                            }
-//                            notificationManager.notify(NOTIFY_ID, mBuilder.build());
-//                            Timber.d("add new user%s", id);
-//
-//                            getActivity().getSupportFragmentManager().beginTransaction()
-//                                    .replace(R.id.profile_container, LoginFragment.getInstance())
-//                                    .addToBackStack(null)
-//                                    .commit();
-//                            Snackbar.make(getView(), getString(R.string.add_user) + loginId.getText().toString() + getString(R.string.with_success), Toast.LENGTH_LONG).show();
-//                        })
-//                        .addOnFailureListener(e -> {
-//                            Timber.d("add failed");
-//                            Snackbar.make(getView(), getString(R.string.failed_add) + loginId.getText().toString() + getString(R.string.to_the_database), Toast.LENGTH_LONG).show();
-//                        });
                 DatabaseReference mDB = FirebaseDatabase.getInstance().getReference();
                 mDB.child(getString(R.string.users)).child(user.getIdUser()).setValue(user)
                         .addOnCompleteListener(task -> {

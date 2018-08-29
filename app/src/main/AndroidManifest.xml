@@ -48,6 +48,7 @@
         <receiver android:name=".widget.DalkerWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="dalker.cmtruong.com.app.widget.ACTION_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"

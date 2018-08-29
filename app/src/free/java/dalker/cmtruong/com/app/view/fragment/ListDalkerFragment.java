@@ -180,8 +180,10 @@ public class ListDalkerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Timber.d("Check state here%s", getUsersList().toString());
-        outState.putParcelableArrayList(getString(R.string.user_state_list), getUsersList());
+        if (getUsersList() != null) {
+            outState.putParcelableArrayList(getString(R.string.user_state_list), getUsersList());
+        }
+
         outState.putString(getString(R.string.location_state), mCurrentLocation);
     }
 
@@ -393,6 +395,10 @@ public class ListDalkerFragment extends Fragment {
     @Override
     public void onDestroy() {
 //        getContext().unregisterReceiver(mReceiver);
+        if (mReceiver != null && isRegistered) {
+            getContext().unregisterReceiver(mReceiver);
+            isRegistered = false;
+        }
         super.onDestroy();
     }
 
@@ -428,18 +434,21 @@ public class ListDalkerFragment extends Fragment {
     public class DalkerReceiver extends BroadcastReceiver {
 
         public DalkerReceiver() {
-            waitingForResult();
+            showMessageError();
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            users = intent.getParcelableArrayListExtra(getString(R.string.user_list));
+            Timber.d("Nothing 1");
             if (intent != null) {
+                users = intent.getParcelableArrayListExtra(getString(R.string.user_list));
                 populateUI(users);
                 PreferencesHelper.saveUserList(getContext(), users.toString());
                 setUsersList(users);
                 Timber.d("This is %s", users.toString());
             } else {
+                Timber.d("Nothing");
+                users = null;
                 showMessageError();
             }
 

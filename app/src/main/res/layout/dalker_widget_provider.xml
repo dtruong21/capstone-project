@@ -5,24 +5,38 @@
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
-    <TextView
-        android:id="@+id/appwidget_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/app_name"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textSize="@dimen/text_size"
-        android:textStyle="bold|italic" />
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-    <TextView
-        android:id="@+id/fav_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/no_fav_message"
-        android:textAlignment="center"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/appwidget_text"
+            style="@android:style/Widget.Material.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_weight="1"
+            android:contentDescription="@string/app_name"
+            android:text="@string/app_name"
+            android:textSize="@dimen/text_size"
+            android:textStyle="bold|italic" />
+
+        <Button
+            android:id="@+id/widget_update"
+            style="@android:style/Widget.Material.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/update_widgert" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/favorite_lv"

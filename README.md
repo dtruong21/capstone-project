@@ -28,7 +28,7 @@ In the version 1.0, the application will concentrate to build a platform with al
 - Live Data
 - Butterknife
 - Glide
-- Cloud Firestore
+- Firebase Realtime Database
 - Firebase Storage
 - Google Play Service Location
 - Google Play Service Admob (Banner and Video Reward)

@@ -220,11 +220,6 @@ public class FragmentDetailDalker extends Fragment {
                     Timber.d("user ID: %s", String.valueOf(mUserId));
                     insert_bt.setClickable(false);
                     insert_bt.setFocusable(false);
-//                    user.setIdUser(mUserId);
-//                    mDB.userDAO().updateUser(user);
-//                    String text = "Update " + user.getName().getFirstName() + " " + user.getName().getLastName() + " with successfull to favorite list";
-//                    Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
-//                    Timber.d(user.toString());
                 }
             });
         });
